@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.tteonajaletsgo.mapper.AttractionInfoMapper">
+
+    <resultMap type="AttractionInfo" id="attractionInfo">
+        <result column="id" property="id"/>
+        <result column="type_id" property="typeId"/>
+        <result column="name" property="name"/>
+        <result column="zipcode" property="zipcode"/>
+        <result column="tel" property="tel"/>
+        <result column="first_image" property="firstImage"/>
+        <result column="latitude" property="latitude"/>
+        <result column="longitude" property="longitude"/>
+        <result column="sido_code" property="sidoCode"/>
+        <result column="gugun_code" property="gugunCode"/>
+        <result column="like" property="like"/>
+    </resultMap>
+
+    <resultMap type="Sido" id="sido">
+        <result column="sido_code" property="sidoCode"/>
+        <result column="sido_name" property="sidoName"/>
+    </resultMap>
+    <!--type: Class, id: result map의 id-->
+    <resultMap type="Gugun" id="gugun">
+        <result column="gugun_code" property="gugunCode"/>
+        <result column="gugun_name" property="gugunName"/>
+        <result column="sido_code" property="sidoCode"/>
+    </resultMap>
+
+    <select id="region" parameterType="map" resultMap="attractionInfo">
+        select *
+        from attraction_info
+        <where>
+            <if test="sidoCode != null and sidoCode != ''">
+                and sido_code=#{sidoCode}
+            </if>
+            <if test="gugunCode != null and gugunCode != ''">
+                and gugun_code=#{gugunCode}
+            </if>
+            <if test="contentCode != null and contentCode != ''">
+                and type_id=#{contentCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="sido" resultMap="sido">
+        select *
+        from sido;
+    </select>
+
+    <select id="gugun" parameterType="int" resultMap="gugun">
+        select *
+        from gugun
+        where sido_code=#{sidoCode}
+    </select>
+
+</mapper>
