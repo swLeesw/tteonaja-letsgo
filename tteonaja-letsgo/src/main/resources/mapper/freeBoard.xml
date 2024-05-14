@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.tteonajaletsgo.mapper.FreeBoardMapper">
+
+	<!--resultMap 모음-->
+	<!--domain-->
+	<resultMap type="FreeBoard" id="freeBoard">
+		<result column="article_no" property="articleNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="hit" property="hit"/>
+		<result column="register_time" property="registerTime"/>
+	</resultMap>
+	<!--save-->
+	<resultMap type="FreeBoardSaveDto" id="freeBoardSave">
+		<result column="user_id" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+	</resultMap>
+	<!--update-->
+	<resultMap type="FreeBoardUpdateDto" id="freeBoardUpdateSave">
+		<result column="article_no" property="articleNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+	</resultMap>
+
+
+	<insert id="registArticle" parameterType="freeBoardSaveDto">
+		insert into free_board (user_id, subject, content, hit, register_time)
+		values (#{userId}, #{subject}, #{content}, 0, now())
+	</insert>
+
+	<select id="listArticle" resultMap="freeBoard">
+		select *
+		from free_board
+	</select>
+
+	<select id="getArticle" parameterType="int" resultMap="freeBoard">
+		select *
+		from free_board
+		where article_no = #{articleNo}
+	</select>
+
+	<update id="modifyArticle" parameterType="freeBoardUpdateDto">
+		update free_board
+		set subject=#{subject}, content=#{content}
+		where article_no=#{articleNo}
+	</update>
+
+	<delete id="deleteArticle" parameterType="int">
+		delete from free_board
+		where article_no=#{articleNo}
+	</delete>
+
+	<update id="updateHit">
+		update free_board
+		set hit = hit + 1
+		where article_no=#{articleNo}
+	</update>
+
+</mapper>

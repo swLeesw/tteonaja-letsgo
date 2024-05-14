@@ -1,4 +1,4 @@
 package com.ssafy.tteonajaletsgo.exception;
 
-public class Exception {
+public class ExceptionResponse {
 }

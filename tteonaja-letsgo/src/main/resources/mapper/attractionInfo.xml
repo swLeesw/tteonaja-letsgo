@@ -29,7 +29,7 @@
         <result column="sido_code" property="sidoCode"/>
     </resultMap>
 
-    <select id="region" parameterType="map" resultMap="attractionInfo">
+    <select id="getRegion" parameterType="map" resultMap="attractionInfo">
         select *
         from attraction_info
         <where>
@@ -45,12 +45,12 @@
         </where>
     </select>
 
-    <select id="sido" resultMap="sido">
+    <select id="getSido" resultMap="sido">
         select *
         from sido;
     </select>
 
-    <select id="gugun" parameterType="int" resultMap="gugun">
+    <select id="getGugun" parameterType="int" resultMap="gugun">
         select *
         from gugun
         where sido_code=#{sidoCode}

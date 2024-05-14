@@ -11,6 +11,6 @@ import java.util.Map;
 
 public interface AttractionInfoService {
     List<AttractionInfo> getRegion(Map<String, String> map) throws SQLException;
-    List<Sido> getSidoCode() throws SQLException;
+    List<Sido> getSido() throws SQLException;
     List<Gugun> getGugun(int sidoCode) throws SQLException;
 }

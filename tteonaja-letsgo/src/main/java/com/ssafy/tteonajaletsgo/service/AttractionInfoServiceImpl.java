@@ -23,8 +23,8 @@ public class AttractionInfoServiceImpl implements AttractionInfoService{
     }
 
     @Override
-    public List<Sido> getSidoCode() throws SQLException {
-        return attractionInfoMapper.getSidoCode();
+    public List<Sido> getSido() throws SQLException {
+        return attractionInfoMapper.getSido();
     }
 
     @Override

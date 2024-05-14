@@ -12,6 +12,6 @@ import java.util.Map;
 @Mapper
 public interface AttractionInfoMapper {
     List<AttractionInfo> getRegion(Map<String, String> map) throws SQLException;
-    List<Sido> getSidoCode() throws SQLException;
+    List<Sido> getSido() throws SQLException;
     List<Gugun> getGugun(int sidoCode) throws SQLException;
 }

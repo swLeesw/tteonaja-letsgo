@@ -19,6 +19,7 @@ public class AttractionInfoController {
     private final AttractionInfoService attractionInfoService;
 
     @GetMapping("/region")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public List<AttractionInfo> region(@RequestParam Map<String, String> map) throws SQLException {
         List<AttractionInfo> list = attractionInfoService.getRegion(map);
         return list;
@@ -27,7 +28,7 @@ public class AttractionInfoController {
     @GetMapping("/sido")
     public List<Sido> getSido() throws SQLException {
 
-        List<Sido> list = attractionInfoService.getSidoCode();
+        List<Sido> list = attractionInfoService.getSido();
         return list;
     }
 
