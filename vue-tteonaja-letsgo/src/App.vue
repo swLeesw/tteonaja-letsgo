@@ -1,13 +1,28 @@
 <script setup>
-
+import HeaderNavigationBar from "@/components/layout/HeaderNavigationBar.vue"
+import FooterBar from "@/components/layout/FooterBar.vue"
+import HomeView from "@/views/HomeView.vue"
 </script>
 
 <template>
-  <div>
-    <h2>appvue</h2>
-    <router-link :to="{ name: 'home' }">home</router-link>
-    <RouterView />
+  <div class="header-main min-vh-100">
+    <Header>
+      <HeaderNavigationBar />
+    </Header>
+    <main>
+      <!-- <HomeView /> -->
+      <RouterView />
+    </main>
+  </div>
+  <div class="">
+    <Footer class="footer-bar">
+      <FooterBar />
+    </Footer>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.footer-bar {
+
+}
+</style>
