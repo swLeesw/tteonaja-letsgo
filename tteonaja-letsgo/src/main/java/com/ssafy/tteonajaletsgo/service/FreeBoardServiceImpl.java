@@ -28,7 +28,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
 
         freeBoardListDto.setArticles(articles);
         freeBoardListDto.setCurrentPage(0);
-        freeBoardListDto.setTotalPageCount(articles.size());
+        freeBoardListDto.setTotalPageCount(articles.size() / 10 + 1);
         return freeBoardListDto;
     }
 

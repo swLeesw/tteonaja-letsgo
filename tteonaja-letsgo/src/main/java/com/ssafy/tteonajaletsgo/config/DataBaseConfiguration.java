@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 
 @Configuration //multiple bean add
 @PropertySource("classpath:/application.properties")
-//@MapperScan(basePackages = { "com.ssafy.vue.*.model.mapper" }) //mapper position
+//@MapperScan(basePackages = { "com.ssafy.vue.*.model.mapper" }) //application.properties에서 대체
 public class DataBaseConfiguration {
 
     @Bean

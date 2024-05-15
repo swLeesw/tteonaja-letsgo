@@ -14,13 +14,13 @@
 		<result column="hit" property="hit"/>
 		<result column="register_time" property="registerTime"/>
 	</resultMap>
-	<!--save-->
+	<!--saveDto-->
 	<resultMap type="FreeBoardSaveDto" id="freeBoardSave">
 		<result column="user_id" property="userId"/>
 		<result column="subject" property="subject"/>
 		<result column="content" property="content"/>
 	</resultMap>
-	<!--update-->
+	<!--updateDto-->
 	<resultMap type="FreeBoardUpdateDto" id="freeBoardUpdateSave">
 		<result column="article_no" property="articleNo"/>
 		<result column="user_id" property="userId"/>
@@ -29,7 +29,7 @@
 	</resultMap>
 
 
-	<insert id="registArticle" parameterType="freeBoardSaveDto">
+	<insert id="registArticle" parameterType="FreeBoardSaveDto">
 		insert into free_board (user_id, subject, content, hit, register_time)
 		values (#{userId}, #{subject}, #{content}, 0, now())
 	</insert>

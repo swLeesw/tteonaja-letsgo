@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/attractionInfo/")
+@RequestMapping("tteonaja/api/attractionInfo/")
 @RequiredArgsConstructor
 public class AttractionInfoController {
 

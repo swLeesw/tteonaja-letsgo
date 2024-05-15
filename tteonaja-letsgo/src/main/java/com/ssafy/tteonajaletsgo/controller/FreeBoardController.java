@@ -5,6 +5,8 @@ import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardListDto;
 import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardSaveDto;
 import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardUpdateDto;
 import com.ssafy.tteonajaletsgo.service.FreeBoardService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +15,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/board/free")
+@RequestMapping("tteonaja/api/board/free")
 public class FreeBoardController {
 
-    FreeBoardService freeBoardService;
+    private final FreeBoardService freeBoardService;
 
+    @ApiOperation(value="게시글 등록")
+    @ApiImplicitParam(name = "tagIds", value = "검색할 태그 ID를 담은 리스트", dataType = "list")
     @PostMapping("/regist")
-    public ResponseEntity<?> registArticle(@Validated @RequestBody FreeBoardSaveDto freeBoardSaveDto) throws Exception {
+    public ResponseEntity<?> registArticle(@Validated @RequestBody FreeBoardSaveDto freeBoardSaveDto) {
         //글 등록 작업
+        try {
         freeBoardService.registArticle(freeBoardSaveDto);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("registError", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
@@ -34,13 +42,18 @@ public class FreeBoardController {
     public ResponseEntity<FreeBoard> getArticle(
             @PathVariable(value = "articleno", required = true) int articleNo
     ) throws Exception {
-//        freeBoardService.updateHit(articleno);
+        freeBoardService.updateHit(articleNo);
         return new ResponseEntity<FreeBoard>(freeBoardService.getArticle(articleNo), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<String> modifyArticle(@RequestBody(required = true) FreeBoardUpdateDto freeBoardUpdateDto) throws Exception {
+    public ResponseEntity<String> modifyArticle(@RequestBody(required = true) FreeBoardUpdateDto freeBoardUpdateDto) {
+        System.out.println(freeBoardUpdateDto.toString());
+        try {
         freeBoardService.modifyArticle(freeBoardUpdateDto);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("modifyError", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return ResponseEntity.ok().build();
     }
 
