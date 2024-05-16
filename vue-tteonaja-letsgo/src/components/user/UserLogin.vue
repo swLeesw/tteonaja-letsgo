@@ -1,5 +1,36 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useMemberStore } from '@/stores/member';
+import { useMenuStore } from '@/stores/menu';
+import { storeToRefs } from 'pinia';
+
+const router = useRouter();
+
+const memberStore = useMemberStore();
+
+const { isLogin, isLoginError } = storeToRefs(memberStore);
+const { userLogin, getUserInfo } = memberStore;
+const { changeMenuState } = useMenuStore;
+
+const loginUser = ref({
+    userId: "",
+    userPwd: "",
+});
+
+const login = async () => {
+    await userLogin(loginUser.value);
+
+    let token = sessionStorage.getItem("accessToken");
+    console.log(token);
+    console.log("isLogin: " + isLogin.value);
+    if (isLogin.value) {
+        getUserInfo(token);
+        changeMenuState();
+        router.replace("/");
+    }
+};
 </script>
 
 <template>
@@ -7,7 +38,7 @@ import { RouterLink } from 'vue-router'
     <div class="container centered">
         <div class="row justify-content-center">
             <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
-                <RouterLink :to="{name:'home'}">
+                <RouterLink :to="{ name: 'home' }">
                     <div class="row justify-content-center mt-5">
                         <img src="@/assets/logo.png" class="img-thumnail mb-5" alt="로고"
                             style="width: 150px; height: auto;">
@@ -16,17 +47,16 @@ import { RouterLink } from 'vue-router'
                 <div class="card shadow">
                     <div class="card-body">
                         <form>
-
                             <div class="form-group">
                                 <label for="username"></label>
-                                <input type="text" class="form-control " id="username" placeholder="🙎‍♂️ 아이디 입력"
-                                    required>
+                                <input type="text" class="form-control " id="username" v-model="loginUser.userId"
+                                    placeholder="🙎‍♂️ 아이디 입력" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label for="password"></label>
-                                <input type="password" class="form-control " id="password" placeholder="🔑 비밀번호 입력"
-                                    required>
+                                <input type="password" class="form-control " id="password" v-model="loginUser.userPwd"
+                                    @keyup.enter="login" placeholder="🔑 비밀번호 입력" required>
                             </div>
 
                             <div class="form-check mb-3">
@@ -36,7 +66,7 @@ import { RouterLink } from 'vue-router'
                             </div>
 
                             <div class="row justify-content-center ms-auto me-auto">
-                                <button type="button" class="btn btn-primary" id="login">여행 떠나기!</button>
+                                <button type="button" class="btn btn-primary" id="login" @click="login">여행 떠나기!</button>
                             </div>
                         </form>
                     </div>
@@ -53,7 +83,8 @@ import { RouterLink } from 'vue-router'
                         </li>
                         <div class="vr"></div>
                         <li class="list-group-item border-0 p-0 ms-3">
-                            <RouterLink :to="{ name: 'register' }" class="nav-link align-middle text-muted user-controller">회원 가입</RouterLink>
+                            <RouterLink :to="{ name: 'register' }"
+                                class="nav-link align-middle text-muted user-controller">회원 가입</RouterLink>
                         </li>
                     </ul>
                 </div>
@@ -63,5 +94,4 @@ import { RouterLink } from 'vue-router'
 
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

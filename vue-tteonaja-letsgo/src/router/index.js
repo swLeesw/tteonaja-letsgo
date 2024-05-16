@@ -1,8 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
-import UserView from "@/views/UserView.vue";
-import UserLogin from "@/components/user/UserLogin.vue"
-import UserRegister from "@/components/user/UserRegister.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,20 +12,43 @@ const router = createRouter({
     {
       path: "/user",
       name: "user",
-      component: UserView,
+      component: () => import("@/views/UserView.vue"),
       children: [
         {
           path: "login",
           name: "login",
-          component: UserLogin
+          component: () => import("@/components/user/UserLogin.vue"),
         },
         {
           path: "register",
           name: "register",
-          component: UserRegister
-        }
-      ]
-    }
+          component: () => import("@/components/user/UserRegister.vue"),
+        },
+      ],
+    },
+    {
+      path: "/board",
+      name: "board",
+      component: () => import("@/views/BoardView.vue"),
+      children: [
+        {
+          path: "free",
+          name: "free-list",
+          component: () => import("@/components/board/free/FreeBoardList.vue"),
+
+        },
+        {
+          path: "free/:id",
+          name: "free-detail",
+          component: () => import("@/components/board/free/FreeBoardDetail.vue")
+        },
+        {
+          path: "trip",
+          name: "trip-list",
+          component: () => import("@/components/board/trip/TripBoardList.vue"),
+        },
+      ],
+    },
   ],
 });
 
