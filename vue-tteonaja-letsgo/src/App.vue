@@ -22,7 +22,5 @@ import HomeView from "@/views/HomeView.vue"
 </template>
 
 <style scoped>
-.footer-bar {
-
-}
+.footer-bar {}
 </style>

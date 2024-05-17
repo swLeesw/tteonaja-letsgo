@@ -44,8 +44,7 @@ const router = createRouter({
         {
           path: "free/:id",
           name: "free-detail",
-          component: () =>
-            import("@/components/board/free/FreeBoardDetail.vue"),
+          component: () => import("@/components/board/free/FreeBoardDetail.vue"),
         },
         {
           path: "trip",
@@ -53,6 +52,11 @@ const router = createRouter({
           component: () => import("@/components/board/trip/TripBoardList.vue"),
         },
       ],
+    },
+    {
+      path: "/map",
+      name: "map",
+      component: () => import("@/views/MapView.vue"),
     },
   ],
 });

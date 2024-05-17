@@ -30,7 +30,7 @@
                     <div class="carousel-caption text-start ">
                         <h1 class="">떠나자, Let's Go</h1>
                         <p class="">에서 대한민국에 숨겨진 관광지를 찾고 여행을 함께 해요!</p>
-                        <p><a class="btn btn-lg btn-warning " href="#">관광지 검색</a></p>
+                        <RouterLink class="btn btn-lg btn-warning " :to="{ name: 'map' }">관광지 검색</RouterLink>
                     </div>
                 </div>
             </div>
@@ -195,36 +195,36 @@
 </template>
 
 <style scoped>
-    .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-    }
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
 
-    @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-            font-size: 3.5rem;
-        }
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
     }
+}
 
-    .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-    }
+.b-example-divider {
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
 
-    .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-    }
+.b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+}
 
-    .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-    }
+.bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+}
 </style>
