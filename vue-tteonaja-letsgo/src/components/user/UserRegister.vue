@@ -60,7 +60,7 @@ const userIdCheck = () => {
 
 const userRegister = () => {
     console.log(newUser.value);
-    if (isIdCheck) {
+    if (isIdCheck.value) {
         register(
             newUser.value,
             (response) => {
