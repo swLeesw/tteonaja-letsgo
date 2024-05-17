@@ -28,6 +28,16 @@
 		<result column="content" property="content"/>
 	</resultMap>
 
+	<sql id="search">
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				and subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				and ${key} = #{word}
+			</if>
+		</if>
+	</sql>
 
 	<insert id="registArticle" parameterType="FreeBoardSaveDto">
 		insert into free_board (user_id, subject, content, hit, register_time)
@@ -37,12 +47,24 @@
 	<select id="listArticle" resultMap="freeBoard">
 		select *
 		from free_board
+		<where>
+			<include refid="search"></include>
+		</where>
+		limit #{start}, #{listsize}
 	</select>
 
 	<select id="getArticle" parameterType="int" resultMap="freeBoard">
 		select *
 		from free_board
 		where article_no = #{articleNo}
+	</select>
+
+	<select id="getTotalArticleCount" parameterType="map" resultType="int">
+		select count(article_no)
+		from free_board
+		<where>
+			<include refid="search"></include>
+		</where>
 	</select>
 
 	<update id="modifyArticle" parameterType="freeBoardUpdateDto">

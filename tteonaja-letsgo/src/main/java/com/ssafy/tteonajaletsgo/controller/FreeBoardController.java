@@ -7,11 +7,14 @@ import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardUpdateDto;
 import com.ssafy.tteonajaletsgo.service.FreeBoardService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,8 +37,13 @@ public class FreeBoardController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<FreeBoardListDto> listArticle() throws Exception {
-        return new ResponseEntity<FreeBoardListDto>(freeBoardService.listArticle(), HttpStatus.OK);
+    public ResponseEntity<FreeBoardListDto> listArticle(
+            @RequestParam @Parameter(description = "게시글을 얻기위한 부가정보.", required = true) Map<String, String> map
+    ) throws Exception {
+//        int currentPage = Integer.parseInt(map.get("pgno") == null ? "1" : map.get("pgno"));
+//        int sizePerPage = Integer.parseInt(map.get("spp") == null ? "20" : map.get("spp"));
+//        int start = currentPage * sizePerPage - sizePerPage;
+        return new ResponseEntity<FreeBoardListDto>(freeBoardService.listArticle(map), HttpStatus.OK);
     }
 
     @GetMapping("/{articleno}")
