@@ -11,9 +11,36 @@ function listArticle(params, success, fail) {
 
 function getArticle(params, success, fail) {
   local
-    .get(`board/${params.boardType}/${params.articleNo}`)
+    .get(`/board/${params.boardType}/${params.articleNo}`)
     .then(success)
     .catch(fail);
 }
 
-export { listArticle, getArticle };
+function registArticle(article, success, fail) {
+  local
+    .post(`/board/free/regist`, JSON.stringify(article))
+    .then(success)
+    .catch(fail);
+}
+
+function modifyArticle(params, success, fail) {
+  local
+    .put(`/board/${params.boardType}`, JSON.stringify(params.article))
+    .then(success)
+    .catch(fail);
+}
+
+function deleteArticle(params, success, fail) {
+  local
+    .delete(`/board/${params.boardType}/${params.articleNo}`)
+    .then(success)
+    .catch(fail);
+}
+
+export {
+  listArticle,
+  getArticle,
+  registArticle,
+  modifyArticle,
+  deleteArticle
+};
