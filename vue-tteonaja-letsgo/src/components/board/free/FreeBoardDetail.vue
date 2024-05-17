@@ -62,11 +62,11 @@ onMounted(() => {
 
         <div class="container mt-3 d-flex justify-content-between align-items-center p-1">
             <div>
-                <button class="btn btn-secondary" @click="moveToList">글 목록</button>
+                <button class="btn btn-secondary btn-sm" @click="moveToList">글 목록</button>
             </div>
             <div>
-                <button class="btn btn-primary" @click="moveToUpdate">글 수정</button>
-                <button class="btn btn-danger ms-3" @click="deleteFreeArticle">글 삭제</button>
+                <button class="btn btn-primary btn-sm" @click="moveToUpdate">글 수정</button>
+                <button class="btn btn-danger ms-3 btn-sm" @click="deleteFreeArticle">글 삭제</button>
             </div>
         </div>
     </div>

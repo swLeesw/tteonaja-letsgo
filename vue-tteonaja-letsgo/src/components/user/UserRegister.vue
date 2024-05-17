@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { idCheck, register } from '@/api/user';
 import Swal from 'sweetalert2';
 import { useRoute, useRouter } from 'vue-router';
@@ -17,6 +17,15 @@ const newUser = ref(
         phone: "",
         userNickname: ""
     }
+);
+
+// 아이디가 바뀔 때마다 idCheck 값이 false로 초기화
+watch(
+    () => newUser.value.userId, (newValue, oldValue) => {
+        isIdCheck.value = false;
+        // console.log(isIdCheck.value);
+    },
+    { deep: true }
 );
 
 const userIdCheck = () => {
