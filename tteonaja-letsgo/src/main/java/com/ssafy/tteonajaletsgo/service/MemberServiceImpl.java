@@ -3,6 +3,8 @@ package com.ssafy.tteonajaletsgo.service;
 import com.ssafy.tteonajaletsgo.domain.Member;
 import com.ssafy.tteonajaletsgo.dto.member.MemberLoginDto;
 import com.ssafy.tteonajaletsgo.dto.member.MemberSaveDto;
+import com.ssafy.tteonajaletsgo.dto.member.MemberUpdateDto;
+import com.ssafy.tteonajaletsgo.dto.member.PassCheckDto;
 import com.ssafy.tteonajaletsgo.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -57,7 +59,29 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void join(MemberSaveDto memberSaveDto) {
+    public boolean checkPass(PassCheckDto passCheckDto) throws Exception {
+        String userId = memberMapper.checkPass(passCheckDto);
+        if (userId != null) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void join(MemberSaveDto memberSaveDto) throws Exception{
         memberMapper.join(memberSaveDto);
+    }
+
+    @Override
+    public boolean deleteUser(String userId) throws Exception {
+        if (memberMapper.deleteUser(userId) > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void modify(MemberUpdateDto memberUpdateDto) throws Exception {
+        memberMapper.modify(memberUpdateDto);
     }
 }

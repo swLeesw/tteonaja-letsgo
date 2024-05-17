@@ -7,6 +7,7 @@ import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardUpdateDto;
 import com.ssafy.tteonajaletsgo.service.FreeBoardService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,7 @@ public class FreeBoardController {
 
     private final FreeBoardService freeBoardService;
 
-    @ApiOperation(value="게시글 등록")
-    @ApiImplicitParam(name = "tagIds", value = "검색할 태그 ID를 담은 리스트", dataType = "list")
+    @Operation(summary = "게시글 등록", description = "게시글을 등록한다")
     @PostMapping("/regist")
     public ResponseEntity<?> registArticle(@Validated @RequestBody FreeBoardSaveDto freeBoardSaveDto) {
         //글 등록 작업
@@ -36,6 +36,7 @@ public class FreeBoardController {
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
+    @Operation(summary = "게시글 불러오기", description = "게시글 리스트를 불러온다.")
     @GetMapping("/list")
     public ResponseEntity<FreeBoardListDto> listArticle(
             @RequestParam @Parameter(description = "게시글을 얻기위한 부가정보.", required = true) Map<String, String> map
@@ -46,6 +47,7 @@ public class FreeBoardController {
         return new ResponseEntity<FreeBoardListDto>(freeBoardService.listArticle(map), HttpStatus.OK);
     }
 
+    @Operation(summary = "게시글 상세정보", description = "게시글 상세 정보를 불러온다")
     @GetMapping("/{articleno}")
     public ResponseEntity<FreeBoard> getArticle(
             @PathVariable(value = "articleno", required = true) int articleNo
@@ -54,6 +56,7 @@ public class FreeBoardController {
         return new ResponseEntity<FreeBoard>(freeBoardService.getArticle(articleNo), HttpStatus.OK);
     }
 
+    @Operation(summary = "게시글 수정", description = "게시글을 수정한다")
     @PutMapping
     public ResponseEntity<String> modifyArticle(@RequestBody(required = true) FreeBoardUpdateDto freeBoardUpdateDto) {
         System.out.println(freeBoardUpdateDto.toString());
@@ -65,6 +68,7 @@ public class FreeBoardController {
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "게시글 삭제", description = "게시글을 삭제한다")
     @DeleteMapping("/{articleno}")
     public ResponseEntity<String> deleteArticle(@PathVariable(value = "articleno", required = true) int articleno) throws Exception {
         freeBoardService.deleteArticle(articleno);

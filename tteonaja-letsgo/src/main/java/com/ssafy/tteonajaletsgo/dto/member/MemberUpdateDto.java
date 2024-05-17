@@ -1,31 +1,22 @@
 package com.ssafy.tteonajaletsgo.dto.member;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class MemberSaveDto {
+public class MemberUpdateDto {
 
     @NotBlank
-    @Size(min = 5, max = 20)
     private String userId;
 
-    @NotBlank
-    @Min(2)
-    private String userName;
-
-    @NotBlank
-    @Size(min = 8, max = 20)
     private String userPassword;
 
     @Email
-    @NotBlank
     private String email;
 
-    @NotBlank
     private String phone;
 
-    @NotBlank
     private String userNickname;
 
 }

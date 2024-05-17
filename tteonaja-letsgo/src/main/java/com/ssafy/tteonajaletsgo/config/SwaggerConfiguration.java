@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
                 contact = @Contact(
                         name = "LEESEUNGWON, KIMMINJU",
                         email = "wlk256032@naver.com",
-                        url = "http//github.com/swLeesw/tteonaja-letsgo"
+                        url = "http://github.com/swLeesw/tteonaja-letsgo"
                 )
         )
 )
@@ -42,7 +42,7 @@ public class SwaggerConfiguration {
 //
 //    @Bean
 //    public GroupedOpenApi mapApi() {
-//        return GroupedOpenApi.builder().group("ssafy-map").pathsToMatch("/map/**").build();
+//        return GroupedOpenApi.builder().group("ssafy-map").pathsToMatch("/map/*sw*").build();
 //    }
 
 }

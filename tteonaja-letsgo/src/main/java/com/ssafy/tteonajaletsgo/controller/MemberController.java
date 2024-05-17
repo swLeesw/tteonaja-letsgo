@@ -1,12 +1,11 @@
 package com.ssafy.tteonajaletsgo.controller;
 
 import com.ssafy.tteonajaletsgo.domain.Member;
-import com.ssafy.tteonajaletsgo.dto.member.IdCheckDto;
-import com.ssafy.tteonajaletsgo.dto.member.MemberLoginDto;
-import com.ssafy.tteonajaletsgo.dto.member.MemberSaveDto;
+import com.ssafy.tteonajaletsgo.dto.member.*;
 import com.ssafy.tteonajaletsgo.exception.ExceptionResponse;
 import com.ssafy.tteonajaletsgo.service.MemberService;
 import com.ssafy.tteonajaletsgo.util.JWTUtil;
+import io.swagger.models.Response;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -28,14 +28,15 @@ public class MemberController {
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
 
+    @Operation(summary = "회원가입", description = "정보를 입력하여 회원가입을 한다.")
     @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody MemberSaveDto memberSaveDto) {
+    public ResponseEntity<?> join(@Validated @RequestBody MemberSaveDto memberSaveDto) {
 
         try {
             memberService.join(memberSaveDto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<String>("joinError", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ExceptionResponse.response(e);
         }
     }
 
@@ -43,7 +44,7 @@ public class MemberController {
     @Operation(summary = "로그인", description = "아이디와 비밀번호를 이용하여 로그인 처리.")
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(
-            @RequestBody @Parameter(description = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberLoginDto memberDto) {
+            @Validated @RequestBody @Parameter(description = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberLoginDto memberDto) {
         log.debug("login user : {}", memberDto);
         Map<String, Object> resultMap = new HashMap<String, Object>();
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -144,8 +145,10 @@ public class MemberController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
+    @Operation(summary = "아이디 중복 체크", description = "회원가입 전 아이디 중복 체크.")
     @GetMapping("/idcheck/{userId}")
     public ResponseEntity<?> checkId(@PathVariable(value = "userId", required = true) String userId) {
+
         try {
             IdCheckDto idCheckDto = new IdCheckDto();
             if (memberService.checkId(userId)) {
@@ -156,6 +159,51 @@ public class MemberController {
             return new ResponseEntity<IdCheckDto>(idCheckDto, HttpStatus.OK);
 
         } catch (Exception e) {
+            return ExceptionResponse.response(e);
+        }
+    }
+
+    @Operation(summary = "비밀번호 체크", description = "회원정보 수정 전 비밀번호 확인")
+    @PostMapping("/passcheck")
+    public ResponseEntity<?> checkPass(@RequestBody(required = true) PassCheckDto passCheckDto) {
+
+        try {
+            IdCheckDto passCheck = new IdCheckDto();
+            if (memberService.checkPass(passCheckDto)) {
+                passCheck.setCheck(true);
+            } else {
+                passCheck.setCheck(false);
+            }
+            return new ResponseEntity<IdCheckDto>(passCheck, HttpStatus.OK);
+        } catch (Exception e) {
+            return ExceptionResponse.response(e);
+        }
+    }
+
+    @Operation(summary = "회원정보 삭제", description = "회원정보를 삭제한다")
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable(value = "userId", required = true) String userId) {
+
+        try {
+            if (memberService.deleteUser(userId)) {
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return ExceptionResponse.response(e);
+        }
+    }
+
+    @Operation(summary = "회원정보 수정", description = "수정 가능한 정보(password, email, phone, userNickname)")
+    @PutMapping
+    public ResponseEntity<?> modifyUser(@Validated @RequestBody MemberUpdateDto memberUpdateDto) {
+
+        try {
+            memberService.modify(memberUpdateDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
             return ExceptionResponse.response(e);
         }
 

@@ -52,9 +52,42 @@
         where user_id=#{userId}
     </select>
 
+    <select id="checkPass" parameterType="passCheckDto">
+        select user_id
+        from member
+        where user_id=#{userId}
+        and user_password=#{checkPassword}
+    </select>
+
     <insert id="join" parameterType="MemberSaveDto">
         insert into member(user_id, user_name, user_password, email, phone, user_nickname, join_date)
         values (#{userId}, #{userName}, #{userPassword}, #{email}, #{phone}, #{userNickname}, now());
     </insert>
+
+    <delete id="deleteUser" parameterType="String">
+        delete from member
+        where user_id=#{userId}
+    </delete>
+
+    <update id="modify" parameterType="MemberUpdateDto">
+        update member
+        <set>
+            <if test="userPassword != null">
+                user_password = #{userPassword},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="userNickname != null">
+                user_nickName = #{userNickname},
+            </if>
+            last_modified_date = now()
+        </set>
+        where user_id = #{userId}
+
+    </update>
 
 </mapper>
