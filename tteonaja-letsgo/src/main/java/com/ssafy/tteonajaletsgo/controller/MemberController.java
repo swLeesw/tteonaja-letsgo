@@ -3,6 +3,8 @@ package com.ssafy.tteonajaletsgo.controller;
 import com.ssafy.tteonajaletsgo.domain.Member;
 import com.ssafy.tteonajaletsgo.dto.member.IdCheckDto;
 import com.ssafy.tteonajaletsgo.dto.member.MemberLoginDto;
+import com.ssafy.tteonajaletsgo.dto.member.MemberSaveDto;
+import com.ssafy.tteonajaletsgo.exception.ExceptionResponse;
 import com.ssafy.tteonajaletsgo.service.MemberService;
 import com.ssafy.tteonajaletsgo.util.JWTUtil;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -25,6 +27,18 @@ import java.util.Map;
 public class MemberController {
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
+
+    @PostMapping("/join")
+    public ResponseEntity<?> join(@RequestBody MemberSaveDto memberSaveDto) {
+
+        try {
+            memberService.join(memberSaveDto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("joinError", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @Operation(summary = "로그인", description = "아이디와 비밀번호를 이용하여 로그인 처리.")
     @PostMapping("/login")
@@ -142,7 +156,7 @@ public class MemberController {
             return new ResponseEntity<IdCheckDto>(idCheckDto, HttpStatus.OK);
 
         } catch (Exception e) {
-            return new ResponseEntity<String>("checkError", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ExceptionResponse.response(e);
         }
 
     }

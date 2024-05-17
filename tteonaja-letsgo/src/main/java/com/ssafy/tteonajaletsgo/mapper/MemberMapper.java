@@ -2,6 +2,7 @@ package com.ssafy.tteonajaletsgo.mapper;
 
 import com.ssafy.tteonajaletsgo.domain.Member;
 import com.ssafy.tteonajaletsgo.dto.member.MemberLoginDto;
+import com.ssafy.tteonajaletsgo.dto.member.MemberSaveDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.sql.SQLException;
@@ -15,4 +16,5 @@ public interface MemberMapper {
     Object getRefreshToken(String userid) throws SQLException;
     void deleteRefreshToken(Map<String, String> map) throws SQLException;
     String checkId(String userId) throws Exception;
+    void join(MemberSaveDto memberSaveDto);
 }

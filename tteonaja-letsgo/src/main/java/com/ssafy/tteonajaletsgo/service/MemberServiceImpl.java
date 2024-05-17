@@ -2,6 +2,7 @@ package com.ssafy.tteonajaletsgo.service;
 
 import com.ssafy.tteonajaletsgo.domain.Member;
 import com.ssafy.tteonajaletsgo.dto.member.MemberLoginDto;
+import com.ssafy.tteonajaletsgo.dto.member.MemberSaveDto;
 import com.ssafy.tteonajaletsgo.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,10 @@ public class MemberServiceImpl implements MemberService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void join(MemberSaveDto memberSaveDto) {
+        memberMapper.join(memberSaveDto);
     }
 }

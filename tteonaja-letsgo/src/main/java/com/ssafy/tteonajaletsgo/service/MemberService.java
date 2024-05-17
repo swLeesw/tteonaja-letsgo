@@ -2,6 +2,7 @@ package com.ssafy.tteonajaletsgo.service;
 
 import com.ssafy.tteonajaletsgo.domain.Member;
 import com.ssafy.tteonajaletsgo.dto.member.MemberLoginDto;
+import com.ssafy.tteonajaletsgo.dto.member.MemberSaveDto;
 
 public interface MemberService {
     Member login(MemberLoginDto memberDto) throws Exception;
@@ -10,5 +11,5 @@ public interface MemberService {
     Object getRefreshToken(String userId) throws Exception;
     void deleRefreshToken(String userId) throws Exception;
     boolean checkId(String userId) throws Exception;
-
+    void join(MemberSaveDto memberSaveDto);
 }

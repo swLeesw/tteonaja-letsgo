@@ -52,4 +52,9 @@
         where user_id=#{userId}
     </select>
 
+    <insert id="join" parameterType="MemberSaveDto">
+        insert into member(user_id, user_name, user_password, email, phone, user_nickname, join_date)
+        values (#{userId}, #{userName}, #{userPassword}, #{email}, #{phone}, #{userNickname}, now());
+    </insert>
+
 </mapper>
