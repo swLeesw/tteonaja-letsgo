@@ -4,7 +4,6 @@ import com.ssafy.tteonajaletsgo.domain.FreeComment;
 import com.ssafy.tteonajaletsgo.dto.freeComment.FreeCommentSaveDto;
 import com.ssafy.tteonajaletsgo.service.FreeCommentService;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("tteonaja/api/board/free-comment")
-public class FreeeCommentController {
+public class FreeCommentController {
 
     private final FreeCommentService freeCommentService;
 

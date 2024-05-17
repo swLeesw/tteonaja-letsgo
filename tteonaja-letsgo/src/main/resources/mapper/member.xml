@@ -4,4 +4,52 @@
 
 <mapper namespace="com.ssafy.tteonajaletsgo.mapper.MemberMapper">
 
+    <resultMap type="Member" id="member">
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_password" property="userPwd"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="user_nickname" property="userNickname"/>
+        <result column="join_date" property="joinDate"/>
+        <result column="last_modified_date" property="lastModifiedDate"/>
+        <result column="refresh_token" property="refreshToken"/>
+    </resultMap>
+
+    <select id="login" parameterType="map" resultMap="member">
+        select user_id, user_name, refresh_token
+        from member
+        where user_id = #{userId} and user_password = #{userPassword}
+    </select>
+
+    <select id="userInfo" parameterType="string" resultMap="member">
+        select user_id, user_name, email, phone, user_nickname, join_date, last_modified_date
+        from member
+        where user_id = #{userId}
+    </select>
+
+    <update id="saveRefreshToken" parameterType="map">
+        update member
+        set refresh_token = #{refreshToken}
+        where user_id = #{userId}
+    </update>
+
+    <select id="getRefreshToken" parameterType="string" resultType="string">
+        select refresh_token
+        from member
+        where user_id = #{userId}
+    </select>
+
+    <update id="deleteRefreshToken" parameterType="map">
+        update member
+        set refresh_token = #{refreshToken, jdbcType=VARCHAR}
+        where user_id = #{userId}
+    </update>
+
+    <select id="checkId" parameterType="String">
+        select user_id
+        from member
+        where user_id=#{userId}
+    </select>
+
 </mapper>

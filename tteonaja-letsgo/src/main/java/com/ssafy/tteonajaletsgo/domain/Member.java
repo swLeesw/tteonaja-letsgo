@@ -10,6 +10,7 @@ public class Member {
     private String email;
     private String phone;
     private String userNickname;
-    private String joinData;
+    private String joinDate;
     private String lastModifiedDate;
+    private String refreshToken;
 }
