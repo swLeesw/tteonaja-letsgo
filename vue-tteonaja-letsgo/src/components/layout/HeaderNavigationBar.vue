@@ -1,12 +1,28 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
 import { ref } from 'vue';
+import { useMenuStore } from '@/stores/menu';
+import { useMemberStore } from '@/stores/member';
+import { storeToRefs } from 'pinia';
+
+const menuStore = useMenuStore();
+const memberStore = useMemberStore();
+
+const { menuList } = storeToRefs(menuStore);
+const { changeMenuState } = menuStore;
+
+const { userLogout } = memberStore;
+
+const logout = () => {
+    userLogout();
+    changeMenuState();
+}
 
 </script>
 
 <template>
 
-    <nav class="navbar navbar-expand-md bg-body-tertiary sticky-top">
+    <nav class="navbar navbar-expand-md bg-white sticky-top ms-5 me-5">
         <div class="container-fluid">
             <RouterLink :to="{ name: 'home' }" class="navbar-brand">
                 <img src="@/assets/logo.png" class="ratio" alt="..." style="width: 25%" />
@@ -16,7 +32,7 @@ import { ref } from 'vue';
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarScroll">
-                <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll p-1" style="--bs-scroll-height: 100px">
+                <ul class="navbar-nav ms-auto navbar-nav-scroll p-1" style="--bs-scroll-height: 100px">
                     <li class="nav-item me-3">
                         <a class="nav-link btn-hover-effect rounded-pill" href="#">홈</a>
                     </li>
@@ -24,7 +40,7 @@ import { ref } from 'vue';
                         <a class="nav-link btn-hover-effect rounded-pill" href="#">여행</a>
                         <!-- <RouterLink :to="{ name: 'trip' }" class="nav-link align-middle btn-hover-effect rounded-pill">여행</RouterLink> -->
                     </li>
-                    <li class="nav-item me-3 dropdown">
+                    <li class="nav-item me-2 dropdown">
                         <a class="nav-link dropdown-toggle btn-hover-effect rounded-pill" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false" href="#">게시판</a>
                         <!-- <RouterLink :to="{ name: 'free' }" class="nav-link align-middle btn-hover-effect rounded-pill">자유게시판</RouterLink> -->
@@ -40,15 +56,14 @@ import { ref } from 'vue';
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item me-3">
+                    <!-- <li class="nav-item me-3">
                         <RouterLink :to="{ name: 'login' }" class="nav-link align-middle btn-hover-effect rounded-pill">
                             로그인</RouterLink>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            HELP DESK
-                        </a>
+                    </li> -->
+                    <li class="nav-item dropdown me-1">
+                        <a class="nav-link dropdown-toggle btn-hover-effect rounded-pill" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            HELP DESK</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item " href="#">공지사항</a></li>
                             <li><a class="dropdown-item" href="#">FAQ</a></li>
@@ -58,6 +73,28 @@ import { ref } from 'vue';
                             <li><a class="dropdown-item" href="#">학사규정</a></li>
                         </ul>
                     </li>
+                </ul>
+                <ul class="navbar-nav navbar-nav-scroll" style="--bs-scroll-height: 100px">
+                    <template v-for="menu in menuList" :key="menu.routeName">
+                        <template v-if="menu.show">
+                            <template v-if="menu.routeName === 'logout'">
+                                <li class="nav-item me-2">
+                                    <router-link to="/" @click.prevent="logout"
+                                        class="nav-link btn-hover-effect rounded-pill">{{
+                                        menu.name
+                                        }}</router-link>
+                                </li>
+                            </template>
+                            <template v-else>
+                                <li class="nav-item">
+                                    <router-link :to="{ name: menu.routeName }"
+                                        class="nav-link btn-hover-effect rounded-pill">{{
+                                        menu.name
+                                        }}</router-link>
+                                </li>
+                            </template>
+                        </template>
+                    </template>
                 </ul>
             </div>
         </div>

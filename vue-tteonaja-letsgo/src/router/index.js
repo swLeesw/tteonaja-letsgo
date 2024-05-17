@@ -24,6 +24,11 @@ const router = createRouter({
           name: "register",
           component: () => import("@/components/user/UserRegister.vue"),
         },
+        {
+          path: "info",
+          name: "my-page",
+          component: () => import("@/components/user/UserInfo.vue"),
+        },
       ],
     },
     {
@@ -35,12 +40,12 @@ const router = createRouter({
           path: "free",
           name: "free-list",
           component: () => import("@/components/board/free/FreeBoardList.vue"),
-
         },
         {
           path: "free/:id",
           name: "free-detail",
-          component: () => import("@/components/board/free/FreeBoardDetail.vue")
+          component: () =>
+            import("@/components/board/free/FreeBoardDetail.vue"),
         },
         {
           path: "trip",

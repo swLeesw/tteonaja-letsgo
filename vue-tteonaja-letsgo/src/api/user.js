@@ -2,24 +2,35 @@ import { localAxios } from "@/util/http-commons";
 
 const local = localAxios();
 
+// 사용자 로그인
 async function userConfirm(param, success, fail) {
-  await local.post(``, param).then(success).catch(fail);
+  await local.post(`member/login`, param).then(success).catch(fail);
 }
 
-async function findById(userid, success, fail) {
+// 사용자 정보 조회
+async function findById(userId, success, fail) {
   local.defaults.headers["Authorization"] =
     sessionStorage.getItem("accessToken");
-  await local.post(``).then(success).catch(fail);
+  await local.get(`member/info/${userId}`).then(success).catch(fail);
 }
 
+// access token 재생성
 async function tokenRegeneration(user, success, fail) {
   local.defaults.headers["refreshToken"] =
     sessionStorage.getItem("refreshToken");
   await local.post(``, param).then(success).catch(fail);
 }
 
-async function logout(userid, success, fail) {
-  await local.post(``).then(success).catch(fail);
+async function logout(userId, success, fail) {
+  await local.get(`member/logout/${userId}`).then(success).catch(fail);
 }
 
-export { userConfirm, findById, tokenRegeneration, logout}
+async function register(newUser, success, fail) {
+  await local.post(`member/join`, newUser).then(success).catch(fail);
+}
+
+async function idCheck(userId, success, fail) {
+  await local.get(`member/idcheck/${userId}`).then(success).catch(fail);
+}
+
+export { userConfirm, findById, tokenRegeneration, logout, idCheck, register };

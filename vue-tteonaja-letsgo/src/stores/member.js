@@ -10,7 +10,6 @@ import { httpStatusCode } from "@/util/http-status";
 // 할당 변수 이름은  use{store이름}Store로 설정, 규칙임
 // memberStore는 pinia에서 store와 devtools를 연결하는데 사용
 export const useMemberStore = defineStore("memberStore", () => {
-
   // 아래는 store를 정의하는 문법 중 setup store 문법
   // ref()는 state 속성
   // computed()는 getters
@@ -27,19 +26,21 @@ export const useMemberStore = defineStore("memberStore", () => {
   const isValidToken = ref(false);
 
   const userLogin = async (loginUser) => {
+    console.log(loginUser);
     await userConfirm(
       loginUser,
       (response) => {
         if (response.status === httpStatusCode.CREATE) {
           console.log("로그인 성공");
+          console.log(response);
           let { data } = response;
           let accessToken = data["access-token"];
           let refreshToken = data["refresh-token"];
           isLogin.value = true;
           isLoginError.value = false;
           isValidToken.value = true;
-          sessionStorage.getItem("accessToken", accessToken);
-          sessionStorage.getItem("refreshToken", refreshToken);
+          sessionStorage.setItem("accessToken", accessToken);
+          sessionStorage.setItem("refreshToken", refreshToken);
         }
       },
       (error) => {
@@ -55,6 +56,7 @@ export const useMemberStore = defineStore("memberStore", () => {
   const getUserInfo = async (token) => {
     let decodeToken = jwtDecode(token);
     console.log(decodeToken);
+    console.log(decodeToken.userId);
     await findById(
       decodeToken.userId,
       (response) => {

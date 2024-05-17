@@ -31,12 +31,20 @@ const getArticleList = () => {
         (response) => {
             console.log(response.data.articles);
             articles.value = response.data.articles;
+            currentPage.value = response.data.currentPage;
+            totalPage.value = response.data.totalPageCount;
         },
         (error) => {
             console.error(error);
         }
     );
 };
+
+const onPageChange = (val) => {
+    currentPage.value = val;
+    params.value.pgno = val;
+    getArticleList();
+}
 
 onMounted(() => {
     getArticleList();
@@ -81,7 +89,7 @@ onMounted(() => {
             </div>
             <div class="row">
                 <div class="col offset-2 text-center">
-                    <VPageNavigation :current-page="currentPage" :total-page="totalPage" @pageCHange="onPageChange">
+                    <VPageNavigation :current-page="currentPage" :total-page="totalPage" @pageChange="onPageChange">
                     </VPageNavigation>
                 </div>
                 <div class="col-md-2 text-end">

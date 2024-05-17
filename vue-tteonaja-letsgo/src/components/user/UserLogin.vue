@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router';
 import { useMemberStore } from '@/stores/member';
 import { useMenuStore } from '@/stores/menu';
 import { storeToRefs } from 'pinia';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 
@@ -12,16 +13,15 @@ const memberStore = useMemberStore();
 
 const { isLogin, isLoginError } = storeToRefs(memberStore);
 const { userLogin, getUserInfo } = memberStore;
-const { changeMenuState } = useMenuStore;
+const { changeMenuState } = useMenuStore();
 
 const loginUser = ref({
     userId: "",
-    userPwd: "",
+    userPassword: "",
 });
 
 const login = async () => {
     await userLogin(loginUser.value);
-
     let token = sessionStorage.getItem("accessToken");
     console.log(token);
     console.log("isLogin: " + isLogin.value);
@@ -55,8 +55,9 @@ const login = async () => {
 
                             <div class="form-group mb-3">
                                 <label for="password"></label>
-                                <input type="password" class="form-control " id="password" v-model="loginUser.userPwd"
-                                    @keyup.enter="login" placeholder="🔑 비밀번호 입력" required>
+                                <input type="password" class="form-control " id="password"
+                                    v-model="loginUser.userPassword" @keyup.enter="login" placeholder="🔑 비밀번호 입력"
+                                    required>
                             </div>
 
                             <div class="form-check mb-3">
