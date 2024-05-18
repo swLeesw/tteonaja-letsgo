@@ -11,7 +11,6 @@ public class MemberSaveDto {
     private String userId;
 
     @NotBlank
-    @Min(2)
     private String userName;
 
     @NotBlank
