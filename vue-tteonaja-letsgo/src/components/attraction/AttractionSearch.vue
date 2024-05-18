@@ -8,7 +8,7 @@ import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 const sido = ref("");
 const gugun = ref("");
 const contentCode = ref("");
-
+const searchTerm = ref("");
 //전체 정보
 const attractionInfo = ref("");
 
@@ -104,7 +104,12 @@ const getGugun = watch(() => {
 })
 
 const onClickMapMarker = (info) => {
+    for (let i = 0; i < attractionInfo.value.length; i++) {
+        attractionInfo.value[i].visible = false;
+    }
     info.visible = !info.visible;
+
+
 }
 
 
@@ -126,14 +131,14 @@ onMounted(() => {
 </script>
 
 <template>
-    <div style="display: flex;">
+    <div class="container-fluid vh-100" style="display: flex;">
         <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
             <a href="/"
                 class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
                 <svg class="bi pe-none me-2" width="30" height="24">
                     <use xlink:href="#bootstrap" />
                 </svg>
-                <span class="fs-5 fw-semibold">List group</span>
+                <span class="fs-5 fw-semibold">검색</span>
             </a>
             <div class="list-group list-group-flush border-bottom scrollarea">
                 <select class="col form-select mx-2" aria-label="Default select example" v-model="sido">
@@ -145,44 +150,36 @@ onMounted(() => {
                 <select class="col form-select mx-2" aria-label="Default select example" v-model="gugun">
                     <option value="">구/군 선택</option>
                     <option v-for="(gugunn, index) in gugunOptions" :key="index" :value="gugunn.gugunCode">{{
-                        gugunn.gugunName
-                        }}</option>
+                    gugunn.gugunName
+                }}</option>
                 </select>
                 <select class="col form-select mx-2" aria-label="Default select example" v-model="contentCode">
                     <option value="">콘텐츠 유형 선택</option>
                     <option v-for="(contentt, index) in contentCodeOptions" :key="index" :value="contentt.value">{{
-                        contentt.name }}</option>
+                    contentt.name }}</option>
                 </select>
-                <button type="button" class="btn btn-primary col-2 mx-2" @click="getAttraction">검색</button>
-                <a href="#" class="list-group-item list-group-item-action active py-3 lh-sm" aria-current="true">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">List group item heading</strong>
-                        <small>Wed</small>
+                <input class="form-control mx-2" type="text" v-model="searchTerm" placeholder="검색어 입력.." />
+                <button type="button" class="btn btn-primary col-2 mx-2 mt-3 mb-3" @click="getAttraction">검색</button>
+                <div class="" v-for="(info, index) in attractionInfo" :key="index">
+                    <div class="card lh-sm m-2 card-custom" style="width: 18rem;">
+                        <img :src="info.firstImage" class="card-img-top"
+                            onerror="this.onerror=null; this.src='../../assets/logo.png'">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ info.name }}</h5>
+                            <p class="card-text">설명...</p>
+                            <a href="#" class="btn btn-primary" @click="onClickMapMarker(info)">위치 보기</a>
+                        </div>
                     </div>
-                    <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.
-                    </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action py-3 lh-sm">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">List group item heading</strong>
-                        <small class="text-body-secondary">Tues</small>
-                    </div>
-                    <div class="col-10 mb-1 small">Some placeholder content in a paragraph below the heading and date.
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" style="width: 100%; height: 100vh;">
-            <KakaoMapMarker v-for="(info, idx) in attractionInfo" :key="idx" :lat="info.latitude" :lng="info.longitude"
-                :infoWindow="{
+            <KakaoMapMarker v-for="(info, idx) in  attractionInfo " :key="idx" :lat="info.latitude"
+                :lng="info.longitude" :infoWindow="{
                     content:
                         `
-                    <div class='card' style='width: 10rem;'>
-                        <img src='` + info.firstImage + `' class='card-img-top' :alt='/assets/img/noImg.png'  height='120'/>
-                        <div class='card-body'>
-                            <h5>` + info.name + `</h5>
-                            <a type='button' href='http://map.naver.com/p/search/` + info.name + `' target='_blank' class='btn btn-primary btn-sm'>지도에서 검색</a>
-                        </div>
+                    <div>
+                        ` + info.name + `
                     </div>
                             `
                     , visible: info.visible
@@ -219,6 +216,12 @@ main {
     font-weight: 600;
     color: var(--bs-emphasis-color);
     background-color: transparent;
+}
+
+.card-custom:hover,
+.card-custom:focus {
+    color: rgba(var(--bs-emphasis-color-rgb), .85);
+    background-color: var(--bs-tertiary-bg);
 }
 
 .btn-toggle:hover,
