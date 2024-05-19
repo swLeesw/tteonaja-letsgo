@@ -36,7 +36,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         String key = map.get("key");
         param.put("key", key == null ? "" : key);
         if ("user_id".equals(key))
-            param.put("key", key == null ? "" : "b.user_id");
+            param.put("key", key == null ? "" : "user_id");
         List<FreeBoard> list = freeBoardMapper.listArticle(param);
 
         if ("user_id".equals(key))

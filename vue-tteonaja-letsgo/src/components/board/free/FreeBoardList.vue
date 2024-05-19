@@ -51,6 +51,10 @@ const onPageChange = (val) => {
     getArticleList();
 };
 
+const changeKey = (key) => {
+    params.value.key = key
+}
+
 onMounted(() => {
     getArticleList();
 })

@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { deleteArticle, getArticle } from '@/api/board';
+import BoardCommentWrite from '@/components/board/comment/BoardCommentWrite.vue'
 import Swal from 'sweetalert2';
 
 const route = useRoute();
@@ -106,6 +107,8 @@ const moveToModify = () => {
                 </table>
             </div>
         </div>
+
+        <BoardCommentWrite/>
 
         <div class="container mt-3 d-flex justify-content-between align-items-center p-1">
             <div>
