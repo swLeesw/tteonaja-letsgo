@@ -42,6 +42,9 @@
             <if test="contentCode != null and contentCode != ''">
                 and type_id=#{contentCode}
             </if>
+            <if test="searchTerm != null and searchTerm != ''">
+                and name like concat('%', #{searchTerm}, '%')
+            </if>
         </where>
     </select>
 

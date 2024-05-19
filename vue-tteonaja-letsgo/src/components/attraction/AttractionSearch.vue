@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import axios from 'axios'
+// import axios from 'axios'
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
-
+import { getAttraction, getSido, getGugun } from '@/api/attractionInfo.js';
 
 //options에서 선택된 장소
 const sido = ref("");
@@ -50,26 +50,24 @@ const contentCodeOptions = ref([
     },
 ]);
 
-
 //db에서 여행지 정보 뽑아오기
-const getAttraction = () => {
-    axios.get('http://localhost/tteonaja/api/attractionInfo/region', {
-        params: {
-            sidoCode: sido.value,
-            gugunCode: gugun.value,
-            contentCode: contentCode.value,
-        }
-    })
-        .then(response => {
-            attractionInfo.value = response.data;
-            attractionInfo.value.forEach(info => info.visible = false);
-            coordinate.value.lat = attractionInfo.value[0].latitude;
-            coordinate.value.lng = attractionInfo.value[0].longitude;
-        })
-        .catch(error => {
-            console.log(error);
-        })
-}
+const getAttractionf = () => (getAttraction(
+    {
+        sidoCode: sido.value,
+        gugunCode: gugun.value,
+        contentCode: contentCode.value,
+        searchTerm: searchTerm.value,
+    },
+    (response) => {
+        attractionInfo.value = response.data;
+        attractionInfo.value.forEach(info => info.visible = false);
+        coordinate.value.lat = attractionInfo.value[0].latitude;
+        coordinate.value.lng = attractionInfo.value[0].longitude;
+    },
+    (error) => {
+        console.log(error);
+    }
+));
 
 
 //지도화면 좌표
@@ -79,35 +77,43 @@ const coordinate = ref({
 })
 
 //db에서 sido 얻어오기
-const getSido = () => {
-    axios.get('http://localhost/tteonaja/api/attractionInfo/sido')
-        .then(response => {
-            sidoOptions.value = response.data;
-        })
-        .catch(error => {
-            console.log(error)
-        })
-}
+const getSidof = () => getSido(
+    (response) => {
+        sidoOptions.value = response.data;
+    },
+    (error) => {
+        console.log(error);
+    }
+)
+
 
 //db에서 gugun 얻어오기(sido의 값이 변경되면 실행된다.)
-const getGugun = watch(() => {
+const getGugunf = watch(() => {
 
-    if (sido.value == "") return; //sido의 값이 들어오지 않았다면 요청하지 않는다.
+    if (sido.value == "") return;
 
-    axios.get('http://localhost/tteonaja/api/attractionInfo/gugun/' + sido.value)
-        .then(response => {
+    getGugun(sido.value,
+        (response) => {
             gugunOptions.value = response.data;
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        },
+        (error) => {
+            console.log(error);
+        }
+    )
 })
 
+
 const onClickMapMarker = (info) => {
-    for (let i = 0; i < attractionInfo.value.length; i++) {
-        attractionInfo.value[i].visible = false;
+
+    if (info.visible == true) {
+        info.visible = false;
+    } else {
+        for (let i = 0; i < attractionInfo.value.length; i++) {
+            attractionInfo.value[i].visible = false;
+        }
+        info.visible = !info.visible;
     }
-    info.visible = !info.visible;
+
 
 
 }
@@ -115,7 +121,7 @@ const onClickMapMarker = (info) => {
 
 //화면 로드가 되면 자동으로 sido 얻기
 onMounted(() => {
-    getSido();
+    getSidof();
 })
 
 /* global bootstrap: false */
@@ -131,37 +137,36 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="container-fluid vh-100" style="display: flex;">
-        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-body-tertiary" style="width: 380px;">
-            <a href="/"
-                class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
-                <svg class="bi pe-none me-2" width="30" height="24">
-                    <use xlink:href="#bootstrap" />
-                </svg>
-                <span class="fs-5 fw-semibold">검색</span>
-            </a>
-            <div class="list-group list-group-flush border-bottom scrollarea">
-                <select class="col form-select mx-2" aria-label="Default select example" v-model="sido">
+    <div class="vh-100" style="display: flex;">
+        <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary sdw" style="width: 380px;">
+            <form @submit.prevent="getAttractionf" class="col align-items-center mt-2">
+                <input class="form-control-lg mx-2 justify-content-center" type="text" v-model="searchTerm"
+                    placeholder="검색어 입력.." />
+                <button type="submit" class="btn btn-primary mt-3 mb-3 me-4">검색</button>
+                <div class="ms-3">옵션</div>
+                <select class="col form-select-sm mx-2" aria-label="Default select example" v-model="sido">
                     <option value="">시/도 선택</option>
-                    <option v-for="(sidoo, index) in sidoOptions" :key="index" :value="sidoo.sidoCode">{{ sidoo.sidoName
-                        }}
+                    <option v-for="(sidoo, index) in sidoOptions" :key="index" :value="sidoo.sidoCode">
+                        {{ sidoo.sidoName }}
                     </option>
                 </select>
-                <select class="col form-select mx-2" aria-label="Default select example" v-model="gugun">
+                <select class="col form-select-sm mx-2 mt-1" aria-label="Default select example" v-model="gugun">
                     <option value="">구/군 선택</option>
-                    <option v-for="(gugunn, index) in gugunOptions" :key="index" :value="gugunn.gugunCode">{{
-                    gugunn.gugunName
-                }}</option>
+                    <option v-for="(gugunn, index) in gugunOptions" :key="index" :value="gugunn.gugunCode">
+                        {{ gugunn.gugunName }}</option>
                 </select>
-                <select class="col form-select mx-2" aria-label="Default select example" v-model="contentCode">
+                <select class="col form-select-sm mx-2 mt-1 mb-3" aria-label="Default select example"
+                    v-model="contentCode">
                     <option value="">콘텐츠 유형 선택</option>
-                    <option v-for="(contentt, index) in contentCodeOptions" :key="index" :value="contentt.value">{{
-                    contentt.name }}</option>
+                    <option v-for="(contentt, index) in contentCodeOptions" :key="index" :value="contentt.value">
+                        {{ contentt.name }}
+                    </option>
                 </select>
-                <input class="form-control mx-2" type="text" v-model="searchTerm" placeholder="검색어 입력.." />
-                <button type="button" class="btn btn-primary col-2 mx-2 mt-3 mb-3" @click="getAttraction">검색</button>
+            </form>
+            <div class="list-group list-group-flush border-bottom scrollarea ">
+
                 <div class="" v-for="(info, index) in attractionInfo" :key="index">
-                    <div class="card lh-sm m-2 card-custom" style="width: 18rem;">
+                    <div class="card lh-sm m-2 ms-4 card-custom" style="width: 18rem;">
                         <img :src="info.firstImage" class="card-img-top"
                             onerror="this.onerror=null; this.src='../../assets/logo.png'">
                         <div class="card-body">
@@ -176,14 +181,14 @@ onMounted(() => {
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" style="width: 100%; height: 100vh;">
             <KakaoMapMarker v-for="(info, idx) in  attractionInfo " :key="idx" :lat="info.latitude"
                 :lng="info.longitude" :infoWindow="{
-                    content:
-                        `
+                content:
+                    `
                     <div>
                         ` + info.name + `
                     </div>
                             `
-                    , visible: info.visible
-                }" :clickable="true" @onClickKakaoMapMarker="onClickMapMarker(info)" />
+                , visible: info.visible
+            }" :clickable="true" @onClickKakaoMapMarker="onClickMapMarker(info)" />
         </KakaoMap>
     </div>
 
@@ -263,5 +268,10 @@ main {
 
 .scrollarea {
     overflow-y: auto;
+}
+
+.sdw {
+    box-shadow: 3px 0 10px #888686;
+    z-index: 2;
 }
 </style>

@@ -10,8 +10,8 @@ defineProps({ elem: Object });
     <tr>
         <th scope="row">{{ elem.index + 1 }}</th>
         <td>
-            <RouterLink :to="{ name: 'free-detail', params: { id: elem.article.articleNo } }">{{
-                elem.article.subject }}</RouterLink>
+            <RouterLink class="del-deco" :to="{ name: 'free-detail', params: { id: elem.article.articleNo } }">{{
+            elem.article.subject }}</RouterLink>
         </td>
         <td>{{ elem.article.userId }}</td>
         <td>{{ elem.article.registerTime }}</td>
@@ -19,4 +19,9 @@ defineProps({ elem: Object });
     </tr>
 </template>
 
-<style scoped></style>
+<style scoped>
+.del-deco {
+    text-decoration: none;
+    color: black;
+}
+</style>

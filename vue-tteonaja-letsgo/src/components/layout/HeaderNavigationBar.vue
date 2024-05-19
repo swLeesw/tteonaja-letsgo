@@ -22,19 +22,19 @@ const logout = () => {
 
 <template>
 
-    <nav class="navbar navbar-expand-md bg-white sticky-top ms-5 me-5">
+    <nav class="navbar navbar-expand-md bg-white sticky-top">
         <div class="container-fluid">
-            <RouterLink :to="{ name: 'home' }" class="navbar-brand">
+            <RouterLink :to="{ name: 'home' }" class="navbar-brand ms-3">
                 <img src="@/assets/logo.png" class="ratio" alt="..." style="width: 25%" />
             </RouterLink>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarScroll">
+            <div class="collapse navbar-collapse me-3" id="navbarScroll">
                 <ul class="navbar-nav ms-auto navbar-nav-scroll p-1" style="--bs-scroll-height: 100px">
                     <li class="nav-item me-3">
-                        <a class="nav-link btn-hover-effect rounded-pill" href="#">홈</a>
+                        <RouterLink :to="{ name: 'home' }" class="nav-link btn-hover-effect rounded-pill">홈</RouterLink>
                     </li>
                     <li class="nav-item me-3">
                         <a class="nav-link btn-hover-effect rounded-pill" href="#">여행</a>
@@ -47,11 +47,11 @@ const logout = () => {
                         <ul class="dropdown-menu">
                             <li class="dropdown-item">여행 계획</li>
                             <li class="dropdown-item">
-                                <RouterLink :to="{ name: 'trip-list' }">관광지 후기
+                                <RouterLink :to="{ name: 'trip-list' }" class="del-deco">관광지 후기
                                 </RouterLink>
                             </li>
                             <li class="dropdown-item">
-                                <RouterLink :to="{ name: 'free-list' }">자유 게시판
+                                <RouterLink :to="{ name: 'free-list' }" class="del-deco">자유 게시판
                                 </RouterLink>
                             </li>
                         </ul>
@@ -81,8 +81,8 @@ const logout = () => {
                                 <li class="nav-item me-2">
                                     <router-link to="/" @click.prevent="logout"
                                         class="nav-link btn-hover-effect rounded-pill">{{
-                                        menu.name
-                                        }}</router-link>
+                menu.name
+            }}</router-link>
                                 </li>
                             </template>
                             <template v-else>
@@ -133,5 +133,10 @@ const logout = () => {
     color: white;
     border-color: #004085;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.del-deco {
+    text-decoration: none;
+    color: black;
 }
 </style>

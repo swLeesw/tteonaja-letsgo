@@ -5,12 +5,14 @@ import com.ssafy.tteonajaletsgo.domain.Gugun;
 import com.ssafy.tteonajaletsgo.domain.Sido;
 import com.ssafy.tteonajaletsgo.service.AttractionInfoService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("tteonaja/api/attractionInfo/")
 @RequiredArgsConstructor
@@ -20,7 +22,8 @@ public class AttractionInfoController {
 
     @GetMapping("/region")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public List<AttractionInfo> region(@RequestParam Map<String, String> map) throws SQLException {
+    public List<AttractionInfo> getAttraction(@RequestParam Map<String, String> map) throws SQLException {
+        log.info("searchTerm = {}", map.get("searchTerm"));
         List<AttractionInfo> list = attractionInfoService.getRegion(map);
         return list;
     }
