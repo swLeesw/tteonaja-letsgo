@@ -10,6 +10,7 @@ const router = useRouter();
 const articles = ref([]);
 const currentPage = ref(1);
 const totalPage = ref(0);
+const totalArticles = ref(-1);
 const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 const params = ref({
     boardType: 'free',
@@ -31,12 +32,34 @@ const getArticleList = () => {
         params.value,
         (response) => {
             console.log(response.data.articles);
+            console.log(response);
             articles.value = response.data.articles;
             currentPage.value = response.data.currentPage;
             totalPage.value = response.data.totalPageCount;
+            if (totalArticles.value == -1) {
+                setBoardNum();
+            }
+
         },
         (error) => {
             console.error(error);
+        }
+    );
+};
+
+const setBoardNum = () => {
+    listArticle(
+        {
+            boardType: 'free',
+            pgno: totalPage.value,
+            spp: VITE_ARTICLE_LIST_SIZE
+        },
+        (response) => {
+            totalArticles.value = VITE_ARTICLE_LIST_SIZE * (totalPage.value - 1) + response.data.articles.length;
+            console.log(totalArticles.value)
+        },
+        (error) => {
+            console.log(error);
         }
     );
 };
@@ -52,8 +75,8 @@ const onPageChange = (val) => {
 };
 
 const changeKey = (key) => {
-    params.value.key = key
-}
+    params.value.key = key;
+};
 
 onMounted(() => {
     getArticleList();
@@ -66,7 +89,7 @@ onMounted(() => {
         <h4 class="fw-bolder">자유게시판</h4>
         <div class="row align-self-center mt-4">
             <div class="col-md-5 offset-7">
-                <form class="d-flex">
+                <form @submit.prevent="getArticleList" class="d-flex">
                     <VSelect :selectOption="selectOption" @onKeySelect="changeKey" />
                     <div class="input-group input-group-sm ms-1">
                         <input type="text" class="form-control" v-model="params.word" placeholder="검색어..." />
@@ -89,7 +112,13 @@ onMounted(() => {
                     </thead>
                     <tbody>
                         <FreeBoardListItem v-for="(article, index) in articles" :key="article.articleNo"
-                            :elem="{ article: article, index: index }">
+                            :elem="{
+                                article: article,
+                                total: totalArticles,
+                                currentPage: currentPage, 
+                                index: index,
+                                boardType: params.boardType
+                            }">
                         </FreeBoardListItem>
                     </tbody>
                 </table>

@@ -50,6 +50,7 @@
 		<where>
 			<include refid="search"></include>
 		</where>
+		order by register_time desc
 		limit #{start}, #{listsize}
 	</select>
 

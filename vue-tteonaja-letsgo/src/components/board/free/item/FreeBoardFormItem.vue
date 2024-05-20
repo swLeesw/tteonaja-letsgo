@@ -131,6 +131,8 @@ const controlArticle = () => {
 </script>
 
 <template>
+    <p class="text-secondary">글쓰기</p>
+    <hr class="mb-5">
     <label for="subjectFormControlInput1" class="form-label fw-bolder">제목</label>
     <input type="email" class="subject-input mb-5" id="subjectFormControlInput1" v-model="article.subject"
         placeholder="글 제목을 입력하세요.">

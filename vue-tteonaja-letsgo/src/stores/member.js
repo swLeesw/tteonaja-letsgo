@@ -118,6 +118,7 @@ export const useMemberStore = defineStore("memberStore", () => {
   };
 
   const userLogout = async () => {
+    // await getUserInfo(sessionStorage.getItem(['accessToken']))
     console.log("로그아웃 아이디: " + userInfo.value.userId);
     await logout(
       userInfo.value.userId,

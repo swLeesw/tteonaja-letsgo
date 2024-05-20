@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useMenuStore } from '@/stores/menu';
 import { useMemberStore } from '@/stores/member';
 import { storeToRefs } from 'pinia';
@@ -11,12 +11,25 @@ const memberStore = useMemberStore();
 const { menuList } = storeToRefs(menuStore);
 const { changeMenuState } = menuStore;
 
+
+// TODO: 새로고침 시 로그인 해제되는
+// const checkLogin = () => {
+//     let token = sessionStorage.getItem("accessToken")
+//     if (token !== null) {
+//         changeMenuState();
+//     }
+// }
+
 const { userLogout } = memberStore;
 
 const logout = () => {
     userLogout();
     changeMenuState();
 }
+
+// onMounted(() => {
+//     checkLogin()
+// })
 
 </script>
 

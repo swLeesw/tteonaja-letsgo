@@ -32,7 +32,7 @@ public class MemberServiceImpl implements MemberService{
     public void saveRefreshToken(String userId, String refreshToken) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
         map.put("userId", userId);
-        map.put("token", refreshToken);
+        map.put("refreshToken", refreshToken);
         memberMapper.saveRefreshToken(map);
     }
 

@@ -37,10 +37,34 @@ function deleteArticle(params, success, fail) {
     .catch(fail);
 }
 
+function registComment(params, success, fail) {
+  local
+    .post(`board/${params.boardType}-comment/regist`, JSON.stringify(params.comment))
+    .then(success)
+    .catch(fail);
+}
+
+function listComment(params, success, fail) {
+  local
+    .get(`board/${params.boardType}-comment/list/${params.articleNo}`)
+    .then(success)
+    .catch(fail);
+}
+
+function deleteComment(params, success, fail) {
+  local
+    .delete(`board/${params.boardType}-comment/${params.commentNo}`)
+    .then(success)
+    .catch(fail);
+}
+
 export {
   listArticle,
   getArticle,
   registArticle,
   modifyArticle,
-  deleteArticle
+  deleteArticle,
+  registComment,
+  listComment,
+  deleteComment
 };

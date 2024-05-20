@@ -2,8 +2,10 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { deleteArticle, getArticle } from '@/api/board';
-import BoardCommentWrite from '@/components/board/comment/BoardCommentWrite.vue'
+import BoardCommentWrite from '@/components/board/comment/BoardCommentWrite.vue';
+import BoardCommentListItem from '../comment/item/BoardCommentListItem.vue';
 import Swal from 'sweetalert2';
+import BoardCommentList from '../comment/BoardCommentList.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -61,10 +63,10 @@ const deleteFreeArticle = () => {
                 showConfirmButton: false,
                 timer: 1500
             });
-            console.log(error)
+            console.log(error);
         }
-    )
-}
+    );
+};
 
 onMounted(() => {
     getArticleDetail();
@@ -101,14 +103,18 @@ const moveToModify = () => {
                             <th colspan="2" class="text-center">{{ article.hit }}</th>
                         </tr>
                         <tr>
-                            <td colspan="9" v-html="article.content"></td>
+                            <td colspan="9" v-html="article.content" class="p-3"></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-
-        <BoardCommentWrite/>
+        <div class="container border p-3" id="comment_block">
+            <p>댓글 목록</p>
+            <hr>
+            <BoardCommentList :comment-params="params" />
+            <BoardCommentWrite :comment-params="params" />
+        </div>
 
         <div class="container mt-3 d-flex justify-content-between align-items-center p-1">
             <div>
