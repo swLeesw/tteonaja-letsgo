@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useMemberStore } from '@/stores/member';
 import { useMenuStore } from '@/stores/menu';
@@ -31,6 +31,10 @@ const login = async () => {
         router.replace("/");
     }
 };
+
+// onMounted(() => {
+//     changeMenuState();
+// })
 </script>
 
 <template>

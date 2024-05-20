@@ -4,6 +4,11 @@ import { onMounted, ref } from 'vue';
 import { useMenuStore } from '@/stores/menu';
 import { useMemberStore } from '@/stores/member';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+import { findById} from '@/api/user';
+import { jwtDecode } from 'jwt-decode';
+
+const router = useRouter();
 
 const menuStore = useMenuStore();
 const memberStore = useMemberStore();
@@ -11,25 +16,45 @@ const memberStore = useMemberStore();
 const { menuList } = storeToRefs(menuStore);
 const { changeMenuState } = menuStore;
 
+const { userLogout, getUserInfo, tokenRegenerate } = memberStore;
+const { isLogin, isValidToken, userInfo } = storeToRefs(memberStore);
 
-// TODO: 새로고침 시 로그인 해제되는
-// const checkLogin = () => {
-//     let token = sessionStorage.getItem("accessToken")
-//     if (token !== null) {
-//         changeMenuState();
-//     }
-// }
+// TODO: 새로고침 시 로그인 해제 방지
+const checkLogin = async() => {
+    let token = sessionStorage.getItem("accessToken");
+    if (token !== null) {
+        let decodeToken = jwtDecode(token);
+        console.log(decodeToken.userId)
+        await findById(
+            decodeToken.userId,
+            (response) => {
+                if (response.status === httpStatusCode.OK) {
+                    userInfo.value = response.data.userInfo;
+                    console.log("이제 자자");
+                    console.log(userInfo.value)
+                    changeMenuState();
+                } else {
+                    console.log("유저 정보 없음");
+                    userLogout();
+                }
+            },
+            async (error) => {
+                console.log("g[토큰 만료되어 사용 불가능.] :")
+                await tokenRegenerate();
+            }
+        )
+    }
+};
 
-const { userLogout } = memberStore;
 
 const logout = () => {
     userLogout();
     changeMenuState();
-}
+};
 
-// onMounted(() => {
-//     checkLogin()
-// })
+onMounted(() => {
+    checkLogin();
+})
 
 </script>
 
@@ -94,15 +119,15 @@ const logout = () => {
                                 <li class="nav-item me-2">
                                     <router-link to="/" @click.prevent="logout"
                                         class="nav-link btn-hover-effect rounded-pill">{{
-                                            menu.name
-                                        }}</router-link>
+                menu.name
+            }}</router-link>
                                 </li>
                             </template>
                             <template v-else>
                                 <li class="nav-item">
                                     <router-link :to="{ name: menu.routeName }"
                                         class="nav-link btn-hover-effect rounded-pill">{{
-                                            menu.name
+                                        menu.name
                                         }}</router-link>
                                 </li>
                             </template>

@@ -18,7 +18,8 @@ async function findById(userId, success, fail) {
 async function tokenRegeneration(user, success, fail) {
   local.defaults.headers["refreshToken"] =
     sessionStorage.getItem("refreshToken");
-  await local.post(``, param).then(success).catch(fail);
+  console.log(user);
+  await local.post(`member/refresh`, user).then(success).catch(fail);
 }
 
 async function logout(userId, success, fail) {

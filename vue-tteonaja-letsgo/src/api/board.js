@@ -38,6 +38,7 @@ function deleteArticle(params, success, fail) {
 }
 
 function registComment(params, success, fail) {
+  console.log(params.comment);
   local
     .post(`board/${params.boardType}-comment/regist`, JSON.stringify(params.comment))
     .then(success)

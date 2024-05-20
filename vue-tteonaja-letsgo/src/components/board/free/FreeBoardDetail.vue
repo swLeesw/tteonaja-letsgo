@@ -110,7 +110,7 @@ const moveToModify = () => {
             </div>
         </div>
         <div class="container border p-3" id="comment_block">
-            <p>댓글 목록</p>
+            <p>댓글 목록 <span>({{ route.params.commentNum }})</span></p>
             <hr>
             <BoardCommentList :comment-params="params" />
             <BoardCommentWrite :comment-params="params" />

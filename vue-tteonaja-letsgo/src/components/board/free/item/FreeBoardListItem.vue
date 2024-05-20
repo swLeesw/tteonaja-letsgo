@@ -34,7 +34,7 @@ onMounted(() => {
         <td scope="row">{{ elem.total - (VITE_ARTICLE_LIST_SIZE * (elem.currentPage - 1) + elem.index) }}</td>
         <td>
             <RouterLink class="del-deco fw-bold"
-                :to="{ name: 'free-detail', params: { id: props.elem.article.articleNo } }">{{
+                :to="{ name: 'free-detail', params: { id: props.elem.article.articleNo, commentNum: commentNum } }">{{
                 elem.article.subject }} <span v-if="commentNum !== 0">({{ commentNum }})</span></RouterLink>
         </td>
         <td>{{ elem.article.userId }}</td>

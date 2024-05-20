@@ -45,7 +45,7 @@ public class MemberServiceImpl implements MemberService{
     public void deleRefreshToken(String userId) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
         map.put("userId", userId);
-        map.put("token", null);
+        map.put("refreshToken", null);
         memberMapper.deleteRefreshToken(map);
     }
 
