@@ -1,6 +1,7 @@
 package com.ssafy.tteonajaletsgo.dto.freeBoard;
 
 import com.ssafy.tteonajaletsgo.domain.FreeBoard;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.List;

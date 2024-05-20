@@ -69,6 +69,13 @@ const router = createRouter({
       path: "/map",
       name: "map",
       component: () => import("@/views/MapView.vue"),
+      children: [
+        {
+          path: "mapReview/:id",
+          name: "map-review",
+          component: () => import("@/components/attraction/AttractionReview.vue"),
+        }
+      ]
     },
   ],
 });

@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 public class FreeBoardUpdateDto {
-    @NotNull
+    @NotBlank
     private int articleNo;
     @NotBlank
     private String subject;

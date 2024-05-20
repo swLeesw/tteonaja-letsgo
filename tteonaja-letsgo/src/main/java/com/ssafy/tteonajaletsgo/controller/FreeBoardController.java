@@ -4,6 +4,7 @@ import com.ssafy.tteonajaletsgo.domain.FreeBoard;
 import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardListDto;
 import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardSaveDto;
 import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardUpdateDto;
+import com.ssafy.tteonajaletsgo.exception.ExceptionResponse;
 import com.ssafy.tteonajaletsgo.service.FreeBoardService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -38,13 +39,17 @@ public class FreeBoardController {
 
     @Operation(summary = "게시글 불러오기", description = "게시글 리스트를 불러온다.")
     @GetMapping("/list")
-    public ResponseEntity<FreeBoardListDto> listArticle(
+    public ResponseEntity<?> listArticle(
             @RequestParam @Parameter(description = "게시글을 얻기위한 부가정보.", required = true) Map<String, String> map
-    ) throws Exception {
+    ) {
 //        int currentPage = Integer.parseInt(map.get("pgno") == null ? "1" : map.get("pgno"));
 //        int sizePerPage = Integer.parseInt(map.get("spp") == null ? "20" : map.get("spp"));
 //        int start = currentPage * sizePerPage - sizePerPage;
-        return new ResponseEntity<FreeBoardListDto>(freeBoardService.listArticle(map), HttpStatus.OK);
+        try {
+            return new ResponseEntity<FreeBoardListDto>(freeBoardService.listArticle(map), HttpStatus.OK);
+        } catch (Exception e) {
+            return ExceptionResponse.response(e);
+        }
     }
 
     @Operation(summary = "게시글 상세정보", description = "게시글 상세 정보를 불러온다")

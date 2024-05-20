@@ -1,8 +1,13 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
+//import router
+import { useRouter } from "vue-router";
 // import axios from 'axios'
 import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
 import { getAttraction, getSido, getGugun } from '@/api/attractionInfo.js';
+
+//router
+const router = useRouter();
 
 //options에서 선택된 장소
 const sido = ref("");
@@ -49,6 +54,13 @@ const contentCodeOptions = ref([
         value: 39
     },
 ]);
+
+//리뷰보기
+const moveReview = (value) => {
+
+    console.log('movie.value=' + value);
+    router.push({ name: "map-review", params: { id: value } });
+}
 
 //db에서 여행지 정보 뽑아오기
 const getAttractionf = () => (getAttraction(
@@ -139,6 +151,7 @@ onMounted(() => {
 
 <template>
     <div class="vh-100" style="display: flex;">
+        <!--맵 서치-->
         <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary sdw" style="width: 380px;">
             <form @submit.prevent="getAttractionf" class="col-fluid align-items-center mt-2">
                 <input class="fc" type="text" v-model="searchTerm" placeholder="검색어 입력.." />
@@ -172,30 +185,35 @@ onMounted(() => {
                         <div class="card-content ms-3">
                             <h5 class="card-title mb-1">{{ info.name }}</h5>
                             <p class="card-description">{{ info.addr1 }}</p>
-                            <button class="btn btn-custom" data-bs-toggle="offcanvas"
+                            <button class="btn btn-custom me-3" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"
-                                @click.stop="console.log('리뷰보기')">리뷰</button>
+                                @click="moveReview(info.id)">{{ info.id }}</button>
+                            <button class="btn btn-custom" @click.stop="console.log('좋아요')">좋아요</button>
                         </div>
                     </div>
 
                 </div>
             </div>
         </div>
+        <!--리뷰 오프캔버스-->
         <div class="offcanvas offcanvas-end " data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-            id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Offcanvas with body scrolling</h5>
+            id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel" style="top: 95px; border-radius: 10px;">
+            <!-- <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasScrollingLabel">리뷰</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                 <p>Try scrolling the rest of the page to see this option in action.</p>
-            </div>
+            </div> -->
+            <router-view />
         </div>
+        <!--리뷰 오프캔버스 끝-->
+        <!--카카오 맵 시작-->
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" style="width: 100%; height: 100vh;">
             <KakaoMapMarker v-for="(info, idx) in attractionInfo " :key="idx" :lat="info.latitude" :lng="info.longitude"
                 :infoWindow="{
-                    content:
-                        `
+                content:
+                    `
                     <div>
                         ` + info.name + `
                     </div>
@@ -203,8 +221,8 @@ onMounted(() => {
                         ` + info.overview + `
                     </div>
                         `
-                    , visible: info.visible
-                }" :clickable="true" @onClickKakaoMapMarker="onClickMapMarker(info)" />
+                , visible: info.visible
+            }" :clickable="true" @onClickKakaoMapMarker="onClickMapMarker(info)" />
         </KakaoMap>
     </div>
 

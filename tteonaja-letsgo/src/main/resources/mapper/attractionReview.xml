@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.tteonajaletsgo.mapper.AttractionReviewMapper">
+
+    <!--resultMap 모음-->
+    <!--domain-->
+    <resultMap type="AttractionReview" id="attractionReview">
+        <result column="review_no" property="reviewNo"/>
+        <result column="user_id" property="userId"/>
+        <result column="review_title" property="reviewTitle"/>
+        <result column="content" property="content"/>
+        <result column="hit" property="hit"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="attraction_id" property="attractionId"/>
+    </resultMap>
+
+<!--    <sql id="search">-->
+<!--        <if test="word != null and word != ''">-->
+<!--            <if test="key == 'subject'">-->
+<!--                and subject like concat('%', #{word}, '%')-->
+<!--            </if>-->
+<!--            <if test="key != 'subject'">-->
+<!--                and ${key} = #{word}-->
+<!--            </if>-->
+<!--        </if>-->
+<!--    </sql>-->
+
+<!--    <insert id="registArticle" parameterType="FreeBoardSaveDto">-->
+<!--        insert into free_board (user_id, subject, content, hit, register_time)-->
+<!--        values (#{userId}, #{subject}, #{content}, 0, now())-->
+<!--    </insert>-->
+
+    <select id="listReview" parameterType="int" resultMap="attractionReview">
+        select *
+        from attraction_review
+        where attraction_id = #{attractionId}
+    </select>
+
+<!--    <select id="getArticle" parameterType="int" resultMap="freeBoard">-->
+<!--        select *-->
+<!--        from free_board-->
+<!--        where article_no = #{articleNo}-->
+<!--    </select>-->
+
+<!--    <select id="getTotalArticleCount" parameterType="map" resultType="int">-->
+<!--        select count(article_no)-->
+<!--        from free_board-->
+<!--        <where>-->
+<!--            <include refid="search"></include>-->
+<!--        </where>-->
+<!--    </select>-->
+
+<!--    <update id="modifyArticle" parameterType="freeBoardUpdateDto">-->
+<!--        update free_board-->
+<!--        set subject=#{subject}, content=#{content}-->
+<!--        where article_no=#{articleNo}-->
+<!--    </update>-->
+
+<!--    <delete id="deleteArticle" parameterType="int">-->
+<!--        delete from free_board-->
+<!--        where article_no=#{articleNo}-->
+<!--    </delete>-->
+
+    <update id="updateHit" parameterType="int">
+        update attractionReview
+        set hit = hit + 1
+        where review_no=#{reviewNo}
+    </update>
+
+    <insert id="registReview" parameterType="AttractionReviewSaveDto">
+        insert into attraction_review(user_id, review_title, content, hit, register_time, review_like, attraction_id)
+        values(#{userId}, #{reviewTitle}, #{content}, 0, now(), 0, #{attractionId})
+    </insert>
+
+</mapper>
