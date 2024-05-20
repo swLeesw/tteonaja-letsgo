@@ -59,6 +59,7 @@ const getAttractionf = () => (getAttraction(
         searchTerm: searchTerm.value,
     },
     (response) => {
+        console.log(response.data);
         attractionInfo.value = response.data;
         attractionInfo.value.forEach(info => info.visible = false);
         coordinate.value.lat = attractionInfo.value[0].latitude;
@@ -139,56 +140,71 @@ onMounted(() => {
 <template>
     <div class="vh-100" style="display: flex;">
         <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary sdw" style="width: 380px;">
-            <form @submit.prevent="getAttractionf" class="col align-items-center mt-2">
-                <input class="form-control-lg mx-2 justify-content-center" type="text" v-model="searchTerm"
-                    placeholder="검색어 입력.." />
-                <button type="submit" class="btn btn-primary mt-3 mb-3 me-4">검색</button>
-                <div class="ms-3">옵션</div>
-                <select class="col form-select-sm mx-2" aria-label="Default select example" v-model="sido">
-                    <option value="">시/도 선택</option>
+            <form @submit.prevent="getAttractionf" class="col-fluid align-items-center mt-2">
+                <input class="fc" type="text" v-model="searchTerm" placeholder="검색어 입력.." />
+                <button type="submit" class="btn btn-custom">검색</button>
+                <div class="ms-4" style="color=">옵션</div>
+                <select class="col fc-option mx-4" aria-label="Default select example" v-model="sido">
+                    <option value="">시/도</option>
                     <option v-for="(sidoo, index) in sidoOptions" :key="index" :value="sidoo.sidoCode">
                         {{ sidoo.sidoName }}
                     </option>
                 </select>
-                <select class="col form-select-sm mx-2 mt-1" aria-label="Default select example" v-model="gugun">
-                    <option value="">구/군 선택</option>
+                <select class="col fc-option mx-4 mt-1" aria-label="Default select example" v-model="gugun">
+                    <option value="">구/군</option>
                     <option v-for="(gugunn, index) in gugunOptions" :key="index" :value="gugunn.gugunCode">
                         {{ gugunn.gugunName }}</option>
                 </select>
-                <select class="col form-select-sm mx-2 mt-1 mb-3" aria-label="Default select example"
-                    v-model="contentCode">
-                    <option value="">콘텐츠 유형 선택</option>
+                <select class="col fc-option mx-4 mt-1 mb-3" aria-label="Default select example" v-model="contentCode">
+                    <option value="">콘텐츠 유형</option>
                     <option v-for="(contentt, index) in contentCodeOptions" :key="index" :value="contentt.value">
                         {{ contentt.name }}
                     </option>
                 </select>
             </form>
-            <div class="list-group list-group-flush border-bottom scrollarea ">
-
-                <div class="" v-for="(info, index) in attractionInfo" :key="index">
-                    <div class="card lh-sm m-2 ms-4 card-custom" style="width: 18rem;">
-                        <img :src="info.firstImage" class="card-img-top"
-                            onerror="this.onerror=null; this.src='../../assets/logo.png'">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ info.name }}</h5>
-                            <p class="card-text">설명...</p>
-                            <a href="#" class="btn btn-primary" @click="onClickMapMarker(info)">위치 보기</a>
+            <div class="list-group list-group-flush border-bottom scrollarea">
+                <div v-for="(info, index) in attractionInfo" :key="index">
+                    <div class="d-flex ms-3 me-3 mt-4 mb-4 cardd" @click="onClickMapMarker(info)">
+                        <img :src="info.firstImage" style="border-radius: 10px;" alt="사진" width="120px"
+                            v-show="info.firstImage != ''">
+                        <img src="@/assets/logo.png" alt="사진" width="120px" v-show="info.firstImage == ''">
+                        <span class="ms-3 border border-1 opacity-90"></span>
+                        <div class="card-content ms-3">
+                            <h5 class="card-title mb-1">{{ info.name }}</h5>
+                            <p class="card-description">{{ info.addr1 }}</p>
+                            <button class="btn btn-custom" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"
+                                @click.stop="console.log('리뷰보기')">리뷰</button>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
+        <div class="offcanvas offcanvas-end " data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+            id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Offcanvas with body scrolling</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <p>Try scrolling the rest of the page to see this option in action.</p>
+            </div>
+        </div>
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" style="width: 100%; height: 100vh;">
-            <KakaoMapMarker v-for="(info, idx) in  attractionInfo " :key="idx" :lat="info.latitude"
-                :lng="info.longitude" :infoWindow="{
-                content:
-                    `
+            <KakaoMapMarker v-for="(info, idx) in attractionInfo " :key="idx" :lat="info.latitude" :lng="info.longitude"
+                :infoWindow="{
+                    content:
+                        `
                     <div>
                         ` + info.name + `
                     </div>
-                            `
-                , visible: info.visible
-            }" :clickable="true" @onClickKakaoMapMarker="onClickMapMarker(info)" />
+                    <div>
+                        ` + info.overview + `
+                    </div>
+                        `
+                    , visible: info.visible
+                }" :clickable="true" @onClickKakaoMapMarker="onClickMapMarker(info)" />
         </KakaoMap>
     </div>
 
@@ -270,8 +286,50 @@ main {
     overflow-y: auto;
 }
 
+.cardd:hover {
+    transform: scale(1.05);
+    background-color: rgba(67, 180, 255, 0.158);
+    border-radius: 10px;
+}
+
 .sdw {
     box-shadow: 3px 0 10px #888686;
     z-index: 2;
+}
+
+.fc {
+    padding-top: 5px;
+    padding-bottom: 8px;
+    padding-left: 15px;
+    padding-right: 30px;
+    margin: 25px;
+    border: 1px solid;
+    border-color: hsla(202, 78%, 56%, 0.199);
+    border-radius: 5px;
+}
+
+/* .fc:focus {
+    border: 1px solid;
+    border-color: hsla(202, 78%, 56%, 0.199);
+    border-radius: 5px;
+} */
+
+.fc-option {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin: 5px;
+    border: 1px solid;
+    border-color: hsla(202, 78%, 56%, 0.199);
+    border-radius: 5px;
+    color: #888686;
+}
+
+.btn-custom {
+    background-color: rgba(67, 180, 255, 0.158);
+    color: #888686;
+    border: 1px solid;
+    border-color: #8886861a;
 }
 </style>

@@ -3,6 +3,7 @@ package com.ssafy.tteonajaletsgo.service;
 import com.ssafy.tteonajaletsgo.domain.AttractionInfo;
 import com.ssafy.tteonajaletsgo.domain.Gugun;
 import com.ssafy.tteonajaletsgo.domain.Sido;
+import com.ssafy.tteonajaletsgo.dto.AttractionInfoAndDescription;
 import com.ssafy.tteonajaletsgo.mapper.AttractionInfoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class AttractionInfoServiceImpl implements AttractionInfoService{
     private final AttractionInfoMapper attractionInfoMapper;
 
     @Override
-    public List<AttractionInfo> getRegion(Map<String, String> map) throws SQLException {
+    public List<AttractionInfoAndDescription> getRegion(Map<String, String> map) throws SQLException {
         return attractionInfoMapper.getRegion(map);
     }
 

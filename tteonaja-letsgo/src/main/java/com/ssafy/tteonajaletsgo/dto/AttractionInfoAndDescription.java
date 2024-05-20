@@ -1,9 +1,9 @@
-package com.ssafy.tteonajaletsgo.domain;
+package com.ssafy.tteonajaletsgo.dto;
 
 import lombok.Data;
 
 @Data
-public class AttractionInfo {
+public class AttractionInfoAndDescription {
     private int id;
     private int typeId;
     private String name;
@@ -16,4 +16,6 @@ public class AttractionInfo {
     private int gugunCode;
     private int like;
     private String addr1;
+    private String homepage;
+    private String overview;
 }

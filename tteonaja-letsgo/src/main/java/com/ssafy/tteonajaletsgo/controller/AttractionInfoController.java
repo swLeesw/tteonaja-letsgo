@@ -3,6 +3,7 @@ package com.ssafy.tteonajaletsgo.controller;
 import com.ssafy.tteonajaletsgo.domain.AttractionInfo;
 import com.ssafy.tteonajaletsgo.domain.Gugun;
 import com.ssafy.tteonajaletsgo.domain.Sido;
+import com.ssafy.tteonajaletsgo.dto.AttractionInfoAndDescription;
 import com.ssafy.tteonajaletsgo.service.AttractionInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +23,9 @@ public class AttractionInfoController {
 
     @GetMapping("/region")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public List<AttractionInfo> getAttraction(@RequestParam Map<String, String> map) throws SQLException {
+    public List<AttractionInfoAndDescription> getAttraction(@RequestParam Map<String, String> map) throws SQLException {
         log.info("searchTerm = {}", map.get("searchTerm"));
-        List<AttractionInfo> list = attractionInfoService.getRegion(map);
+        List<AttractionInfoAndDescription> list = attractionInfoService.getRegion(map);
         return list;
     }
 

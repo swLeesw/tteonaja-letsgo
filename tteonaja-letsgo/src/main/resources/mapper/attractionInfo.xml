@@ -4,6 +4,23 @@
 
 <mapper namespace="com.ssafy.tteonajaletsgo.mapper.AttractionInfoMapper">
 
+    <resultMap type="AttractionInfoAndDescription" id="attractionInfoAndDescription">
+        <result column="id" property="id"/>
+        <result column="type_id" property="typeId"/>
+        <result column="name" property="name"/>
+        <result column="zipcode" property="zipcode"/>
+        <result column="tel" property="tel"/>
+        <result column="first_image" property="firstImage"/>
+        <result column="latitude" property="latitude"/>
+        <result column="longitude" property="longitude"/>
+        <result column="sido_code" property="sidoCode"/>
+        <result column="gugun_code" property="gugunCode"/>
+        <result column="like" property="like"/>
+        <result column="addr1" property="addr1"/>
+        <result column="homepage" property="homepage"/>
+        <result column="overview" property="overview"/>
+    </resultMap>
+
     <resultMap type="AttractionInfo" id="attractionInfo">
         <result column="id" property="id"/>
         <result column="type_id" property="typeId"/>
@@ -16,7 +33,10 @@
         <result column="sido_code" property="sidoCode"/>
         <result column="gugun_code" property="gugunCode"/>
         <result column="like" property="like"/>
+        <result column="addr1" property="addr1"/>
     </resultMap>
+
+
 
     <resultMap type="Sido" id="sido">
         <result column="sido_code" property="sidoCode"/>
@@ -29,21 +49,23 @@
         <result column="sido_code" property="sidoCode"/>
     </resultMap>
 
-    <select id="getRegion" parameterType="map" resultMap="attractionInfo">
-        select *
-        from attraction_info
+    <select id="getRegion" parameterType="map" resultMap="attractionInfoAndDescription">
+        select i.id, i.type_id, i.name, i.zipcode, i.tel, i.first_image, i.latitude, i.longitude, i.sido_code, i.gugun_code, i.like, i.addr1, d.homepage, d.overview
+        from attraction_info i
+        left join attraction_description d
+        on i.id = d.id
         <where>
             <if test="sidoCode != null and sidoCode != ''">
-                and sido_code=#{sidoCode}
+                and i.sido_code=#{sidoCode}
             </if>
             <if test="gugunCode != null and gugunCode != ''">
-                and gugun_code=#{gugunCode}
+                and i.gugun_code=#{gugunCode}
             </if>
             <if test="contentCode != null and contentCode != ''">
-                and type_id=#{contentCode}
+                and i.type_id=#{contentCode}
             </if>
             <if test="searchTerm != null and searchTerm != ''">
-                and name like concat('%', #{searchTerm}, '%')
+                and i.name like concat('%', #{searchTerm}, '%')
             </if>
         </where>
     </select>
