@@ -1,7 +1,9 @@
 package com.ssafy.tteonajaletsgo.controller;
 
 import com.ssafy.tteonajaletsgo.domain.AttractionReview;
+import com.ssafy.tteonajaletsgo.dto.attractionReview.AttractionReviewCheckDto;
 import com.ssafy.tteonajaletsgo.dto.attractionReview.AttractionReviewSaveDto;
+import com.ssafy.tteonajaletsgo.dto.common.CheckDto;
 import com.ssafy.tteonajaletsgo.exception.ExceptionResponse;
 import com.ssafy.tteonajaletsgo.service.AttractionReviewService;
 import io.swagger.models.Response;
@@ -48,6 +50,34 @@ public class AttractionReviewController {
         }
 
     }
+
+    @GetMapping("/like/{reviewno}/{userid}")
+    public ResponseEntity<?> likeReview(@PathVariable(value = "reviewno", required = true) int reviewno,
+                                        @PathVariable(value = "userid", required = true) String userid) {
+
+        try {
+            AttractionReviewCheckDto attractionReviewCheckDto = new AttractionReviewCheckDto();
+            attractionReviewCheckDto.setReviewNo(reviewno);
+            attractionReviewCheckDto.setUserId(userid);
+            CheckDto checkDto = new CheckDto();
+            if (attractionReviewService.checkReview(attractionReviewCheckDto)) {
+                attractionReviewService.likeCancelReview(reviewno);
+                attractionReviewService.deleteCheckReview(attractionReviewCheckDto);
+                checkDto.setCheck(true);
+            } else {
+                attractionReviewService.likeReview(reviewno);
+                attractionReviewService.insertCheckReview(attractionReviewCheckDto);
+                checkDto.setCheck(false);
+            }
+                return new ResponseEntity<CheckDto>(checkDto, HttpStatus.OK);
+        } catch (Exception e) {
+            log.info("likeError = {}", e);
+            return ExceptionResponse.response(e);
+        }
+
+    }
+
+
 
 //    @GetMapping("/{reviewno}")
 //    public ResponseEntity<String> modifyReview() {

@@ -3,7 +3,7 @@ import { ref, onMounted, watch } from 'vue';
 //import router
 import { useRouter } from "vue-router";
 // import axios from 'axios'
-import { KakaoMap, KakaoMapMarker } from 'vue3-kakao-maps';
+import { KakaoMap, KakaoMapMarker, KakaoMapCustomOverlay } from 'vue3-kakao-maps';
 import { getAttraction, getSido, getGugun } from '@/api/attractionInfo.js';
 
 //router
@@ -55,32 +55,84 @@ const contentCodeOptions = ref([
     },
 ]);
 
-//리뷰보기
-const moveReview = (value) => {
+//kakaoMapCustomOVeray
 
-    console.log('movie.value=' + value);
+const getContent = (infoName, infoAddr1, infoHomepage) => {
+    let tmp = ` <div
+        style="
+          padding: 10px;
+          background-color: white;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+        "
+      >
+        <div style="font-weight: bold; margin-bottom: 5px">` + infoName + `</div>
+        <div style="display: flex">
+          <div style="margin-right: 10px">
+            <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png" width="73" height="70" />
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: flex-start">
+            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">` + infoAddr1 + `</div>`;
+
+    if (infoHomepage != null) {
+        tmp += infoHomepage + `
+        
+          </div>
+        </div>
+      </div>`
+    } else {
+        tmp += `
+          </div>
+        </div>
+      </div>`
+    }
+
+    return tmp;
+}
+
+//리뷰보기
+const moveReview = (value, lat, lng) => {
+    coordinate.value.lat = lat;
+    coordinate.value.lng = lng;
+    const oc = document.getElementById("offcanvasScrolling");
+    oc.classList.add("show");
+
+    console.log('move.value=' + value);
     router.push({ name: "map-review", params: { id: value } });
 }
 
+const closeReview = () => {
+    const oc = document.getElementById("offcanvasScrolling");
+    oc.classList.remove("show");
+}
+
 //db에서 여행지 정보 뽑아오기
-const getAttractionf = () => (getAttraction(
-    {
-        sidoCode: sido.value,
-        gugunCode: gugun.value,
-        contentCode: contentCode.value,
-        searchTerm: searchTerm.value,
-    },
-    (response) => {
-        console.log(response.data);
-        attractionInfo.value = response.data;
-        attractionInfo.value.forEach(info => info.visible = false);
-        coordinate.value.lat = attractionInfo.value[0].latitude;
-        coordinate.value.lng = attractionInfo.value[0].longitude;
-    },
-    (error) => {
-        console.log(error);
-    }
-));
+const getAttractionf = () => (
+
+    getAttraction(
+        {
+            sidoCode: sido.value,
+            gugunCode: gugun.value,
+            contentCode: contentCode.value,
+            searchTerm: searchTerm.value,
+        },
+        (response) => {
+            console.log(response.data);
+            if (response.data == "" || response.data == null) {
+                return;
+            }
+            attractionInfo.value = response.data;
+            attractionInfo.value.forEach(info => info.visible = false);
+            coordinate.value.lat = attractionInfo.value[0].latitude;
+            coordinate.value.lng = attractionInfo.value[0].longitude;
+        },
+        (error) => {
+            console.log(error);
+        }
+    ));
 
 
 //지도화면 좌표
@@ -103,7 +155,10 @@ const getSidof = () => getSido(
 //db에서 gugun 얻어오기(sido의 값이 변경되면 실행된다.)
 const getGugunf = watch(() => {
 
-    if (sido.value == "") return;
+    if (sido.value == "") {
+        gugunOptions.value = null;
+        return;
+    }
 
     getGugun(sido.value,
         (response) => {
@@ -117,7 +172,8 @@ const getGugunf = watch(() => {
 
 
 const onClickMapMarker = (info) => {
-
+    coordinate.value.lat = info.latitude;
+    coordinate.value.lng = info.longitude;
     if (info.visible == true) {
         info.visible = false;
     } else {
@@ -152,7 +208,7 @@ onMounted(() => {
 <template>
     <div class="vh-100" style="display: flex;">
         <!--맵 서치-->
-        <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary sdw" style="width: 380px;">
+        <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary sdw" style="width: 380px; z-index: 3;">
             <form @submit.prevent="getAttractionf" class="col-fluid align-items-center mt-2">
                 <input class="fc" type="text" v-model="searchTerm" placeholder="검색어 입력.." />
                 <button type="submit" class="btn btn-custom">검색</button>
@@ -185,45 +241,45 @@ onMounted(() => {
                         <div class="card-content ms-3">
                             <h5 class="card-title mb-1">{{ info.name }}</h5>
                             <p class="card-description">{{ info.addr1 }}</p>
-                            <button class="btn btn-custom me-3" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"
-                                @click="moveReview(info.id)">{{ info.id }}</button>
+                            <button class="btn btn-custom me-3" aria-controls="offcanvasScrolling"
+                                @click.stop="moveReview(info.id, info.latitude, info.longitude)">리뷰 보기</button>
                             <button class="btn btn-custom" @click.stop="console.log('좋아요')">좋아요</button>
                         </div>
                     </div>
-
+                    <!-- data-bs-target="#offcanvasScrolling"
+                                data-bs-toggle="offcanvas" -->
                 </div>
             </div>
         </div>
         <!--리뷰 오프캔버스-->
-        <div class="offcanvas offcanvas-end " data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-            id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel" style="top: 95px; border-radius: 10px;">
-            <!-- <div class="offcanvas-header">
+        <div class="offcanvas offcanvas-start offcanvas-custom" data-bs-scroll="true" data-bs-backdrop="false"
+            tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+            <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasScrollingLabel">리뷰</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button type="button" class="btn-close" @click="closeReview" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body">
-                <p>Try scrolling the rest of the page to see this option in action.</p>
-            </div> -->
-            <router-view />
+            <div class="container p-4">
+                <router-view />
+            </div>
         </div>
         <!--리뷰 오프캔버스 끝-->
         <!--카카오 맵 시작-->
         <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" style="width: 100%; height: 100vh;">
             <KakaoMapMarker v-for="(info, idx) in attractionInfo " :key="idx" :lat="info.latitude" :lng="info.longitude"
-                :infoWindow="{
-                content:
-                    `
-                    <div>
-                        ` + info.name + `
-                    </div>
-                    <div>
-                        ` + info.overview + `
-                    </div>
-                        `
-                , visible: info.visible
-            }" :clickable="true" @onClickKakaoMapMarker="onClickMapMarker(info)" />
+                :clickable="true" @onClickKakaoMapMarker="onClickMapMarker(info)" />
+
+            <KakaoMapCustomOverlay v-for="(info, idx) in attractionInfo " :key="idx" :lat="info.latitude"
+                :lng="info.longitude" :content="getContent(info.name, info.addr1, info.homepage)"
+                :visible="info.visible" :yAnchor="1.4" />
+
         </KakaoMap>
+
+        <!-- 
+        <KakaoMapMarker :lat="33.450701" :lng="126.570667" @onClickKakaoMapMarker="onClickKakaoMapMarker"
+            :clickable="true" />
+        <KakaoMapCustomOverlay :lat="33.450701" :lng="126.570667" :yAnchor="1.4" :visible="visible"
+            :content="content" /> -->
+
     </div>
 
 </template>
@@ -349,5 +405,22 @@ main {
     color: #888686;
     border: 1px solid;
     border-color: #8886861a;
+}
+
+.offcanvas-custom {
+    --bs-offcanvas-width: 350px;
+    --bs-offcanvas-bg: var(--bs-tertiary-bg);
+    top: 95px;
+    bottom: 70px;
+    left: 400px;
+    border-radius: 10px;
+    z-index: 2;
+
+}
+
+.container {
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-width: none;
 }
 </style>

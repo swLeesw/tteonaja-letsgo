@@ -49,14 +49,12 @@ const router = createRouter({
         {
           path: "free/write",
           name: "free-write",
-          component: () =>
-            import("@/components/board/free/FreeBoardWrite.vue"),
+          component: () => import("@/components/board/free/FreeBoardWrite.vue"),
         },
         {
           path: "free/modify:id",
           name: "free-modify",
-          component: () =>
-            import("@/components/board/free/FreeBoardModify.vue"),
+          component: () => import("@/components/board/free/FreeBoardModify.vue"),
         },
         {
           path: "trip",
@@ -74,8 +72,13 @@ const router = createRouter({
           path: "mapReview/:id",
           name: "map-review",
           component: () => import("@/components/attraction/AttractionReview.vue"),
-        }
-      ]
+        },
+        {
+          path: "mapReviewWrite/:id",
+          name: "map-review-write",
+          component: () => import("@/components/attraction/AttractionReviewWrite.vue"),
+        },
+      ],
     },
   ],
 });

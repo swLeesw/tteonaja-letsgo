@@ -12,6 +12,7 @@
         <result column="review_title" property="reviewTitle"/>
         <result column="content" property="content"/>
         <result column="hit" property="hit"/>
+        <result column="review_like" property="reviewLike"/>
         <result column="register_time" property="registerTime"/>
         <result column="attraction_id" property="attractionId"/>
     </resultMap>
@@ -73,5 +74,34 @@
         insert into attraction_review(user_id, review_title, content, hit, register_time, review_like, attraction_id)
         values(#{userId}, #{reviewTitle}, #{content}, 0, now(), 0, #{attractionId})
     </insert>
+
+    <update id="likeReview" parameterType="int">
+        update attraction_review
+        set review_like = review_like + 1
+        where review_no=#{reviewNo}
+    </update>
+    <update id="likeCancelReview" parameterType="int">
+        update attraction_review
+        set review_like = review_like - 1
+        where review_no=#{reviewNo}
+    </update>
+
+    <select id="checkReview" parameterType="AttractionReviewCheckDto" resultType="String">
+        select user_id
+        from attraction_review_check
+        where user_id=#{userId}
+        and review_no=#{reviewNo}
+    </select>
+
+    <insert id="insertCheckReview" parameterType="AttractionReviewCheckDto">
+        insert into attraction_review_check(user_id, review_no)
+        values(#{userId}, #{reviewNo})
+    </insert>
+
+    <delete id="deleteCheckReview" parameterType="AttractionReviewCheckDto">
+        delete from attraction_review_check
+        where user_id=#{userId}
+        and review_no=#{reviewNo}
+    </delete>
 
 </mapper>
