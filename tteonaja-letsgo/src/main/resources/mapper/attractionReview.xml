@@ -75,6 +75,11 @@
         values(#{userId}, #{reviewTitle}, #{content}, 0, now(), 0, #{attractionId})
     </insert>
 
+    <delete id="deleteReview" parameterType="int">
+        delete from attraction_review
+        where review_no=#{reviewNo}
+    </delete>
+
     <update id="likeReview" parameterType="int">
         update attraction_review
         set review_like = review_like + 1
@@ -104,4 +109,9 @@
         and review_no=#{reviewNo}
     </delete>
 
+    <select id="getTopReview" resultMap="attractionReview">
+        select * from attraction_review
+        order by review_like desc, register_time desc
+        limit 5;
+    </select>
 </mapper>

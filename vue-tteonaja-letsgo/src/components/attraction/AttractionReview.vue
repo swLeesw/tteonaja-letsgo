@@ -2,7 +2,7 @@
 
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router';
-import { listReview, likeReview } from "@/api/attractionReview";
+import { listReview, likeReview, deleteReview } from "@/api/attractionReview";
 import { jwtDecode } from "jwt-decode";
 import Swal from 'sweetalert2';
 
@@ -13,6 +13,9 @@ const route = useRoute();
 const reviews = ref([]);
 const attractionId = ref(route.params.id);
 
+//토큰에서 id정보 저장
+const userId = ref(null);
+
 onBeforeRouteUpdate((to) => {
     console.log("onBeforeRouteUpdate = " + to.params.id);
     attractionId.value = to.params.id;
@@ -22,12 +25,18 @@ onBeforeRouteUpdate((to) => {
 onMounted(() => {
     console.log("reviewMounte" + route.params.id);
     getReview();
+
+    let token = sessionStorage.getItem("accessToken");
+    if (token == null) {
+        userId.value = null;
+        return;
+    }
+
+    let decodeToken = jwtDecode(token);
+    userId.value = decodeToken.userId;
 })
 
-const moveWrite = () => {
-    console.log("moveWrite : " + attractionId.value);
-    router.push({ name: "map-review-write", params: { id: attractionId.value } });
-}
+
 
 const getReview = () => {
 
@@ -81,22 +90,78 @@ const likeReviewf = (param) => {
     )
 }
 
+const deleteReviewf = (param) => {
+    const delCheck = ref(false);
+    Swal.fire({
+        title: "정말 삭제하시겠습니까?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        cancelButtonText: `취소`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            delCheck.value = true;
+            deleteReview(
+                param,
+                () => {
+                    getReview();
+                },
+                (error) => {
+                    console.log(error);
+                }
+            )
+            Swal.fire("삭제되었습니다!", "", "success");
+        }
+    });
+
+}
+
 
 </script>
 
 <template>
-    <div class="offcanvas-body bodyy">
+    <div class="offcanvas-body">
         <div class="review" v-for="(review, index) in reviews" :key="index">
+            <!-- <button style="margin-left: 191px;" class="btn btn-sm btn-outline-danger" v-if="userId == review.userId"
+                @click="deleteReviewf(review.reviewNo)">삭제</button>
             <div>
-                <strong>{{ review.reviewTitle }}</strong>
+                <p><strong>{{ review.reviewTitle }}</strong></p>
             </div>
             <div>
                 {{ review.content }}<br>
             </div>
-            {{ review.registerTime }}<br>
-            {{ review.reviewLike }}<br>
+            <p>{{ review.registerTime }}</p>
+            <p>좋아요 : {{ review.reviewLike }}</p>
+            <p style="">작성자 : {{ review.userId }}</p>
             <button class="btn btn-custom" @click="likeReviewf(review.reviewNo)">좋아요</button>
-            <hr class="border border-1 opacity-50">
+            <hr class="border border-1 opacity-50"> -->
+            <!---->
+            <div class="review-item"
+                style="border: 0px solid #ddd; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <p><strong style="font-size: 1.2em; color: #333;">{{ review.reviewTitle }}</strong></p>
+                    </div>
+                    <button style="" class="btn btn-sm btn-outline-danger" v-if="userId == review.userId"
+                        @click="deleteReviewf(review.reviewNo)">삭제</button>
+                </div>
+                <div style="margin-top: 10px;">
+                    <p style="font-size: 1em; color: #666;">{{ review.content }}</p>
+                </div>
+                <div style="margin-top: 10px;">
+                    <p style="font-size: 0.9em; color: #999;">{{ review.registerTime }}</p>
+                </div>
+                <div style="margin-top: 10px;">
+                    <p style="font-size: 1em; color: #007bff;">좋아요 : {{ review.reviewLike }}</p>
+                </div>
+                <div style="margin-top: 10px;">
+                    <p style="font-size: 1em; color: #555;">작성자 : {{ review.userId }}</p>
+                </div>
+                <div style="margin-top: 10px;">
+                    <button class="btn btn-custom" @click="likeReviewf(review.reviewNo)">좋아요</button>
+                </div>
+                <hr class="border border-1 opacity-50" style="margin-top: 20px;">
+            </div>
         </div>
     </div>
 </template>

@@ -18,10 +18,11 @@ public interface AttractionReviewMapper {
     List<AttractionReview> listReview(int attractionId) throws Exception;
     void updateHit(int reviewNo) throws Exception;
     void registReview(AttractionReviewSaveDto attractionReviewSaveDto) throws Exception;
+    void deleteReview(int reviewNo) throws Exception;
     void likeReview(int reviewNo) throws Exception;
     void likeCancelReview(int reviewNo) throws Exception;
     String checkReview(AttractionReviewCheckDto attractionReviewCheckDto) throws Exception;
     void insertCheckReview(AttractionReviewCheckDto attractionReviewCheckDto) throws Exception;
     void deleteCheckReview(AttractionReviewCheckDto attractionReviewCheckDto) throws Exception;
+    List<AttractionReview> getTopReview() throws Exception;
 }
-

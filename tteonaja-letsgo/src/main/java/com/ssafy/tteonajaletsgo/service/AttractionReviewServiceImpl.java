@@ -32,6 +32,11 @@ public class AttractionReviewServiceImpl implements AttractionReviewService{
     }
 
     @Override
+    public void deleteReview(int reviewNo) throws Exception {
+        attractionReviewMapper.deleteReview(reviewNo);
+    }
+
+    @Override
     public void likeReview(int reviewNo) throws Exception {
         attractionReviewMapper.likeReview(reviewNo);
     }
@@ -53,5 +58,10 @@ public class AttractionReviewServiceImpl implements AttractionReviewService{
     @Override
     public void deleteCheckReview(AttractionReviewCheckDto attractionReviewCheckDto) throws Exception {
         attractionReviewMapper.deleteCheckReview(attractionReviewCheckDto);
+    }
+
+    @Override
+    public List<AttractionReview> getTopReview() throws Exception {
+        return attractionReviewMapper.getTopReview();
     }
 }

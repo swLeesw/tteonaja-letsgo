@@ -5,7 +5,7 @@ import { useRouter } from "vue-router";
 // import axios from 'axios'
 import { KakaoMap, KakaoMapMarker, KakaoMapCustomOverlay } from 'vue3-kakao-maps';
 import { getAttraction, getSido, getGugun } from '@/api/attractionInfo.js';
-
+import { jwtDecode } from "jwt-decode";
 //router
 const router = useRouter();
 
@@ -55,7 +55,16 @@ const contentCodeOptions = ref([
     },
 ]);
 
+//review장소저장(리뷰 쓰기를 위한 변수)
+const attractionId = ref(0);
+//reivew설명 저장(리뷰 overview 나타내기 위한 변수)
+const overview = ref("");
+//로그인 정보 저장
+const userId = ref("");
+const name = ref("");
+
 //kakaoMapCustomOVeray
+
 
 const getContent = (infoName, infoAddr1, infoHomepage) => {
     let tmp = ` <div
@@ -93,8 +102,29 @@ const getContent = (infoName, infoAddr1, infoHomepage) => {
     return tmp;
 }
 
+//리뷰 쓰기
+const moveWrite = () => {
+    console.log("moveWrite : " + attractionId.value);
+    router.push({ name: "map-review-write", params: { id: attractionId.value } });
+}
+
 //리뷰보기
-const moveReview = (value, lat, lng) => {
+const moveReview = (value, overvieww, namee, lat, lng) => {
+    attractionId.value = value;
+    console.log(overvieww);
+    // overview가 ref일 때 null 체크
+    if (overvieww != null) {
+        overview.value = overvieww;
+    } else {
+        overview.value = "";
+    }
+
+    if (namee != null) {
+        name.value = namee;
+    } else {
+        name.value = "";
+    }
+
     coordinate.value.lat = lat;
     coordinate.value.lng = lng;
     const oc = document.getElementById("offcanvasScrolling");
@@ -191,6 +221,17 @@ const onClickMapMarker = (info) => {
 //화면 로드가 되면 자동으로 sido 얻기
 onMounted(() => {
     getSidof();
+
+    //아이디 불러우기
+    let token = sessionStorage.getItem("accessToken");
+
+    if (token == null) {
+        return;
+    }
+
+    let decodeToken = jwtDecode(token);
+    userId.value = decodeToken.userId;
+
 })
 
 /* global bootstrap: false */
@@ -208,7 +249,7 @@ onMounted(() => {
 <template>
     <div class="vh-100" style="display: flex;">
         <!--맵 서치-->
-        <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary sdw" style="width: 380px; z-index: 3;">
+        <div class="d-flex flex-column flex-shrink-0 bg-body-tertiary side-custom" style="width: 400px; z-index: 3;">
             <form @submit.prevent="getAttractionf" class="col-fluid align-items-center mt-2">
                 <input class="fc" type="text" v-model="searchTerm" placeholder="검색어 입력.." />
                 <button type="submit" class="btn btn-custom">검색</button>
@@ -231,7 +272,7 @@ onMounted(() => {
                     </option>
                 </select>
             </form>
-            <div class="list-group list-group-flush border-bottom scrollarea">
+            <div class="list-group list-group-flush border-bottom scrollarea scroll-custom">
                 <div v-for="(info, index) in attractionInfo" :key="index">
                     <div class="d-flex ms-3 me-3 mt-4 mb-4 cardd" @click="onClickMapMarker(info)">
                         <img :src="info.firstImage" style="border-radius: 10px;" alt="사진" width="120px"
@@ -242,7 +283,8 @@ onMounted(() => {
                             <h5 class="card-title mb-1">{{ info.name }}</h5>
                             <p class="card-description">{{ info.addr1 }}</p>
                             <button class="btn btn-custom me-3" aria-controls="offcanvasScrolling"
-                                @click.stop="moveReview(info.id, info.latitude, info.longitude)">리뷰 보기</button>
+                                @click.stop="moveReview(info.id, info.overview, info.name, info.latitude, info.longitude)">리뷰
+                                보기</button>
                             <button class="btn btn-custom" @click.stop="console.log('좋아요')">좋아요</button>
                         </div>
                     </div>
@@ -258,6 +300,12 @@ onMounted(() => {
                 <h5 class="offcanvas-title" id="offcanvasScrollingLabel">리뷰</h5>
                 <button type="button" class="btn-close" @click="closeReview" aria-label="Close"></button>
             </div>
+            <p class="d-flex justify-content-center"><strong>{{ name }}</strong></p>
+            <div class="container" v-html="overview">
+            </div>
+            <div v-if="userId != null" class="d-flex justify-content-end me-4">
+                <button class="btn btn-custom" @click="moveWrite()">리뷰 작성</button>
+            </div>
             <div class="container p-4">
                 <router-view />
             </div>
@@ -271,7 +319,6 @@ onMounted(() => {
             <KakaoMapCustomOverlay v-for="(info, idx) in attractionInfo " :key="idx" :lat="info.latitude"
                 :lng="info.longitude" :content="getContent(info.name, info.addr1, info.homepage)"
                 :visible="info.visible" :yAnchor="1.4" />
-
         </KakaoMap>
 
         <!-- 
@@ -366,9 +413,17 @@ main {
     border-radius: 10px;
 }
 
-.sdw {
+.side-custom {
     box-shadow: 3px 0 10px #888686;
     z-index: 2;
+}
+
+.scroll-custom {
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(67, 180, 255, 0.158) var(--bs-tertiary-bg);
+
 }
 
 .fc {
@@ -412,7 +467,7 @@ main {
     --bs-offcanvas-bg: var(--bs-tertiary-bg);
     top: 95px;
     bottom: 70px;
-    left: 400px;
+    left: 410px;
     border-radius: 10px;
     z-index: 2;
 
@@ -420,7 +475,7 @@ main {
 
 .container {
     overflow-y: auto;
-    overscroll-behavior-y: contain;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(67, 180, 255, 0.158) var(--bs-tertiary-bg);
 }
 </style>

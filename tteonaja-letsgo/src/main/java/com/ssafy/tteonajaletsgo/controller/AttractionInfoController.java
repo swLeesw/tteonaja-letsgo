@@ -22,7 +22,7 @@ public class AttractionInfoController {
     private final AttractionInfoService attractionInfoService;
 
     @GetMapping("/region")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+//    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public List<AttractionInfoAndDescription> getAttraction(@RequestParam Map<String, String> map) throws SQLException {
         log.info("searchTerm = {}", map.get("searchTerm"));
         List<AttractionInfoAndDescription> list = attractionInfoService.getRegion(map);

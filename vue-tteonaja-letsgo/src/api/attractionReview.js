@@ -15,4 +15,8 @@ function registReview(param, success, fail) {
   local.post(`review/regist`, param).then(success).catch(fail);
 }
 
-export { listReview, likeReview, registReview };
+function deleteReview(param, success, fail) {
+  local.delete(`/review/${param}`, param).then(success).catch(fail);
+}
+
+export { listReview, likeReview, registReview, deleteReview};
