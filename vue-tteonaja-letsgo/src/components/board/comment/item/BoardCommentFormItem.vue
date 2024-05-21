@@ -6,11 +6,11 @@ import { jwtDecode } from 'jwt-decode';
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
-const props = defineProps({ 
+const props = defineProps({
     commentParams: Object,
     type: String
 });
- 
+const emits = defineEmits(['writeComment']);
 const router = useRouter();
 const route = useRoute();
 
@@ -31,7 +31,7 @@ watch(
 );
 
 const refreshPage = () => {
-    router.go(0);
+    router.go(0)
 };
 
 const controlComment = () => {
@@ -47,8 +47,8 @@ const controlComment = () => {
                 comment: comment.value,
             },
             (response) => {
-                    console.log(response);
-                    refreshPage();
+                console.log(response);
+                refreshPage();
             },
             (error) => console.error(error)
         );
@@ -90,13 +90,14 @@ const controlComment = () => {
     //         }
     //     );
     // }
-}
+};
 </script>
 
 <template>
-    <QuillEditor theme="snow" contentType="html" v-model:content="comment.content" toolbar="mini" placeholder="댓글을 입력해주세요." />
+    <QuillEditor theme="snow" contentType="html" v-model:content="comment.content" toolbar="mini"
+        placeholder="댓글을 입력해주세요." />
     <div class="container mt-3 text-end p-0">
-            <button class="btn btn-success btn-sm" @click="controlComment">댓글 작성</button>
+        <button class="btn btn-success btn-sm" @click="controlComment">댓글 작성</button>
     </div>
 </template>
 

@@ -1,6 +1,34 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 
+import { storeToRefs } from "pinia";
+import { useMemberStore } from "@/stores/member";
+import Swal from "sweetalert2";
+
+const onlyAuthUser = async (to, from, next) => {
+  const memberStore = useMemberStore();
+  const { userInfo, isValidToken } = storeToRefs(memberStore)
+  const { getUserInfo } = memberStore
+
+  let token = sessionStorage.getItem("accessToken")
+
+  if (userInfo.value != null && token) {
+    await getUserInfo(token);
+  }
+  if (userInfo.value === null) {
+    Swal.fire({
+      position: "top",
+      icon: "info",
+      title: "로그인 후 이용 가능합니다.",
+      showConfirmButton: false,
+      timer: 1500
+    });
+    next({ name: "login" });
+  } else {
+    next();
+  }
+}
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -27,6 +55,7 @@ const router = createRouter({
         {
           path: "info",
           name: "my-page",
+          beforeEnter: onlyAuthUser,
           component: () => import("@/components/user/UserInfo.vue"),
         },
       ],
@@ -44,17 +73,22 @@ const router = createRouter({
         {
           path: "free/:id/:commentNum",
           name: "free-detail",
+          beforeEnter: onlyAuthUser,
           component: () => import("@/components/board/free/FreeBoardDetail.vue"),
         },
         {
           path: "free/write",
           name: "free-write",
-          component: () => import("@/components/board/free/FreeBoardWrite.vue"),
+          beforeEnter: onlyAuthUser,
+          component: () =>
+            import("@/components/board/free/FreeBoardWrite.vue"),
         },
         {
           path: "free/modify:id",
           name: "free-modify",
-          component: () => import("@/components/board/free/FreeBoardModify.vue"),
+          beforeEnter: onlyAuthUser,
+          component: () =>
+            import("@/components/board/free/FreeBoardModify.vue"),
         },
         {
           path: "trip",
@@ -71,6 +105,7 @@ const router = createRouter({
         {
           path: "mapReview/:id",
           name: "map-review",
+          beforeEnter: onlyAuthUser,
           component: () => import("@/components/attraction/AttractionReview.vue"),
         },
         {

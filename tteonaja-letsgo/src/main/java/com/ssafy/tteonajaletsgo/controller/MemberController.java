@@ -126,6 +126,7 @@ public class MemberController {
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody Member memberDto, HttpServletRequest request)
             throws Exception {
+    	System.out.println("재발급 들어왔다.");
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         String token = request.getHeader("refreshToken");

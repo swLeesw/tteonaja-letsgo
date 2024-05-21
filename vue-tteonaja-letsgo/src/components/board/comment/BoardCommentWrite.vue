@@ -8,6 +8,11 @@ const props = defineProps({
     commentParams: Object
 })
 
+// const emits = defineEmits(['writeComment'])
+// const writeComment = () => {
+//     emits('writeComment')
+// }
+
 </script>
 
 <template>

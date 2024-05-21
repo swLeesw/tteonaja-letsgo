@@ -5,9 +5,9 @@ import { useMenuStore } from '@/stores/menu';
 import { useMemberStore } from '@/stores/member';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import { findById} from '@/api/user';
+import { findById } from '@/api/user';
 import { jwtDecode } from 'jwt-decode';
-
+import { httpStatusCode } from "@/util/http-status";
 const router = useRouter();
 
 const menuStore = useMenuStore();
@@ -20,29 +20,33 @@ const { userLogout, getUserInfo, tokenRegenerate } = memberStore;
 const { isLogin, isValidToken, userInfo } = storeToRefs(memberStore);
 
 // TODO: 새로고침 시 로그인 해제 방지
-const checkLogin = async() => {
+const checkLogin = async () => {
+    console.log(isValidToken.value);
+    console.log(isLogin.value);
     let token = sessionStorage.getItem("accessToken");
     if (token !== null) {
         let decodeToken = jwtDecode(token);
-        console.log(decodeToken.userId)
+        console.log(decodeToken.userId);
         await findById(
             decodeToken.userId,
             (response) => {
+                console.log(response);
                 if (response.status === httpStatusCode.OK) {
                     userInfo.value = response.data.userInfo;
                     console.log("이제 자자");
-                    console.log(userInfo.value)
-                    changeMenuState();
+                    console.log(userInfo.value);
+                    // changeMenuState();
                 } else {
                     console.log("유저 정보 없음");
                     userLogout();
                 }
             },
             async (error) => {
-                console.log("g[토큰 만료되어 사용 불가능.] :")
+                console.log(error);
+                console.log("g[토큰 만료되어 사용 불가능.] :");
                 await tokenRegenerate();
             }
-        )
+        );
     }
 };
 
@@ -75,24 +79,17 @@ onMounted(() => {
                         <RouterLink :to="{ name: 'home' }" class="nav-link btn-hover-effect rounded-pill">홈</RouterLink>
                     </li>
                     <li class="nav-item me-3">
-                        <a class="nav-link btn-hover-effect rounded-pill" href="#">여행</a>
-                        <!-- <RouterLink :to="{ name: 'trip' }" class="nav-link align-middle btn-hover-effect rounded-pill">여행</RouterLink> -->
+                        <RouterLink :to="{ name: 'map' }" class="nav-link align-middle btn-hover-effect rounded-pill">
+                            관광지 검색</RouterLink>
                     </li>
-                    <li class="nav-item me-2 dropdown">
-                        <a class="nav-link dropdown-toggle btn-hover-effect rounded-pill" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false" href="#">게시판</a>
-                        <!-- <RouterLink :to="{ name: 'free' }" class="nav-link align-middle btn-hover-effect rounded-pill">자유게시판</RouterLink> -->
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-item">여행 계획</li>
-                            <li class="dropdown-item">
-                                <RouterLink :to="{ name: 'trip-list' }" class="del-deco">관광지 후기
-                                </RouterLink>
-                            </li>
-                            <li class="dropdown-item">
-                                <RouterLink :to="{ name: 'free-list' }" class="del-deco">자유 게시판
-                                </RouterLink>
-                            </li>
-                        </ul>
+                    <li class="nav-item me-3">
+                        <RouterLink :to="{ name: 'trip-list' }"
+                            class="nav-link align-middle btn-hover-effect rounded-pill">
+                            여행 계획</RouterLink>
+                    </li>
+                    <li class="nav-item me-3">
+                        <RouterLink :to="{ name: 'free-list' }" class="nav-link btn-hover-effect rounded-pill">자유 게시판
+                        </RouterLink>
                     </li>
                     <!-- <li class="nav-item me-3">
                         <RouterLink :to="{ name: 'login' }" class="nav-link align-middle btn-hover-effect rounded-pill">
@@ -105,10 +102,6 @@ onMounted(() => {
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item " href="#">공지사항</a></li>
                             <li><a class="dropdown-item" href="#">FAQ</a></li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li><a class="dropdown-item" href="#">학사규정</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -119,8 +112,8 @@ onMounted(() => {
                                 <li class="nav-item me-2">
                                     <router-link to="/" @click.prevent="logout"
                                         class="nav-link btn-hover-effect rounded-pill">{{
-                menu.name
-            }}</router-link>
+                                        menu.name
+                                        }}</router-link>
                                 </li>
                             </template>
                             <template v-else>

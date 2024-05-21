@@ -5,6 +5,8 @@ import { jwtDecode } from "jwt-decode";
 
 import { userConfirm, findById, tokenRegeneration, logout } from "@/api/user";
 import { httpStatusCode } from "@/util/http-status";
+import { useMenuStore } from "./menu";
+
 
 // defineStore에 의해 store가 정의됨
 // 할당 변수 이름은  use{store이름}Store로 설정, 규칙임
@@ -78,11 +80,15 @@ export const useMemberStore = defineStore("memberStore", () => {
       );
     };
 
-    const tokenRegenerate = async () => {
+  const tokenRegenerate = async () => {
+    console.log("토큰 재생성 위한 유저 정보");
+    console.log(userInfo.value);
       await tokenRegeneration(
         JSON.stringify(userInfo.value),
         (response) => {
-          if (response.stauts === httpStatusCode.CREATE) {
+          if (response.status === httpStatusCode.CREATE) {
+            console.log("토큰 재생성");
+            console.log(response)
             let accessToken = response.data["access-token"];
             sessionStorage.setItem("accessToken", accessToken);
             isValidToken.value = true;
@@ -93,9 +99,9 @@ export const useMemberStore = defineStore("memberStore", () => {
           if (error.response.status === httpStatusCode.UNAUTHORIZED) {
             // logout을 통해서 DB에 저장된 RefreshToken 제거.
             console.log("여기가 안돼?")
-            console.log(userInfo.value)
+            console.log(userInfo.value.userId)
             await logout(
-              userInfo.value.userid,
+              userInfo.value.userId,
               (response) => {
                 if (response.status === httpStatusCode.OK) {
                   sessionStorage.removeItem("accessToken")
@@ -110,6 +116,9 @@ export const useMemberStore = defineStore("memberStore", () => {
                 isLogin.value = false;
                 userInfo.value = null;
                 isValidToken.value = false;
+                const menuStore = useMenuStore();
+                console.log(menuStore)
+                menuStore.changeMenuState();
                 router.replace({ name: "login" });
               },
               (error) => {

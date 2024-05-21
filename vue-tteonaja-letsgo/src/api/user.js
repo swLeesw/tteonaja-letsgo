@@ -18,6 +18,7 @@ async function findById(userId, success, fail) {
 async function tokenRegeneration(user, success, fail) {
   local.defaults.headers["refreshToken"] =
     sessionStorage.getItem("refreshToken");
+  console.log(sessionStorage.getItem("refreshToken"))
   console.log(user);
   await local.post(`member/refresh`, user).then(success).catch(fail);
 }
@@ -34,4 +35,12 @@ async function idCheck(userId, success, fail) {
   await local.get(`member/idcheck/${userId}`).then(success).catch(fail);
 }
 
-export { userConfirm, findById, tokenRegeneration, logout, idCheck, register };
+async function modifyUser(newUser, success, fail) {
+  await local.put(`member`, newUser).then(success).catch(fail);
+}
+
+async function deleteUser(userId, success, fail) {
+  await local.delete(`member/${userId}`).then(success).catch(fail);
+}
+
+export { userConfirm, findById, tokenRegeneration, logout, idCheck, register, modifyUser, deleteUser };

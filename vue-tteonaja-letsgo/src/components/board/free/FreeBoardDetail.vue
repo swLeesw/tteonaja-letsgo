@@ -6,6 +6,7 @@ import BoardCommentWrite from '@/components/board/comment/BoardCommentWrite.vue'
 import BoardCommentListItem from '../comment/item/BoardCommentListItem.vue';
 import Swal from 'sweetalert2';
 import BoardCommentList from '../comment/BoardCommentList.vue';
+import { jwtDecode } from 'jwt-decode';
 
 const route = useRoute();
 const router = useRouter();
@@ -16,6 +17,8 @@ const params = ref(
         articleNo: route.params.id
     }
 );
+
+const currentUserId = ref("")
 
 const article = ref({});
 
@@ -70,6 +73,7 @@ const deleteFreeArticle = () => {
 
 onMounted(() => {
     getArticleDetail();
+    currentUserId.value = jwtDecode(sessionStorage.getItem(['accessToken'])).userId;
 });
 
 const moveToList = () => {
@@ -110,13 +114,14 @@ const moveToModify = () => {
             </div>
         </div>
         <div class="container border p-3" id="comment_block">
-            <p>댓글 목록 <span>({{ route.params.commentNum }})</span></p>
+            <p>댓글 목록</p>
             <hr>
-            <BoardCommentList :comment-params="params" />
-            <BoardCommentWrite :comment-params="params" />
+            <BoardCommentList :comment-params="params" :write-checker="writeChecker"
+                @deleted-comment="deletedComment" @complete-write="completeWrite"/>
+            <BoardCommentWrite :comment-params="params" @write-comment="writeComment" />
         </div>
 
-        <div class="container mt-3 d-flex justify-content-between align-items-center p-1">
+        <div v-if="currentUserId === article.userId" class="container mt-3 d-flex justify-content-between align-items-center p-1">
             <div>
                 <button class="btn btn-secondary btn-sm" @click="moveToList">글 목록</button>
             </div>

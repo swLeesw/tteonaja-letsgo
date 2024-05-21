@@ -1,12 +1,17 @@
 <script setup>
 import { deleteComment } from '@/api/board';
 import router from '@/router';
+import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const props = defineProps({
     comment: Object
 });
+
+const currentUserId = ref("")
+
+const emits = defineEmits(['deletedComment'])
 
 const deleteFreeComment = () => {
     Swal.fire({
@@ -31,7 +36,8 @@ const deleteFreeComment = () => {
                         icon: "success",
                         confirmButtonText: "확인",
                     }).then((result) => {
-                        router.go(0);
+                        emits('deletedComment', props.comment.commentNo)
+                        // router.go(0);
                     });
                 },
                 (error) => {
@@ -42,13 +48,18 @@ const deleteFreeComment = () => {
     });
 }
 
+onMounted(() => {
+    currentUserId.value = jwtDecode(sessionStorage.getItem(['accessToken'])).userId;
+})
 </script>
 
 <template>
     <div class="p-2">
         <div class="d-flex justify-content-between ">
             <span class="d-flex align-items-center">{{ props.comment.userId }} <button
-                    class="btn btn-white btn-sm p-0 ms-3" @click="deleteFreeComment">삭제</button></span>
+                    v-if="currentUserId === props.comment.userId"
+                    class="btn bg-light rounded btn-sm pt-0 pb-0 ps-1 pe-1 ms-3"
+                    @click="deleteFreeComment">삭제</button></span>
             <span>{{ props.comment.registerTime }}</span>
         </div>
         <p class="mt-3" v-html="props.comment.content"></p>
