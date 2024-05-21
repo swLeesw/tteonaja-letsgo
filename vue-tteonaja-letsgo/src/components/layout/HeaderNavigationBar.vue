@@ -78,6 +78,9 @@ onMounted(() => {
                     <li class="nav-item me-3">
                         <RouterLink :to="{ name: 'home' }" class="nav-link btn-hover-effect rounded-pill">홈</RouterLink>
                     </li>
+                    <!-- <li class="nav-item me-3">
+                        <RouterLink :to="{ name: 'ai' }" class="nav-link btn-hover-effect rounded-pill">AI 테스트</RouterLink>
+                    </li> -->
                     <li class="nav-item me-3">
                         <RouterLink :to="{ name: 'map' }" class="nav-link align-middle btn-hover-effect rounded-pill">
                             관광지 검색</RouterLink>

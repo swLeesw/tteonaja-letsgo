@@ -138,8 +138,8 @@ const controlArticle = () => {
         placeholder="글 제목을 입력하세요.">
     <label for="contentFormControlInput1" class="form-label fw-bolder">내용</label>
     <QuillEditor theme="snow" v-model:content="article.content" contentType="html" toolbar="full" />
-    <div class="container" v-html="article.content">
-    </div>
+    <!-- <div class="container" v-html="article.content">
+    </div> -->
     <div class="mt-3 d-flex justify-content-between align-items-center">
         <button class="btn btn-secondary btn-sm" @click="moveToList">글 목록</button>
         <button class="btn btn-primary btn-sm" v-if="type === 'regist'" @click="controlArticle">등록하기</button>

@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import { userConfirm, findById, tokenRegeneration, logout } from "@/api/user";
 import { httpStatusCode } from "@/util/http-status";
 import { useMenuStore } from "./menu";
+import Swal from "sweetalert2";
 
 
 // defineStore에 의해 store가 정의됨
@@ -45,8 +46,18 @@ export const useMemberStore = defineStore("memberStore", () => {
             sessionStorage.setItem("refreshToken", refreshToken);
           }
         },
-        (error) => {
+        async (error) => {
+          const errorMessage = error.response.data.message
+          await Swal.fire({
+            position: "top",
+            icon: "error",
+            titleText: errorMessage,
+            showConfirmButton: false,
+            timer: 1500
+          });
           console.log("로그인 실패");
+          console.log(error)
+          console.log(error.response.data.message)
           isLogin.value = false;
           isLoginError.value = true;
           isValidToken.value = false;
