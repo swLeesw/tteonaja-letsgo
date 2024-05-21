@@ -1,6 +1,7 @@
 package com.ssafy.tteonajaletsgo.mapper;
 
 import com.ssafy.tteonajaletsgo.domain.AttractionInfo;
+import com.ssafy.tteonajaletsgo.domain.AttractionReview;
 import com.ssafy.tteonajaletsgo.domain.Gugun;
 import com.ssafy.tteonajaletsgo.domain.Sido;
 import com.ssafy.tteonajaletsgo.dto.AttractionInfoAndDescription;
@@ -15,4 +16,5 @@ public interface AttractionInfoMapper {
     List<AttractionInfoAndDescription> getRegion(Map<String, String> map) throws SQLException;
     List<Sido> getSido() throws SQLException;
     List<Gugun> getGugun(int sidoCode) throws SQLException;
+    List<AttractionInfo> getTopAttraction() throws Exception;
 }

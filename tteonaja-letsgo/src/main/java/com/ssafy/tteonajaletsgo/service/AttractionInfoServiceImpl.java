@@ -32,4 +32,9 @@ public class AttractionInfoServiceImpl implements AttractionInfoService{
     public List<Gugun> getGugun(int sidoCode) throws SQLException {
         return attractionInfoMapper.getGugun(sidoCode);
     }
+
+    @Override
+    public List<AttractionInfo> getTopAttraction() throws Exception {
+        return attractionInfoMapper.getTopAttraction();
+    }
 }

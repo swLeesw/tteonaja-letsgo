@@ -1,12 +1,17 @@
 package com.ssafy.tteonajaletsgo.controller;
 
 import com.ssafy.tteonajaletsgo.domain.AttractionInfo;
+import com.ssafy.tteonajaletsgo.domain.AttractionReview;
 import com.ssafy.tteonajaletsgo.domain.Gugun;
 import com.ssafy.tteonajaletsgo.domain.Sido;
 import com.ssafy.tteonajaletsgo.dto.AttractionInfoAndDescription;
+import com.ssafy.tteonajaletsgo.exception.ExceptionResponse;
 import com.ssafy.tteonajaletsgo.service.AttractionInfoService;
+import io.swagger.models.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -40,6 +45,23 @@ public class AttractionInfoController {
     public List<Gugun> getGugun(@PathVariable("sidoCode") int sidoCode) throws SQLException {
         List<Gugun> list = attractionInfoService.getGugun(sidoCode);
         return list;
+    }
+
+    @GetMapping("/top")
+    public ResponseEntity<?> getTopAttraction() {
+
+        try {
+            List<AttractionInfo> topAttraction = attractionInfoService.getTopAttraction();
+
+            if (topAttraction != null) {
+                return new ResponseEntity<List<AttractionInfo>>(topAttraction, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            return ExceptionResponse.response(e);
+        }
     }
 
 }
