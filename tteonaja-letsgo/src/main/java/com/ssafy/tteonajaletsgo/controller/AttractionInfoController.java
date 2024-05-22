@@ -5,9 +5,13 @@ import com.ssafy.tteonajaletsgo.domain.AttractionReview;
 import com.ssafy.tteonajaletsgo.domain.Gugun;
 import com.ssafy.tteonajaletsgo.domain.Sido;
 import com.ssafy.tteonajaletsgo.dto.AttractionInfoAndDescription;
+import com.ssafy.tteonajaletsgo.dto.attractionInfo.AttractionInfoCheckDto;
+import com.ssafy.tteonajaletsgo.dto.attractionReview.AttractionReviewCheckDto;
+import com.ssafy.tteonajaletsgo.dto.common.CheckDto;
 import com.ssafy.tteonajaletsgo.exception.ExceptionResponse;
 import com.ssafy.tteonajaletsgo.service.AttractionInfoService;
 import io.swagger.models.Response;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -60,6 +64,32 @@ public class AttractionInfoController {
             }
 
         } catch (Exception e) {
+            return ExceptionResponse.response(e);
+        }
+    }
+
+    @Operation(summary = "여행정보 좋아요", description = "아이디당 여행정보 좋아요 및 좋아요 취소를 한다.")
+    @GetMapping("/like/{id}/{userid}")
+    public ResponseEntity<?> likeReview(@PathVariable(value = "id", required = true) int id,
+                                        @PathVariable(value = "userid", required = true) String userid) {
+
+        try {
+            AttractionInfoCheckDto attractionInfoCheckDto = new AttractionInfoCheckDto();
+            attractionInfoCheckDto.setId(id);
+            attractionInfoCheckDto.setUserId(userid);
+            CheckDto checkDto = new CheckDto();
+            if (attractionInfoService.checkInfo(attractionInfoCheckDto)) {
+                attractionInfoService.likeCancelInfo(id);
+                attractionInfoService.deleteCheckInfo(attractionInfoCheckDto);
+                checkDto.setCheck(true);
+            } else {
+                attractionInfoService.likeInfo(id);
+                attractionInfoService.insertCheckInfo(attractionInfoCheckDto);
+                checkDto.setCheck(false);
+            }
+            return new ResponseEntity<CheckDto>(checkDto, HttpStatus.OK);
+        } catch (Exception e) {
+            log.debug("reviewLikeError = {}", e);
             return ExceptionResponse.response(e);
         }
     }

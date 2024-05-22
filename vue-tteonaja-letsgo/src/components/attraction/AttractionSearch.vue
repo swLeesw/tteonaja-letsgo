@@ -413,10 +413,16 @@ main {
     overflow-y: auto;
 }
 
+.cardd {
+    transition: all 0.2s linear;
+}
+
 .cardd:hover {
+    transition: all 0.2s linear;
     transform: scale(1.05);
-    background-color: rgba(67, 180, 255, 0.158);
+    /* background-color: rgba(67, 180, 255, 0.09); */
     border-radius: 10px;
+    box-shadow: 1px 3px 10px #8886861c;
 }
 
 .side-custom {

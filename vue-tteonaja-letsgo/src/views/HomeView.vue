@@ -23,6 +23,14 @@ const moveAttractionSearch = (attractionName) => {
 
 }
 
+const unfold = (event) => {
+
+    const targetElement = event.target;
+    targetElement.classList
+    targetElement.classList.toggle('fold-controll');
+
+}
+
 onMounted(() => {
     getTop3();
 })
@@ -109,32 +117,35 @@ onMounted(() => {
         <!-- START THE FEATURETTES -->
 
         <hr class="featurette-divider">
-
-
+        <!--관광지 탑 5-->
         <div class="text-center">
-            <h2 class="featurette-heading fw-normal lh-1 mb-5 mt-5"> 관광지 TOP 5
+            <h2 class="featurette-heading fw-normal lh-1 mb-5 mt-5"> 이달의 관광지
                 <p class="text-muted fs-5 mt-3">최근에 가장 인기있는 관광지를 방문하세요!</p>
             </h2>
             <div class="row d-flex justify-content-center">
-                <div class="col-lg-2 text-center mb-2" v-for="(info, index) in attractionTop3" :key="index">
+                <div class="card-custom  rounded m-2 p-2 a col-lg-2 text-center mb-2"
+                    v-for="(info, index) in attractionTop3" :key="index">
                     <img v-show="info.firstImage != ''" :src="info.firstImage" class="bd-placeholder-img rounded-circle"
                         width="100" height="100" alt="">
                     <img v-show="info.firstImage == ''" src="@/assets/attractionAlter.png"
                         class="bd-placeholder-img rounded-circle" width="100" height="100" alt="">
-                    <h4 class="m-3">{{ info.name }}</h4>
-                    <p class="fs-5">{{ info.overview }}</p>
-                    <p>{{ info.addr1 }}</p>
-                    <button class="btn btn-secondary" @click="moveAttractionSearch(info.name)">지도에서 보기</button>
-                </div><!-- /.col-lg-4 -->
-            </div><!-- /.row -->
+                    <p class="fs-4 m-3 truncate fold-controll text-font-weight-bold" @click="unfold($event)">{{
+                            info.name }}</p>
+                    <p v-show="info.overview != null" class="truncate" @click="unfold($event)" v-html="info.overview">
+                    </p>
+                    <p v-show="info.overview == null"><br><br></p>
+                    <p style="color: gray;">{{ info.addr1 }}</p>
+                    <button class="btn  btn-secondary" @click="moveAttractionSearch(info.name)">지도에서 보기</button>
+                </div>
+            </div>
         </div>
-
+        <!--관광지 top 5 end-->
+        <!--이달의 리뷰 top 5-->
         <hr class="featurette-divider">
 
         <div class="row featurette">
             <div class="col-md-7 order-md-2">
-                <h2 class="featurette-heading fw-normal lh-1">Oh yeah, it’s that good. <span class="text-muted">See for
-                        yourself.</span></h2>
+                <h2 class="featurette-heading fw-normal lh-1">이달의 리뷰</h2>
                 <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how
                     this layout would work with some actual real-world content in place.</p>
             </div>
@@ -149,6 +160,7 @@ onMounted(() => {
 
             </div>
         </div>
+        <!--이달의 리뷰 top5 end-->
 
         <hr class="featurette-divider">
 
@@ -211,5 +223,39 @@ onMounted(() => {
 .bi {
     vertical-align: -.125em;
     fill: currentColor;
+}
+
+.truncate {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    /* 최대 줄 수 설정 */
+    /* white-space: nowrap; */
+    /* 텍스트를 한 줄로 만듦 */
+    overflow: hidden;
+    /* 넘치는 텍스트를 숨김 */
+    text-overflow: ellipsis;
+    /* 넘치는 부분을 ...으로 표시 */
+}
+
+.fold-controll {
+    -webkit-line-clamp: 3;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-width: thin;
+}
+
+.card-custom {
+    /* background-color: rgb(145, 233, 70); */
+    background-color: rgba(235, 233, 233, 0.534);
+}
+
+.a img {
+    transition: all 0.2s linear;
+}
+
+.a:hover img {
+    transform: scale(1.12);
+    opacity: 0.7;
 }
 </style>
