@@ -51,10 +51,10 @@ public class AttractionInfoController {
     public ResponseEntity<?> getTopAttraction() {
 
         try {
-            List<AttractionInfo> topAttraction = attractionInfoService.getTopAttraction();
+            List<AttractionInfoAndDescription> topAttraction = attractionInfoService.getTopAttraction();
 
             if (topAttraction != null) {
-                return new ResponseEntity<List<AttractionInfo>>(topAttraction, HttpStatus.OK);
+                return new ResponseEntity<List<AttractionInfoAndDescription>>(topAttraction, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Void>(HttpStatus.OK);
             }

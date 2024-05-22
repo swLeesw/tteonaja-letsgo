@@ -85,4 +85,11 @@
 		where article_no=#{articleNo}
 	</update>
 
+	<select id="getTop" resultMap="freeBoard">
+		select *
+		from free_board
+		order by hit desc, register_time desc
+		limit 5
+	</select>
+
 </mapper>

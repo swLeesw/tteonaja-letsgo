@@ -15,4 +15,5 @@ public interface FreeBoardService {
     void modifyArticle(FreeBoardUpdateDto freeBoardUpdateDto) throws Exception;
     void deleteArticle(int articleNo) throws Exception;
     void updateHit(int articleNo) throws Exception;
+    List<FreeBoard> getTop() throws Exception;
 }

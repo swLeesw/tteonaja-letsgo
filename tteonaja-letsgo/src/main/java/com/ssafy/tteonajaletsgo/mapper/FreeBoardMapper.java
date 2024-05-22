@@ -19,4 +19,5 @@ public interface FreeBoardMapper {
     void deleteArticle(int articleNo) throws Exception;
     void updateHit(int articleNo) throws Exception;
     int getTotalArticleCount(Map<String, Object> param) throws SQLException;
+    List<FreeBoard> getTop() throws Exception;
 }

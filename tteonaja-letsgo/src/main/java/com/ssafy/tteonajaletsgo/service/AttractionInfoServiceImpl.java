@@ -34,7 +34,7 @@ public class AttractionInfoServiceImpl implements AttractionInfoService{
     }
 
     @Override
-    public List<AttractionInfo> getTopAttraction() throws Exception {
+    public List<AttractionInfoAndDescription> getTopAttraction() throws Exception {
         return attractionInfoMapper.getTopAttraction();
     }
 }

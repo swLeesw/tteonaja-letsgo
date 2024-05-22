@@ -34,7 +34,7 @@ CREATE TABLE `free_board` (
   UNIQUE KEY `article_no_UNIQUE` (`article_no`),
   KEY `fk_free_board_member1_idx` (`user_id`),
   CONSTRAINT `member_key` FOREIGN KEY (`user_id`) REFERENCES `member` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `free_board` (
 
 LOCK TABLES `free_board` WRITE;
 /*!40000 ALTER TABLE `free_board` DISABLE KEYS */;
-INSERT INTO `free_board` VALUES (2,'ssafy','hello2','hello ssafy2',12,'2024-05-16 01:36:19',NULL),(3,'ssafy','hello1','hello ssafy2',1,'2024-05-16 02:15:08',NULL),(4,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:11',NULL),(5,'ssafy','hello1','hello ssafy2',1,'2024-05-17 02:06:12',NULL),(6,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:13',NULL),(7,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:13',NULL),(8,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:13',NULL),(9,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:13',NULL),(10,'ssafy','hello1','hello ssafy2',1,'2024-05-17 02:06:14',NULL),(11,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:14',NULL),(12,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:14',NULL),(13,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:14',NULL),(14,'ssafy','hello1','hello ssafy2',6,'2024-05-17 02:06:15',NULL);
+INSERT INTO `free_board` VALUES (2,'ssafy','hello2','hello ssafy2',12,'2024-05-16 01:36:19',NULL),(3,'ssafy','hello1','hello ssafy2',1,'2024-05-16 02:15:08',NULL),(4,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:11',NULL),(5,'ssafy','hello1','hello ssafy2',1,'2024-05-17 02:06:12',NULL),(6,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:13',NULL),(7,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:13',NULL),(8,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:13',NULL),(9,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:13',NULL),(10,'ssafy','hello1','hello ssafy2',1,'2024-05-17 02:06:14',NULL),(11,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:14',NULL),(12,'ssafy','hello1','hello ssafy2',0,'2024-05-17 02:06:14',NULL),(13,'ssafy','hello1','hello ssafy2',4,'2024-05-17 02:06:14',NULL),(14,'ssafy','hello1','hello ssafy2',7,'2024-05-17 02:06:15',NULL),(15,'ssafy','게시글 생성입니다!','test입니다',2,'2024-05-22 05:12:00',NULL);
 /*!40000 ALTER TABLE `free_board` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-22 14:08:08
+-- Dump completed on 2024-05-22 17:53:37

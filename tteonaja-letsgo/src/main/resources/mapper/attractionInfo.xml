@@ -81,10 +81,21 @@
         where sido_code=#{sidoCode}
     </select>
 
-    <select id="getTopAttraction" resultMap="attractionInfo">
-        select * from attraction_info
-        order by attraction_info.like desc
+<!--    <select id="getTopAttraction" resultMap="attractionInfo">-->
+<!--        select * from attraction_info-->
+<!--        order by attraction_info.like desc-->
+<!--        limit 5;-->
+<!--    </select>-->
+
+    <select id="getTopAttraction" resultMap="attractionInfoAndDescription">
+        select i.id, i.type_id, i.name, i.zipcode, i.tel, i.first_image, i.latitude, i.longitude, i.sido_code, i.gugun_code, i.like, i.addr1, d.homepage, d.overview
+        from attraction_info i
+        left join attraction_description d
+        on i.id = d.id
+        order by i.like desc
         limit 5;
     </select>
+
+
 
 </mapper>

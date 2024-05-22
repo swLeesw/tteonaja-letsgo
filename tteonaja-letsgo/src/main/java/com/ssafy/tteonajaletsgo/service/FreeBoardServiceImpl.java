@@ -71,4 +71,9 @@ public class FreeBoardServiceImpl implements FreeBoardService{
     public void updateHit(int articleNo) throws Exception {
         freeBoardMapper.updateHit(articleNo);
     }
+
+    @Override
+    public List<FreeBoard> getTop() throws Exception {
+        return freeBoardMapper.getTop();
+    }
 }

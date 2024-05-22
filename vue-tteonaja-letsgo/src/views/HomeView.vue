@@ -1,4 +1,32 @@
 <script setup>
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { getTop } from "@/api/attractionInfo";
+const router = useRouter();
+
+const attractionTop3 = ref([]);
+
+const getTop3 = () => {
+    getTop(
+        ({ data }) => {
+            attractionTop3.value = data;
+        },
+        (error) => {
+            console.log(error);
+        }
+    )
+}
+
+const moveAttractionSearch = (attractionName) => {
+    // console.log(attractionName);
+    router.push({ name: "map", params: { attractionName: attractionName } })
+
+}
+
+onMounted(() => {
+    getTop3();
+})
+
 </script>
 
 <template>
@@ -76,72 +104,29 @@
     <div class="container marketing mt-5">
 
         <!-- Three columns of text below the carousel -->
-        <div class="row">
-            <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
-                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140"
-                    preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777"
-                        dy=".3em">140x140</text>
-                </svg>
-
-                <h2 class="fw-normal">Heading</h2>
-                <p>Some representative placeholder content for the three columns of text below the carousel. This is the
-                    first column.</p>
-                <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
-                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140"
-                    preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777"
-                        dy=".3em">140x140</text>
-                </svg>
-
-                <h2 class="fw-normal">Heading</h2>
-                <p>Another exciting bit of representative placeholder content. This time, we've moved on to the second
-                    column.</p>
-                <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-lg-4">
-                <svg class="bd-placeholder-img rounded-circle" width="140" height="140"
-                    xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140"
-                    preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777"
-                        dy=".3em">140x140</text>
-                </svg>
-
-                <h2 class="fw-normal">Heading</h2>
-                <p>And lastly this, the third column of representative placeholder content.</p>
-                <p><a class="btn btn-secondary" href="#">View details &raquo;</a></p>
-            </div><!-- /.col-lg-4 -->
-        </div><!-- /.row -->
 
 
         <!-- START THE FEATURETTES -->
 
         <hr class="featurette-divider">
 
-        <div class="row featurette">
-            <div class="col-md-7">
-                <h2 class="featurette-heading fw-normal lh-1">First featurette heading. <span class="text-muted">It’ll
-                        blow your mind.</span></h2>
-                <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting
-                    prose here.</p>
-            </div>
-            <div class="col-md-5">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
-                    height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500"
-                    preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa"
-                        dy=".3em">500x500</text>
-                </svg>
 
-            </div>
+        <div class="text-center">
+            <h2 class="featurette-heading fw-normal lh-1 mb-5 mt-5"> 관광지 TOP 5
+                <p class="text-muted fs-5 mt-3">최근에 가장 인기있는 관광지를 방문하세요!</p>
+            </h2>
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-2 text-center mb-2" v-for="(info, index) in attractionTop3" :key="index">
+                    <img v-show="info.firstImage != ''" :src="info.firstImage" class="bd-placeholder-img rounded-circle"
+                        width="100" height="100" alt="">
+                    <img v-show="info.firstImage == ''" src="@/assets/attractionAlter.png"
+                        class="bd-placeholder-img rounded-circle" width="100" height="100" alt="">
+                    <h4 class="m-3">{{ info.name }}</h4>
+                    <p class="fs-5">{{ info.overview }}</p>
+                    <p>{{ info.addr1 }}</p>
+                    <button class="btn btn-secondary" @click="moveAttractionSearch(info.name)">지도에서 보기</button>
+                </div><!-- /.col-lg-4 -->
+            </div><!-- /.row -->
         </div>
 
         <hr class="featurette-divider">

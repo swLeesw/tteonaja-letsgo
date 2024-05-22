@@ -7,10 +7,10 @@ import Swal from "sweetalert2";
 
 const onlyAuthUser = async (to, from, next) => {
   const memberStore = useMemberStore();
-  const { userInfo, isValidToken } = storeToRefs(memberStore)
-  const { getUserInfo } = memberStore
+  const { userInfo, isValidToken } = storeToRefs(memberStore);
+  const { getUserInfo } = memberStore;
 
-  let token = sessionStorage.getItem("accessToken")
+  let token = sessionStorage.getItem("accessToken");
 
   if (userInfo.value != null && token) {
     await getUserInfo(token);
@@ -21,13 +21,13 @@ const onlyAuthUser = async (to, from, next) => {
       icon: "info",
       title: "로그인 후 이용 가능합니다.",
       showConfirmButton: false,
-      timer: 1500
+      timer: 1500,
     });
     next({ name: "login" });
   } else {
     next();
   }
-}
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -80,15 +80,13 @@ const router = createRouter({
           path: "free/write",
           name: "free-write",
           beforeEnter: onlyAuthUser,
-          component: () =>
-            import("@/components/board/free/FreeBoardWrite.vue"),
+          component: () => import("@/components/board/free/FreeBoardWrite.vue"),
         },
         {
           path: "free/modify:id",
           name: "free-modify",
           beforeEnter: onlyAuthUser,
-          component: () =>
-            import("@/components/board/free/FreeBoardModify.vue"),
+          component: () => import("@/components/board/free/FreeBoardModify.vue"),
         },
         {
           path: "trip",
@@ -98,7 +96,7 @@ const router = createRouter({
       ],
     },
     {
-      path: "/map",
+      path: "/map/:attractionName?",
       name: "map",
       component: () => import("@/views/MapView.vue"),
       children: [

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -78,5 +79,15 @@ public class FreeBoardController {
     public ResponseEntity<String> deleteArticle(@PathVariable(value = "articleno", required = true) int articleno) throws Exception {
         freeBoardService.deleteArticle(articleno);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/top")
+    public ResponseEntity<?> getTop() {
+        try {
+            List<FreeBoard> list = freeBoardService.getTop();
+            return new ResponseEntity<List<FreeBoard>>(list, HttpStatus.OK);
+        } catch (Exception e) {
+            return ExceptionResponse.response(e);
+        }
     }
 }

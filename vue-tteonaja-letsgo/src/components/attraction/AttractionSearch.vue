@@ -1,14 +1,14 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 //import router
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 // import axios from 'axios'
 import { KakaoMap, KakaoMapMarker, KakaoMapCustomOverlay } from 'vue3-kakao-maps';
 import { getAttraction, getSido, getGugun } from '@/api/attractionInfo.js';
 import { jwtDecode } from "jwt-decode";
 //router
 const router = useRouter();
-
+const route = useRoute();
 //options에서 선택된 장소
 const sido = ref("");
 const gugun = ref("");
@@ -220,8 +220,14 @@ const onClickMapMarker = (info) => {
 
 //화면 로드가 되면 자동으로 sido 얻기
 onMounted(() => {
-    getSidof();
 
+    console.log(route.params.attractionName);
+    getSidof();
+    //파라미터 있으면 먼저 검색
+    if (route.params.attractionName != null) {
+        searchTerm.value = route.params.attractionName;
+        getAttractionf();
+    }
     //아이디 불러우기
     let token = sessionStorage.getItem("accessToken");
 

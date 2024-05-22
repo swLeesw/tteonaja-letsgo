@@ -33,7 +33,7 @@ CREATE TABLE `free_comment` (
   KEY `fk_free_comment_member1_idx` (`user_id`),
   CONSTRAINT `fk_free_comment_free_board1` FOREIGN KEY (`article_no`) REFERENCES `free_board` (`article_no`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_free_comment_member1` FOREIGN KEY (`user_id`) REFERENCES `member` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-22 14:08:07
+-- Dump completed on 2024-05-22 17:53:37

@@ -16,5 +16,5 @@ public interface AttractionInfoMapper {
     List<AttractionInfoAndDescription> getRegion(Map<String, String> map) throws SQLException;
     List<Sido> getSido() throws SQLException;
     List<Gugun> getGugun(int sidoCode) throws SQLException;
-    List<AttractionInfo> getTopAttraction() throws Exception;
+    List<AttractionInfoAndDescription> getTopAttraction() throws Exception;
 }
