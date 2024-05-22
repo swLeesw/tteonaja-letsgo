@@ -89,29 +89,29 @@ const router = createRouter({
           component: () => import("@/components/board/free/FreeBoardModify.vue"),
         },
         {
-          path: "trip",
-          name: "trip-list",
-          component: () => import("@/components/board/trip/TripBoardList.vue"),
+          path: "travel",
+          name: "travel-list",
+          component: () => import("@/components/board/travel/TravelBoardList.vue"),
         },
         {
-          path: "trip/:id/:commentNum",
-          name: "trip-detail",
+          path: "travel/:id/:commentNum",
+          name: "travel-detail",
           beforeEnter: onlyAuthUser,
-          component: () => import("@/components/board/trip/TripBoardDetail.vue"),
+          component: () => import("@/components/board/travel/TravelBoardDetail.vue"),
         },
         {
-          path: "trip/write",
-          name: "trip-write",
-          beforeEnter: onlyAuthUser,
-          component: () =>
-            import("@/components/board/trip/TripBoardWrite.vue"),
-        },
-        {
-          path: "trip/modify:id",
-          name: "trip-modify",
+          path: "travel/write",
+          name: "travel-write",
           beforeEnter: onlyAuthUser,
           component: () =>
-            import("@/components/board/trip/TripBoardModify.vue"),
+            import("@/components/board/travel/TravelBoardWrite.vue"),
+        },
+        {
+          path: "travel/modify:id",
+          name: "travel-modify",
+          beforeEnter: onlyAuthUser,
+          component: () =>
+            import("@/components/board/travel/TravelBoardModify.vue"),
         },
       ],
     },

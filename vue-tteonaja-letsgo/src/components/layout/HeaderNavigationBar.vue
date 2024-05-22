@@ -83,9 +83,9 @@ onMounted(() => {
                             관광지 검색</RouterLink>
                     </li>
                     <li class="nav-item me-3">
-                        <RouterLink :to="{ name: 'trip-list' }"
+                        <RouterLink :to="{ name: 'travel-list' }"
                             class="nav-link align-middle btn-hover-effect rounded-pill">
-                            여행 계획</RouterLink>
+                            여행 코스</RouterLink>
                     </li>
                     <li class="nav-item me-3">
                         <RouterLink :to="{ name: 'free-list' }" class="nav-link btn-hover-effect rounded-pill">자유 게시판

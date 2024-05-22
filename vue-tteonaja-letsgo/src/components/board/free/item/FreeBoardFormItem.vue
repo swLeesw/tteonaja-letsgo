@@ -59,13 +59,19 @@ const controlArticle = () => {
     let token = sessionStorage.getItem("accessToken");
     let decodeToken = jwtDecode(token);
     article.value.userId = decodeToken.userId;
+
+    const params = {
+        boardType: 'free',
+        article: {
+            userId: article.value.userId,
+            subject: article.value.subject,
+            content: article.value.content
+        }
+    }
+
     if (props.type === "regist") {
         registArticle(
-            {
-                userId: article.value.userId,
-                subject: article.value.subject,
-                content: article.value.content
-            },
+            params,
             (response) => {
                 if (response.status == 201) {
                     Swal.fire({

@@ -10,18 +10,23 @@ import { getAttraction, getSido, getGugun } from '@/api/attractionInfo.js';
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
+import ArrayControl from 'lodash'
+
 const props = defineProps({ type: String });
 const router = useRouter();
 const route = useRoute();
 
 const article = ref(
     {
-        articleNo: 0,
         userId: "",
         subject: "",
         content: "",
+        travelList: "",
     }
 );
+
+const attractionSelectedList = ref([]);
+const attractionCustomSelectedList = ref([]);
 
 // 글 작성 내용 감시
 watch(
@@ -59,13 +64,20 @@ const controlArticle = () => {
     let token = sessionStorage.getItem("accessToken");
     let decodeToken = jwtDecode(token);
     article.value.userId = decodeToken.userId;
+
+    const params = {
+        boardType: 'travel',
+        article: {
+            userId: article.value.userId,
+            subject: article.value.subject,
+            content: article.value.content,
+            travelList: JSON.stringify(attractionSelectedList.value)
+        }
+    }
+
     if (props.type === "regist") {
         registArticle(
-            {
-                userId: article.value.userId,
-                subject: article.value.subject,
-                content: article.value.content
-            },
+            params,
             (response) => {
                 if (response.status == 201) {
                     Swal.fire({
@@ -298,13 +310,29 @@ const onClickMapMarker = (info) => {
 
 };
 
-const attractionSelectedList = ref([]);
+
 
 const addAttreaction = (info) => {
-    attractionSelectedList.value.push(info);
-    console.log(info);
+    if (!attractionSelectedList.value.includes(info)) {        
+        const attractionCustom = {
+            id: info.id,
+            sidoCode: info.sidoCode,
+            gugunCode: info.gugunCode,
+            firstImage: info.firstImage
+        }
+        attractionSelectedList.value.push(info);
+        attractionCustomSelectedList.value.push(attractionCustom)
+        console.log(attractionCustomSelectedList.value);
+    } else {
+        
+    }
 };
 
+const removeAttraction = (id) => {
+    attractionSelectedList.value = ArrayControl.remove(attractionSelectedList.value, (info) => {
+        return info.id !== id 
+    })
+}
 //화면 로드가 되면 자동으로 sido 얻기
 onMounted(() => {
     getSidof();
@@ -330,7 +358,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <p class="text-secondary">글쓰기</p>
+    <p class="text-secondary">여행 코스 만들기</p>
     <hr class="mb-5">
     <label for="attractionFormControlInput" class="form-label fw-bolder">여행지 검색</label>
     <section>
@@ -400,27 +428,24 @@ onMounted(() => {
     </section>
 
     <label for="myAttractionFormControlInput" class="form-label fw-bolder">선택한 여행지</label>
-    <div class="container-fluid border mb-5 ps-2">
-        <div class="row">
-            <div class="col-md-6" v-for="(info, index) in attractionSelectedList" :key="index">
-                <div class="d-flex ms-3 me-3 mt-4 mb-4 mycard" @click="onClickMapMarker(info)">
-                    <img :src="info.firstImage" style="border-radius: 10px;" alt="사진" width="120px"
-                        v-show="info.firstImage != ''">
-                    <img src="@/assets/logo.png" alt="사진" width="120px" v-show="info.firstImage == ''">
-                    <span class="ms-3 border border-1 opacity-90"></span>
-                    <div class="card-content ms-3">
-                        <h5 class="card-title mb-1">{{ info.name }}</h5>
-                        <p class="card-description">{{ info.addr1 }}</p>
-                        <button class="btn btn-custom me-3" aria-controls="offcanvasScrolling"
-                            @click.stop="moveReview(info.id, info.overview, info.name, info.latitude, info.longitude)">리뷰
-                            보기</button>
-                    </div>
+    <div class="overflow-x-auto border mb-5 ps-2">
+        <!-- <div class="container-fluid border mb-5 ps-2"> -->
+        <div class="d-inline-flex" v-for="(info, index) in attractionSelectedList" :key="index">
+            <div class="d-inline-flex ms-3 me-3 mt-4 mb-4 mycard p-3" @click="onClickMapMarker(info)">
+                <img :src="info.firstImage" style="border-radius: 10px;" alt="사진" width="120px"
+                    v-show="info.firstImage != ''">
+                <img src="@/assets/logo.png" alt="사진" width="120px" v-show="info.firstImage == ''">
+                <span class="ms-3 border border-1 opacity-90"></span>
+                <div class="card-content ms-3">
+                    <h5 class="card-title mb-1">{{ info.name }}</h5>
+                    <p class="card-description">{{ info.addr1 }}</p>
+                    <button class="btn btn-custom-del me-3" aria-controls="offcanvasScrolling"
+                        @click.stop="removeAttraction(info.id)">제거</button>
                 </div>
             </div>
-            <!-- data-bs-target="#offcanvasScrolling"
-                                data-bs-toggle="offcanvas" -->
         </div>
     </div>
+
     <label for="subjectFormControlInput1" class="form-label fw-bolder">제목</label>
     <input type="email" class="subject-input mb-5" id="subjectFormControlInput1" v-model="article.subject"
         placeholder="글 제목을 입력하세요.">
@@ -472,6 +497,21 @@ main {
 .dropdown-toggle {
     outline: 0;
 }
+
+
+/* 가로 스크롤 */
+.overflow-x-auto {
+    white-space: nowrap;
+}
+.mycard:hover {
+    transform: scale(1.05);
+    background-color: rgba(67, 180, 255, 0.158);
+    border-radius: 10px;
+    display: inline-block;
+}
+
+/* ----- */
+
 
 .btn-toggle {
     padding: .25rem .5rem;
@@ -533,11 +573,6 @@ main {
     border-radius: 10px;
 }
 
-.mycard:hover {
-    transform: scale(1.05);
-    background-color: rgba(67, 180, 255, 0.158);
-    border-radius: 10px;
-}
 
 .side-custom {
     box-shadow: 7px 0px 3px -5px #888686;
@@ -588,6 +623,7 @@ main {
     border-color: #8886861a;
 }
 
+
 .btn-custom:hover {
     background-color: rgba(67, 180, 255, 0.623);
     color: #888686;
@@ -595,6 +631,17 @@ main {
 
 .btn-custom:active {
     background-color: rgba(67, 180, 255, 0.027);
+    color: #888686;
+}
+
+.btn-custom-del {
+    background-color: rgba(255, 67, 67, 0.158);
+    color: #888686;
+    border: 1px solid;
+    border-color: #8886861a;
+}
+.btn-custom-del:hover {
+    background-color: rgba(255, 67, 67, 0.623);
     color: #888686;
 }
 

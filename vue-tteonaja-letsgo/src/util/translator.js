@@ -21,7 +21,7 @@ const getGPTResponse = async (article) => {
             messages: [
                 {
                     role: "system",
-                    content: "You will be provided with a text with an html tag. And your task is to remove the html tag and translate the remaining Korean sentences into English."
+                    content: "You will be provided with Korean text with html tags. And your task is to translate the Korean part into English and let me know the result including html tags."
                 },
                 {
                     role: 'user',

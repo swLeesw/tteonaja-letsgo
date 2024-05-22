@@ -15,16 +15,16 @@ const router = useRouter();
 
 const params = ref(
     {
-        boardType: 'free',
+        boardType: 'travel',
         articleNo: route.params.id
     }
 );
 
-const currentUserId = ref("")
+const currentUserId = ref("");
 
 const article = ref({});
 
-const getArticleDetail = () => {
+const getTravelArticleDetail = () => {
     getArticle(params.value,
         (response) => {
             article.value = response.data;
@@ -37,7 +37,7 @@ const getArticleDetail = () => {
     );
 };
 
-const deleteFreeArticle = () => {
+const deleteTravelArticle = () => {
     deleteArticle(
         params.value,
         (response) => {
@@ -73,15 +73,15 @@ const deleteFreeArticle = () => {
     );
 };
 
-const translated = ref("")
-const translateMode = ref(false)
+const translated = ref("");
+const translateMode = ref(false);
 
 const translate = async () => {
     if (!translateMode.value) {
-        translated.value = await getGPTResponse(article.value.content)
+        translated.value = await getGPTResponse(article.value.content);
     }
-    translateMode.value = !translateMode.value
-}
+    translateMode.value = !translateMode.value;
+};
 
 // const options: TypedOptions = {
 //     strings: ["Hello", "World", "This is vue3-typed-js"],
@@ -90,16 +90,16 @@ const translate = async () => {
 // };
 
 onMounted(() => {
-    getArticleDetail();
+    getTravelArticleDetail();
     currentUserId.value = jwtDecode(sessionStorage.getItem(['accessToken'])).userId;
 });
 
 const moveToList = () => {
-    router.replace({ name: 'free-list' });
+    router.replace({ name: 'travel-list' });
 };
 
 const moveToModify = () => {
-    router.push({ name: 'free-modify', params: { articleNo: article.value.articleNo } });
+    router.push({ name: 'travel-modify', params: { articleNo: article.value.articleNo } });
 }
 
 </script>
@@ -107,7 +107,7 @@ const moveToModify = () => {
 <template>
     <br><br>
     <div class="container mt-5 shadow p-4 rounded">
-        <h1 class="fw-light mb-5 text-center">자유게시판</h1>
+        <h1 class="fw-light mb-5 text-center">여행 경로 게시판</h1>
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <table class="table">
@@ -139,7 +139,7 @@ const moveToModify = () => {
                                     <p></p>
                                 </vue-typed-js>
                             </td> -->
-                            <td colspan="10" class="p-3" v-html="translated"></td>
+                            <td colspan="10" class="p-3">{{ translated }}</td>
                         </tr>
                     </tbody>
                 </table>
