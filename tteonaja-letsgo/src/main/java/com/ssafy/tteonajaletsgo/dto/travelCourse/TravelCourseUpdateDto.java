@@ -3,11 +3,10 @@ package com.ssafy.tteonajaletsgo.dto.travelCourse;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-
 @Data
-public class TravelCourseSaveDto {
+public class TravelCourseUpdateDto {
     @NotBlank
-    private String userId;
+    private int articleNo;
     @NotBlank
     private String subject;
     @NotBlank

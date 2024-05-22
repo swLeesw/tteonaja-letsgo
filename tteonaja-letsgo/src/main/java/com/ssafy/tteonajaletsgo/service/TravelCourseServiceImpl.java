@@ -1,11 +1,9 @@
 package com.ssafy.tteonajaletsgo.service;
 
 import com.ssafy.tteonajaletsgo.domain.TravelCourse;
-import com.ssafy.tteonajaletsgo.domain.TravelCourseList;
-import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardListDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseListDto;
-import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseListSaveDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseSaveDto;
+import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseUpdateDto;
 import com.ssafy.tteonajaletsgo.mapper.TravelCourseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,10 +23,6 @@ public class TravelCourseServiceImpl implements TravelCourseService{
         return travelCourseMapper.getArticle(articleNo);
     }
 
-    @Override
-    public List<TravelCourseList> getArticleList(int articleNo) throws Exception {
-        return travelCourseMapper.getArticleList(articleNo);
-    }
 
     @Override
     public TravelCourseListDto listArticle(Map<String, String> map) throws Exception {
@@ -60,14 +54,10 @@ public class TravelCourseServiceImpl implements TravelCourseService{
     }
 
     @Override
-    public void regist(TravelCourseSaveDto travelCourseSaveDto) throws Exception {
-        travelCourseMapper.regist(travelCourseSaveDto);
+    public void registArticle(TravelCourseSaveDto travelCourseSaveDto) throws Exception {
+        travelCourseMapper.registArticle(travelCourseSaveDto);
     }
 
-    @Override
-    public void registList(TravelCourseListSaveDto travelCourseListSaveDto) throws Exception {
-        travelCourseMapper.registList(travelCourseListSaveDto);
-    }
 
     @Override
     public void deleteArticle(int articleNo) throws Exception {
@@ -77,5 +67,10 @@ public class TravelCourseServiceImpl implements TravelCourseService{
     @Override
     public void updateHit(int articleNo) throws Exception {
         travelCourseMapper.updateHit(articleNo);
+    }
+
+    @Override
+    public void modifyArticle(TravelCourseUpdateDto travelCourseUpdateDto) throws Exception {
+        travelCourseMapper.modifyArticle(travelCourseUpdateDto);
     }
 }

@@ -11,15 +11,11 @@
         <result column="user_id" property="userId"/>
         <result column="subject" property="subject"/>
         <result column="content" property="content"/>
+        <result column="travel_list" property="travelList"/>
         <result column="hit" property="hit"/>
         <result column="register_time" property="registerTime"/>
         <result column="course_like" property="courseLike"/>
-    </resultMap>
-
-    <resultMap type="TravelCourseList" id="travelCourseList">
-        <result column="article_no" property="articleNo" />
-        <result column="attraction_id" property="attractionId" />
-        <result column="position" property="position" />
+        <result column="modified_date" property="modifiedDate"/>
     </resultMap>
 
     <!--Dto-->
@@ -27,6 +23,14 @@
         <result column="user_id" property="userId"/>
         <result column="subject" property="subject"/>
         <result column="content" property="content"/>
+        <result column="travel_list" property="travelList"/>
+    </resultMap>
+
+    <resultMap type="TravelCourseUpdateDto" id="travelCourseUpdateDto">
+        <result column="article_no" property="articleNo"/>
+        <result column="subject" property="subject"/>
+        <result column="content" property="content"/>
+        <result column="travel_list" property="travelList"/>
     </resultMap>
 
     <!--sql-->
@@ -42,17 +46,9 @@
     </sql>
 
 
-    <insert id="regist" parameterType="TravelCourseSaveDto">
-        insert into travel_course(user_id, subject, content, hit, register_time, course_like)
-        values(#{userId}, #{subject}, #{content}, 0, now(), 0)
-    </insert>
-
-    <insert id="registList" parameterType="TravelCourseListSaveDto">
-        insert into travel_course_list(article_no, position, attraction_id)
-        values
-        <foreach collection="attractionList" item="attractionId" index="index" separator=",">
-            (#{articleNo}, #{index}, #{attractionId})
-        </foreach>
+    <insert id="registArticle" parameterType="TravelCourseSaveDto">
+        insert into travel_course(user_id, subject, content, travelList, hit, register_time, course_like)
+        values(#{userId}, #{subject}, #{content}, #{travelList}, 0, now(), 0)
     </insert>
 
     <select id="listArticle" resultMap="travelCourse">
@@ -68,12 +64,6 @@
     <select id="getArticle" parameterType="int" resultMap="travelCourse">
         select *
         from travel_course
-        where article_no = #{articleNo}
-    </select>
-
-    <select id="getArticleList" parameterType="int" resultMap="travelCourseList">
-        select *
-        from travel_course_list
         where article_no = #{articleNo}
     </select>
 
@@ -93,6 +83,12 @@
     <update id="updateHit">
         update travel_course
         set hit = hit + 1
+        where article_no=#{articleNo}
+    </update>
+
+    <update id="modifyArticle" parameterType="TravelCourseUpdateDto">
+        update travel_course
+        set subject=#{subject}, content=#{content}, travelList=#{travelList}, modified_date=now()
         where article_no=#{articleNo}
     </update>
 

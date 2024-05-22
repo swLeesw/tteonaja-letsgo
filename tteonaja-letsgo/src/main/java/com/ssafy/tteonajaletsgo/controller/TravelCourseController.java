@@ -1,17 +1,12 @@
 package com.ssafy.tteonajaletsgo.controller;
 
-import com.ssafy.tteonajaletsgo.domain.FreeBoard;
 import com.ssafy.tteonajaletsgo.domain.TravelCourse;
-import com.ssafy.tteonajaletsgo.domain.TravelCourseList;
-import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardListDto;
-import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardSaveDto;
 import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardUpdateDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseListDto;
-import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseListSaveDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseSaveDto;
+import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseUpdateDto;
 import com.ssafy.tteonajaletsgo.exception.ExceptionResponse;
 import com.ssafy.tteonajaletsgo.service.TravelCourseService;
-import com.ssafy.tteonajaletsgo.service.TravelCourseServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -33,22 +27,12 @@ public class TravelCourseController {
     private final TravelCourseService travelCourseService;
 
     @PostMapping("/regist")
-    public ResponseEntity<?> regist(@Validated @RequestBody TravelCourseSaveDto travelCourseSaveDto) {
+    public ResponseEntity<?> registArticle(@Validated @RequestBody TravelCourseSaveDto travelCourseSaveDto) {
         //글 등록 작업
         try {
-            travelCourseService.regist(travelCourseSaveDto);
+            travelCourseService.registArticle(travelCourseSaveDto);
         } catch (Exception e) {
-            return new ResponseEntity<String>("registError", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
-    }
-
-    @PostMapping("/registList")
-    public ResponseEntity<?> registList(@Validated @RequestBody TravelCourseListSaveDto travelCourseListSaveDto) {
-        //글 등록 작업
-        try {
-            travelCourseService.registList(travelCourseListSaveDto);
-        } catch (Exception e) {
+            log.info("registerError={}", e);
             return new ResponseEntity<String>("registError", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -76,30 +60,16 @@ public class TravelCourseController {
             return ExceptionResponse.response(e);
         }
     }
-    @GetMapping("/course/{articleno}")
-    public ResponseEntity<?> getArticleList(@PathVariable(value = "articleno", required = true) int articleNo)  {
 
+    @PutMapping
+    public ResponseEntity<String> modifyArticle(@RequestBody(required = true)TravelCourseUpdateDto travelCourseUpdateDto) {
         try {
-            List<TravelCourseList> travelCourseList = travelCourseService.getArticleList(articleNo);
-            return new ResponseEntity<List<TravelCourseList>>(travelCourseList, HttpStatus.OK);
+            travelCourseService.modifyArticle(travelCourseUpdateDto);
         } catch (Exception e) {
-            return ExceptionResponse.response(e);
+            return new ResponseEntity<String>("modifyError", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return ResponseEntity.ok().build();
     }
-
-
-
-
-//    @PutMapping
-//    public ResponseEntity<String> modifyArticle(@RequestBody(required = true) FreeBoardUpdateDto freeBoardUpdateDto) {
-//        System.out.println(freeBoardUpdateDto.toString());
-//        try {
-//            freeBoardService.modifyArticle(freeBoardUpdateDto);
-//        } catch (Exception e) {
-//            return new ResponseEntity<String>("modifyError", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        return ResponseEntity.ok().build();
-//    }
 
 
     @DeleteMapping("/{articleno}")
@@ -111,6 +81,7 @@ public class TravelCourseController {
             return ExceptionResponse.response(e);
         }
     }
+
 
 
 

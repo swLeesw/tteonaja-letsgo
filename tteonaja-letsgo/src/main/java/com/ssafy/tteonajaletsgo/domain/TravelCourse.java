@@ -8,7 +8,9 @@ public class TravelCourse {
     String userId;
     String subject;
     String content;
+    String travelList;
     int hit;
     String registerTime;
     int courseLike;
+    String modifiedDate;
 }
