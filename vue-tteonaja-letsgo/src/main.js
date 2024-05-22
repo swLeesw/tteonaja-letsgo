@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { useKakao } from "vue3-kakao-maps/@utils";
+import InfiniteLoading from "v3-infinite-loading";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
 
 import App from "./App.vue";
@@ -15,5 +16,8 @@ pinia.use(piniaPluginPersistedstate)
 useKakao("c3d66eda5b359362432348cc2093c184");
 app.use(pinia);
 app.use(router);
+
+app.component("infinite-loading", InfiniteLoading);
+
 
 app.mount("#app");

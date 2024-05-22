@@ -4,10 +4,9 @@ import { idCheck, register } from '@/api/user';
 import Swal from 'sweetalert2';
 import { useRoute, useRouter } from 'vue-router';
 
+const confirmPassword = ref("")
 const isIdCheck = ref(false);
-
 const router = useRouter();
-
 const newUser = ref(
     {
         userId: "",
@@ -58,7 +57,7 @@ const userIdCheck = () => {
             Swal.fire({
                 position: "top",
                 icon: "error",
-                title: "연결 오류.",
+                title: "서버 연결 오류.",
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -83,10 +82,11 @@ const userRegister = () => {
                 router.replace({ name: 'login' });
             },
             (error) => {
+                const errorMessage = error.response.data.errors[0].defaultMessage
                 Swal.fire({
                     position: "top",
                     icon: "error",
-                    title: "회원가입이 실패하였습니다!",
+                    title: errorMessage,
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -105,9 +105,9 @@ const userRegister = () => {
     </div>
     <form id="userInfo">
         <div class="border shadow rounded p-3 col-sm-6 col-md-5 col-lg-3 container centered mt-3 mb-3">
-            <div class="justify-content-center">
+            <div class="justify-content-center align-middle">
                 <label for="inputUsername" class="form-label">아이디</label> <span class="text-warning">*</span>
-                <span><button type="button" class="btn btn-sm offset-1 btn-secondary" @click="userIdCheck"
+                <span><button type="button" class="btn btn-sm offset-1 p-1 btn-secondary" @click="userIdCheck"
                         style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">중복
                         확인</button></span>
                 <input type="id" class="form-control mb-3" id="inputUsername" v-model="newUser.userId"
@@ -119,18 +119,23 @@ const userRegister = () => {
                     placeholder="비밀번호 입력" required>
             </div>
             <div class="justify-content-center">
-                <label for="inputPassword2" class="form-label">비밀번호 확인</label> <span class="text-warning">*</span>
-                <input type="password" class="form-control mb-3" id="inputPassword2" placeholder="비밀번호 재입력" required>
+                <label for="inputPassword2" class="form-label">비밀번호 확인
+                    <span class="text-warning">* </span>
+                    <span v-if="confirmPassword === newUser.userPassword" class="text-success fw-bolder"> ✓</span>
+                    <span v-else class="text-danger fw-bolder"> ✓</span></label>
+                <input type="password" class="form-control mb-3" id="inputPassword2" v-model="confirmPassword"
+                    placeholder="비밀번호 재입력" required>
+
             </div>
             <div class="justify-content-center">
                 <label for="name" class="form-label">이름</label> <span class="text-warning">*</span>
-                <input type="text" class="form-control mb-3" id="name" v-model="newUser.userName" placeholder="성 이름"
-                    required>
+                <input type="text" class="form-control mb-3" id="inputName" v-model="newUser.userName"
+                    placeholder="성 이름" required>
             </div>
             <div class="justify-content-center">
                 <label for="nickname" class="form-label">닉네임</label> <span class="text-warning">*</span>
-                <input type="text" class="form-control mb-3" id="name" v-model="newUser.userNickname" placeholder="닉네임"
-                    required>
+                <input type="text" class="form-control mb-3" id="inputNickName" v-model="newUser.userNickname"
+                    placeholder="닉네임" required>
             </div>
             <div class="justify-content-center">
                 <label for="inputEmail" class="form-label">이메일</label> <!--<span class="text-warning">*</span>-->

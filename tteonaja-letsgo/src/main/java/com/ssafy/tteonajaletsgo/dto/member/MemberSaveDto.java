@@ -7,14 +7,14 @@ import lombok.Data;
 public class MemberSaveDto {
 
     @NotBlank
-    @Size(min = 5, max = 20)
+    @Size(min = 5, max = 20, message="{Size.UserId.message}")
     private String userId;
 
     @NotBlank
     private String userName;
 
     @NotBlank
-    @Size(min = 8, max = 20)
+    @Size(min = 8, max = 20, message="{Size.UserPassword.message}")
     private String userPassword;
 
     @Email

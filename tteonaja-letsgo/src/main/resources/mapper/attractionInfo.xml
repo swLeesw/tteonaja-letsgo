@@ -81,4 +81,10 @@
         where sido_code=#{sidoCode}
     </select>
 
+    <select id="getTopAttraction" resultMap="attractionInfo">
+        select * from attraction_info
+        order by attraction_info.like desc
+        limit 5;
+    </select>
+
 </mapper>
