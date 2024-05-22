@@ -415,6 +415,7 @@ main {
 
 .cardd {
     transition: all 0.2s linear;
+    padding: 3px;
 }
 
 .cardd:hover {
@@ -426,7 +427,7 @@ main {
 }
 
 .side-custom {
-    box-shadow: 3px 0 10px #888686;
+    box-shadow: 3px -11px 10px #888686;
     z-index: 2;
 }
 

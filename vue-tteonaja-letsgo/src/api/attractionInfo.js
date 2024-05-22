@@ -14,8 +14,8 @@ function getGugun(param, success, fail) {
   local.get(`/attractionInfo/gugun/${param}`).then(success).catch(fail);
 }
 
-function getTop(success, fail) {
+function getTopAttraction(success, fail) {
   local.get(`/attractionInfo/top`).then(success).catch(fail);
 }
 
-export { getAttraction, getSido, getGugun, getTop };
+export { getAttraction, getSido, getGugun, getTopAttraction };

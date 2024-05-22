@@ -1,15 +1,44 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getTop } from "@/api/attractionInfo";
+import { getTopAttraction } from "@/api/attractionInfo.js";
+import { getTop } from "@/api/board.js";
 const router = useRouter();
 
-const attractionTop3 = ref([]);
+const attractionTop = ref([]);
+// const reviewTop = ref([]);
+const courseTop = ref([]);
+const freeTop = ref([]);
 
-const getTop3 = () => {
-    getTop(
+const getAttractionTop = () => {
+    getTopAttraction(
         ({ data }) => {
-            attractionTop3.value = data;
+            attractionTop.value = data;
+        },
+        (error) => {
+            console.log(error);
+        }
+    )
+}
+
+const getCourseTop = () => {
+    getTop(
+        { boardType: 'travel' },
+        ({ data }) => {
+            courseTop.value = data;
+        },
+        (error) => {
+            console.log(error);
+        }
+    )
+
+}
+
+const getFreeTop = () => {
+    getTop(
+        { boardType: 'free' },
+        ({ data }) => {
+            freeTop.value = data;
         },
         (error) => {
             console.log(error);
@@ -32,7 +61,9 @@ const unfold = (event) => {
 }
 
 onMounted(() => {
-    getTop3();
+    getAttractionTop();
+    getCourseTop();
+    getFreeTop();
 })
 
 </script>
@@ -124,12 +155,12 @@ onMounted(() => {
             </h2>
             <div class="row d-flex justify-content-center">
                 <div class="card-custom  rounded m-2 p-2 a col-lg-2 text-center mb-2"
-                    v-for="(info, index) in attractionTop3" :key="index">
+                    v-for="(info, index) in attractionTop" :key="index">
                     <img v-show="info.firstImage != ''" :src="info.firstImage" class="bd-placeholder-img rounded-circle"
                         width="100" height="100" alt="">
                     <img v-show="info.firstImage == ''" src="@/assets/attractionAlter.png"
                         class="bd-placeholder-img rounded-circle" width="100" height="100" alt="">
-                    <p class="fs-4 m-3 truncate fold-controll text-font-weight-bold" @click="unfold($event)">{{
+                    <p class="fs-4 m-3 truncate text-font-weight-bold">{{
                             info.name }}</p>
                     <p v-show="info.overview != null" class="truncate" @click="unfold($event)" v-html="info.overview">
                     </p>
@@ -141,45 +172,66 @@ onMounted(() => {
         </div>
         <!--관광지 top 5 end-->
         <!--이달의 리뷰 top 5-->
-        <hr class="featurette-divider">
+        <hr class="featurette-divider mb-5 mt-5">
 
         <div class="row featurette">
             <div class="col-md-7 order-md-2">
-                <h2 class="featurette-heading fw-normal lh-1">이달의 리뷰</h2>
-                <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how
-                    this layout would work with some actual real-world content in place.</p>
+                <h2 class="featurette-heading fw-normal lh-1">이달의 여행 코스</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">게시글 번호</th>
+                            <th scope="col">제목</th>
+                            <th scope="col">작성자</th>
+                            <th scope="col">작성 날짜</th>
+                            <th scope="col">조회수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(course, index) in courseTop" :key="index">
+                            <th scope="row">{{ course.articleNo }}</th>
+                            <td>{{ course.subject }}</td>
+                            <td>{{ course.userId }}</td>
+                            <td>{{ course.registerTime }}</td>
+                            <td>{{ course.hit }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="col-md-5 order-md-1">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
-                    height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500"
-                    preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa"
-                        dy=".3em">500x500</text>
-                </svg>
-
+                <img class="rounded mt-3" src="@/assets/randomImg/img3.jpg" width="400px" alt="">
             </div>
         </div>
         <!--이달의 리뷰 top5 end-->
 
-        <hr class="featurette-divider">
+        <hr class="featurette-divider mb-5 mt-5">
 
         <div class="row featurette">
             <div class="col-md-7">
-                <h2 class="featurette-heading fw-normal lh-1">And lastly, this one. <span
-                        class="text-muted">Checkmate.</span></h2>
-                <p class="lead">And yes, this is the last block of representative placeholder content. Again, not really
-                    intended to be actually read, simply here to give you a better view of what this would look like
-                    with some actual content. Your content.</p>
+                <h2 class="featurette-heading fw-normal lh-1">인기글</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">게시글 번호</th>
+                            <th scope="col">제목</th>
+                            <th scope="col">작성자</th>
+                            <th scope="col">작성 날짜</th>
+                            <th scope="col">조회수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(course, index) in courseTop" :key="index">
+                            <th scope="row">{{ course.articleNo }}</th>
+                            <td>{{ course.subject }}</td>
+                            <td>{{ course.userId }}</td>
+                            <td>{{ course.registerTime }}</td>
+                            <td>{{ course.hit }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="col-md-5">
-                <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
-                    height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500"
-                    preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#eee" /><text x="50%" y="50%" fill="#aaa"
-                        dy=".3em">500x500</text>
-                </svg>
+                <img class="rounded mt-3 ms-5" src="@/assets/randomImg/img2.jpg" width="400px" alt="">
 
             </div>
         </div>
