@@ -70,6 +70,7 @@ public class TravelCourseController {
 
         try {
             TravelCourse travelCourse = travelCourseService.getArticle(articleNo);
+            travelCourseService.updateHit(articleNo);
             return new ResponseEntity<TravelCourse>(travelCourse, HttpStatus.OK);
         } catch (Exception e) {
             return ExceptionResponse.response(e);
