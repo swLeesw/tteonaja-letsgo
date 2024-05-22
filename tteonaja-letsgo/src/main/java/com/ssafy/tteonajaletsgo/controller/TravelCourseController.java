@@ -1,5 +1,6 @@
 package com.ssafy.tteonajaletsgo.controller;
 
+import com.ssafy.tteonajaletsgo.domain.AttractionReview;
 import com.ssafy.tteonajaletsgo.domain.TravelCourse;
 import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardUpdateDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseListDto;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,7 +27,7 @@ import java.util.Map;
 public class TravelCourseController {
 
     private final TravelCourseService travelCourseService;
-
+    @Operation(summary = "여행코스 등록", description = "여행코스를 등록한다.")
     @PostMapping("/regist")
     public ResponseEntity<?> registArticle(@Validated @RequestBody TravelCourseSaveDto travelCourseSaveDto) {
         //글 등록 작업
@@ -37,7 +39,7 @@ public class TravelCourseController {
         }
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
-
+    @Operation(summary = "여행코스 리스트", description = "여행코스 리스트를 불러온다")
     @GetMapping("/list")
     public ResponseEntity<?> listArticle(@RequestParam @Parameter(required = true) Map<String, String> map) {
         try {
@@ -48,7 +50,7 @@ public class TravelCourseController {
             return ExceptionResponse.response(e);
         }
     }
-
+    @Operation(summary = "여행코스 조회", description = "여행코스를 조회한다.")
     @GetMapping("/{articleno}")
     public ResponseEntity<?> getArticle(@PathVariable(value = "articleno", required = true) int articleNo)  {
 
@@ -60,7 +62,7 @@ public class TravelCourseController {
             return ExceptionResponse.response(e);
         }
     }
-
+    @Operation(summary = "여행코스 수정", description = "여행코스를 수정한다.")
     @PutMapping
     public ResponseEntity<String> modifyArticle(@RequestBody(required = true)TravelCourseUpdateDto travelCourseUpdateDto) {
         try {
@@ -71,7 +73,7 @@ public class TravelCourseController {
         return ResponseEntity.ok().build();
     }
 
-
+    @Operation(summary = "여행코스 삭제", description = "여행코스를 삭제한다.")
     @DeleteMapping("/{articleno}")
     public ResponseEntity<?> deleteArticle(@PathVariable(value = "articleno", required = true) int articleno) throws Exception {
         try {
@@ -82,6 +84,21 @@ public class TravelCourseController {
         }
     }
 
+    @Operation(summary = "top5여행코스", description = "top5여행 코스를 뽑아온다")
+    @GetMapping("/top")
+    public ResponseEntity<?> getTopReview() {
+        try {
+            List<TravelCourse> topReviews = travelCourseService.getTop();
+            log.debug("success get top");
+            if (topReviews == null) {
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<List<TravelCourse>>(topReviews, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return ExceptionResponse.response(e);
+        }
+    }
 
 
 

@@ -5,6 +5,7 @@ import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseListDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseSaveDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseUpdateDto;
 
+import java.util.List;
 import java.util.Map;
 
 public interface TravelCourseService {
@@ -14,4 +15,6 @@ public interface TravelCourseService {
     void deleteArticle(int articleNo) throws Exception;
     void updateHit(int articleNo) throws Exception;
     void modifyArticle(TravelCourseUpdateDto travelCourseUpdateDto) throws Exception;
+
+    List<TravelCourse> getTop() throws Exception;
 }

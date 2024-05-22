@@ -18,4 +18,5 @@ public interface TravelCourseMapper {
     void updateHit(int articleNo) throws Exception;
     int getTotalArticleCount(Map<String, Object> param) throws SQLException;
     void modifyArticle(TravelCourseUpdateDto travelCourseUpdateDto) throws Exception;
+    List<TravelCourse> getTop() throws Exception;
 }

@@ -73,4 +73,9 @@ public class TravelCourseServiceImpl implements TravelCourseService{
     public void modifyArticle(TravelCourseUpdateDto travelCourseUpdateDto) throws Exception {
         travelCourseMapper.modifyArticle(travelCourseUpdateDto);
     }
+
+    @Override
+    public List<TravelCourse> getTop() throws Exception {
+        return travelCourseMapper.getTop();
+    }
 }
