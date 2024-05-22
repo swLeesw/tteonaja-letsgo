@@ -32,11 +32,22 @@ public class AttractionInfoController {
 
     @GetMapping("/region")
 //    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public List<AttractionInfoAndDescription> getAttraction(@RequestParam Map<String, String> map) throws SQLException {
+    public List<AttractionInfoAndDescription> getRegion(@RequestParam Map<String, String> map) throws SQLException {
         log.info("searchTerm = {}", map.get("searchTerm"));
         List<AttractionInfoAndDescription> list = attractionInfoService.getRegion(map);
         return list;
     }
+
+
+    @GetMapping("/attraction/{id}")
+    public ResponseEntity<?> getAttraction(@PathVariable(value = "id", required = true) int id) {
+        try {
+            return new ResponseEntity<AttractionInfoAndDescription>(attractionInfoService.getAttraction(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return ExceptionResponse.response(e);
+        }
+    }
+
 
     @GetMapping("/sido")
     public List<Sido> getSido() throws SQLException {

@@ -68,6 +68,12 @@
         </where>
     </select>
 
+    <select id="getAttraction" parameterType="int" resultMap="attractionInfoAndDescription">
+        select *
+        from attraction_info
+        where id=#{id}
+    </select>
+
     <select id="getSido" resultMap="sido">
         select *
         from sido;

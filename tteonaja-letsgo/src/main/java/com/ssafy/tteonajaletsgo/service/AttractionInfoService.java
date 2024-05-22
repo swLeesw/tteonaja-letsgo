@@ -13,6 +13,7 @@ import java.util.Map;
 
 public interface AttractionInfoService {
     List<AttractionInfoAndDescription> getRegion(Map<String, String> map) throws SQLException;
+    AttractionInfoAndDescription getAttraction(int id) throws Exception;
     List<Sido> getSido() throws SQLException;
     List<Gugun> getGugun(int sidoCode) throws SQLException;
     List<AttractionInfoAndDescription> getTopAttraction() throws Exception;
