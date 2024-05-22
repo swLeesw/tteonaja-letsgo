@@ -178,4 +178,14 @@ const deleteReviewf = (param) => {
     border: 1px solid;
     border-color: #8886861a;
 }
+
+.btn-custom:hover {
+    background-color: rgba(67, 180, 255, 0.623);
+    color: #888686;
+}
+
+.btn-custom:active {
+    background-color: rgba(67, 180, 255, 0.027);
+    color: #888686;
+}
 </style>

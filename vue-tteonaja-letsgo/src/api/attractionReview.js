@@ -16,7 +16,7 @@ function registReview(param, success, fail) {
 }
 
 function deleteReview(param, success, fail) {
-  local.delete(`/review/${param}`, param).then(success).catch(fail);
+  local.delete(`review/${param}`, param).then(success).catch(fail);
 }
 
-export { listReview, likeReview, registReview, deleteReview};
+export { listReview, likeReview, registReview, deleteReview };
