@@ -303,7 +303,7 @@ onMounted(() => {
             <p class="d-flex justify-content-center"><strong>{{ name }}</strong></p>
             <div class="container" v-html="overview">
             </div>
-            <div v-if="userId != null" class="d-flex justify-content-end me-4">
+            <div v-if="userId != null" class="d-flex justify-content-end me-4 mt-1 mb-1">
                 <button class="btn btn-custom" @click="moveWrite()">리뷰 작성</button>
             </div>
             <div class="container p-4">
