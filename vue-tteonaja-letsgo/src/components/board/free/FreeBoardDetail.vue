@@ -148,8 +148,8 @@ const moveToModify = () => {
         <div class="container border p-3" id="comment_block">
             <p>댓글 목록</p>
             <hr>
-            <BoardCommentList :comment-params="params" :write-checker="writeChecker" @deleted-comment="deletedComment"
-                @complete-write="completeWrite" />
+            <BoardCommentList board-type="free" :comment-params="params" :write-checker="writeChecker"
+                @deleted-comment="deletedComment" @complete-write="completeWrite" />
             <BoardCommentWrite :comment-params="params" @write-comment="writeComment" />
         </div>
 

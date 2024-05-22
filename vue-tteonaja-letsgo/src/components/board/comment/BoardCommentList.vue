@@ -7,6 +7,7 @@ const comments = ref([]);
 const props = defineProps({
     commentParams: Object,
     writeChecker: String,
+    boardType: String
 });
 const emits = defineEmits(['deletedComment', 'completeWrite']);
 const writeChecker = ref(props.writeChecker)
@@ -52,7 +53,7 @@ onMounted(() => {
 
 <template>
     <div class="container" v-for="(comment, index) in comments" :key="index">
-        <BoardCommentListItem :comment=comment @deleted-comment="refreshCommentsList" />
+        <BoardCommentListItem :board-type="props.boardType" :comment=comment @deleted-comment="refreshCommentsList" />
     </div>
 </template>
 

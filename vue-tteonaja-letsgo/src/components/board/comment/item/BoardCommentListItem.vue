@@ -6,14 +6,15 @@ import Swal from 'sweetalert2';
 import { onMounted, ref } from 'vue';
 
 const props = defineProps({
-    comment: Object
+    comment: Object,
+    boardType: String
 });
 
 const currentUserId = ref("")
 
 const emits = defineEmits(['deletedComment'])
 
-const deleteFreeComment = () => {
+const removeComment = () => {
     Swal.fire({
         title: "댓글을 삭제하시겠습니까?",
         text: "삭제 후 복구할 수 없음에 주의하세요!",
@@ -27,7 +28,7 @@ const deleteFreeComment = () => {
         if (result.isConfirmed) {
             deleteComment(
                 {
-                    boardType: 'free',
+                    boardType: props.boardType,
                     commentNo: props.comment.commentNo
                 },
                 (response) => {
@@ -59,7 +60,7 @@ onMounted(() => {
             <span class="d-flex align-items-center">{{ props.comment.userId }} <button
                     v-if="currentUserId === props.comment.userId"
                     class="btn bg-light rounded btn-sm pt-0 pb-0 ps-1 pe-1 ms-3"
-                    @click="deleteFreeComment">삭제</button></span>
+                    @click="removeComment">삭제</button></span>
             <span>{{ props.comment.registerTime }}</span>
         </div>
         <p class="mt-3" v-html="props.comment.content"></p>

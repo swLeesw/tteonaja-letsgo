@@ -85,16 +85,16 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="py-5 text-center container">
+    <section class="py-5 text-center background-section">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light mb-5">자유게시판</h1>
-                <p class="lead text-muted">다양한 사람들과 자유롭게 정보를 공유하는 공간입니다.</p>
-
+                <p class="lead text-dark fs-bolder">다양한 사람들과 자유롭게 정보를 공유하는 공간입니다.</p>
+                <br><br><br><br>
             </div>
         </div>
     </section>
-    <div class="text-center mt-5 shadow p-4 rounded bg-light vh-100">
+    <div class="text-center shadow p-4 rounded bg-light vh-100">
         <!-- <h4 class="fw-light fs-2">자유게시판</h4> -->
         <div class="container text-center mt-5 p-4 rounded vh-100">
             <div class="row align-self-center mt-4">
@@ -146,4 +146,32 @@ onMounted(() => {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.background-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.background-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('@/assets/free.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(5px);
+    min-height: 80vh;
+    /* 흐림 효과 적용 */
+    z-index: -1;
+    /* 배경을 뒤로 보내기 */
+}
+
+.background-section .content {
+    position: relative;
+    z-index: 1;
+    /* 콘텐츠를 앞쪽에 배치 */
+}
+</style>

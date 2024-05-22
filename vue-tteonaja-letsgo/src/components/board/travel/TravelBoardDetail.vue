@@ -107,7 +107,7 @@ const moveToModify = () => {
 <template>
     <br><br>
     <div class="container mt-5 shadow p-4 rounded">
-        <h1 class="fw-light mb-5 text-center">여행 경로 게시판</h1>
+        <h1 class="fw-light mb-5 text-center">여행 코스</h1>
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <table class="table">
@@ -148,7 +148,7 @@ const moveToModify = () => {
         <div class="container border p-3" id="comment_block">
             <p>댓글 목록</p>
             <hr>
-            <BoardCommentList :comment-params="params" :write-checker="writeChecker" @deleted-comment="deletedComment"
+            <BoardCommentList board-type="travel" :comment-params="params" :write-checker="writeChecker" @deleted-comment="deletedComment"
                 @complete-write="completeWrite" />
             <BoardCommentWrite :comment-params="params" @write-comment="writeComment" />
         </div>

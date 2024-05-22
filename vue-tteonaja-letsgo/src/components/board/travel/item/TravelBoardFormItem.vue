@@ -10,7 +10,7 @@ import { getAttraction, getSido, getGugun } from '@/api/attractionInfo.js';
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
-import ArrayControl from 'lodash'
+import ArrayControl from 'lodash';
 
 const props = defineProps({ type: String });
 const router = useRouter();
@@ -43,7 +43,7 @@ if (props.type === "modify") {
     article.value.articleNo = route.params.id;
     getArticle(
         {
-            boardType: 'trip',
+            boardType: 'travel',
             articleNo: article.value.articleNo
         },
         (response) => {
@@ -57,7 +57,7 @@ if (props.type === "modify") {
 }
 
 const moveToList = () => {
-    router.replace({ name: 'trip-list' });
+    router.replace({ name: 'travel-list' });
 };
 
 const controlArticle = () => {
@@ -71,9 +71,9 @@ const controlArticle = () => {
             userId: article.value.userId,
             subject: article.value.subject,
             content: article.value.content,
-            travelList: JSON.stringify(attractionSelectedList.value)
+            travelList: JSON.stringify(attractionCustomSelectedList.value)
         }
-    }
+    };
 
     if (props.type === "regist") {
         registArticle(
@@ -313,26 +313,27 @@ const onClickMapMarker = (info) => {
 
 
 const addAttreaction = (info) => {
-    if (!attractionSelectedList.value.includes(info)) {        
+    if (!attractionSelectedList.value.includes(info)) {
         const attractionCustom = {
             id: info.id,
             sidoCode: info.sidoCode,
             gugunCode: info.gugunCode,
+            contentCode: info.typeId,
             firstImage: info.firstImage
-        }
+        };
         attractionSelectedList.value.push(info);
-        attractionCustomSelectedList.value.push(attractionCustom)
+        attractionCustomSelectedList.value.push(attractionCustom);
         console.log(attractionCustomSelectedList.value);
     } else {
-        
+
     }
 };
 
 const removeAttraction = (id) => {
     attractionSelectedList.value = ArrayControl.remove(attractionSelectedList.value, (info) => {
-        return info.id !== id 
-    })
-}
+        return info.id !== id;
+    });
+};
 //화면 로드가 되면 자동으로 sido 얻기
 onMounted(() => {
     getSidof();
@@ -503,6 +504,7 @@ main {
 .overflow-x-auto {
     white-space: nowrap;
 }
+
 .mycard:hover {
     transform: scale(1.05);
     background-color: rgba(67, 180, 255, 0.158);
@@ -640,6 +642,7 @@ main {
     border: 1px solid;
     border-color: #8886861a;
 }
+
 .btn-custom-del:hover {
     background-color: rgba(255, 67, 67, 0.623);
     color: #888686;

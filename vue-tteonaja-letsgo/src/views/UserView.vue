@@ -7,8 +7,6 @@ import UserLogin from "@/components/user/UserLogin.vue"
 
 <template>
     <div>
-        사용자 로그인 / 로그아웃 / 내정보 View
-        
         <RouterView />
     </div>
 </template>
