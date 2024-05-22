@@ -86,6 +86,9 @@ const likeReviewf = (param) => {
 
 <template>
     <div class="offcanvas-body bodyy">
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-custom" @click="moveWrite">리뷰 작성</button>
+        </div>
         <div class="review" v-for="(review, index) in reviews" :key="index">
             <div>
                 <strong>{{ review.reviewTitle }}</strong>
