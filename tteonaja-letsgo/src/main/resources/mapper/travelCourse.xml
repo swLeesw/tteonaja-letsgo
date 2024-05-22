@@ -47,7 +47,7 @@
 
 
     <insert id="registArticle" parameterType="TravelCourseSaveDto">
-        insert into travel_course(user_id, subject, content, travelList, hit, register_time, course_like)
+        insert into travel_course(user_id, subject, content, travel_list, hit, register_time, course_like)
         values(#{userId}, #{subject}, #{content}, #{travelList}, 0, now(), 0)
     </insert>
 
@@ -88,7 +88,7 @@
 
     <update id="modifyArticle" parameterType="TravelCourseUpdateDto">
         update travel_course
-        set subject=#{subject}, content=#{content}, travelList=#{travelList}, modified_date=now()
+        set subject=#{subject}, content=#{content}, travel_list=#{travelList}, modified_date=now()
         where article_no=#{articleNo}
     </update>
 
