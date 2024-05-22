@@ -3,8 +3,9 @@ import FreeBoardFormItem from './item/FreeBoardFormItem.vue';
 </script>
 
 <template>
+    <br><br>
     <div class="container mt-5 shadow p-4 rounded">
-            <h4 class="fw-bolder text-center mb-5">자유게시판</h4>
+        <h1 class="fw-light mb-5 text-center">자유게시판</h1>
         <FreeBoardFormItem type="regist" />
     </div>
 </template>

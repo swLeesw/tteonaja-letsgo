@@ -93,6 +93,26 @@ const router = createRouter({
           name: "trip-list",
           component: () => import("@/components/board/trip/TripBoardList.vue"),
         },
+        {
+          path: "trip/:id/:commentNum",
+          name: "trip-detail",
+          beforeEnter: onlyAuthUser,
+          component: () => import("@/components/board/trip/TripBoardDetail.vue"),
+        },
+        {
+          path: "trip/write",
+          name: "trip-write",
+          beforeEnter: onlyAuthUser,
+          component: () =>
+            import("@/components/board/trip/TripBoardWrite.vue"),
+        },
+        {
+          path: "trip/modify:id",
+          name: "trip-modify",
+          beforeEnter: onlyAuthUser,
+          component: () =>
+            import("@/components/board/trip/TripBoardModify.vue"),
+        },
       ],
     },
     {

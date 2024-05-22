@@ -77,9 +77,9 @@ const translated = ref("")
 const translateMode = ref(false)
 
 const translate = async () => {
-    // if (!translateMode.value) {
-    //     translated.value = await getGPTResponse(article.value.content)
-    // }
+    if (!translateMode.value) {
+        translated.value = await getGPTResponse(article.value.content)
+    }
     translateMode.value = !translateMode.value
 }
 
@@ -105,8 +105,9 @@ const moveToModify = () => {
 </script>
 
 <template>
+    <br><br>
     <div class="container mt-5 shadow p-4 rounded">
-        <h4 class="fw-bolder text-center">자유게시판</h4>
+        <h1 class="fw-light mb-5 text-center">자유게시판</h1>
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <table class="table">

@@ -56,7 +56,7 @@ const setBoardNum = () => {
         },
         (response) => {
             totalArticles.value = VITE_ARTICLE_LIST_SIZE * (totalPage.value - 1) + response.data.articles.length;
-            console.log(totalArticles.value)
+            console.log(totalArticles.value);
         },
         (error) => {
             console.log(error);
@@ -85,52 +85,62 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="container text-center mt-5 shadow p-4 rounded">
-        <h4 class="fw-bolder">자유게시판</h4>
-        <div class="row align-self-center mt-4">
-            <div class="col-md-5 offset-7">
-                <form @submit.prevent="getArticleList" class="d-flex">
-                    <VSelect :selectOption="selectOption" @onKeySelect="changeKey" />
-                    <div class="input-group input-group-sm ms-1">
-                        <input type="text" class="form-control" v-model="params.word" placeholder="검색어..." />
-                        <button class="btn btn-dark" type="button" @click="getArticleList">검색</button>
-                    </div>
-                </form>
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light mb-5">자유게시판</h1>
+                <p class="lead text-muted">다양한 사람들과 자유롭게 정보를 공유하는 공간입니다.</p>
+
             </div>
         </div>
-        <div class="container mt-2">
-            <div class="row justify-content-center">
-                <table class="table">
-                    <thead class="table-dark shadow">
-                        <tr>
-                            <th scope="col">게시글 번호</th>
-                            <th scope="col">제목</th>
-                            <th scope="col">작성자</th>
-                            <th scope="col">작성날짜</th>
-                            <th scope="col">조회수</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <FreeBoardListItem v-for="(article, index) in articles" :key="article.articleNo"
-                            :elem="{
+    </section>
+    <div class="text-center mt-5 shadow p-4 rounded bg-light vh-100">
+        <!-- <h4 class="fw-light fs-2">자유게시판</h4> -->
+        <div class="container text-center mt-5 p-4 rounded vh-100">
+            <div class="row align-self-center mt-4">
+                <div class="col-md-5 offset-7">
+                    <form @submit.prevent="getArticleList" class="d-flex">
+                        <VSelect :selectOption="selectOption" @onKeySelect="changeKey" />
+                        <div class="input-group input-group-sm ms-1">
+                            <input type="text" class="form-control" v-model="params.word" placeholder="검색어..." />
+                            <button class="btn btn-dark" type="button" @click="getArticleList">검색</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="container mt-2">
+                <div class="row justify-content-center">
+                    <table class="table">
+                        <thead class="table-secondary shadow">
+                            <tr>
+                                <th scope="col">게시글 번호</th>
+                                <th scope="col">제목</th>
+                                <th scope="col">작성자</th>
+                                <th scope="col">작성날짜</th>
+                                <th scope="col">조회수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <FreeBoardListItem v-for="(article, index) in articles" :key="article.articleNo" :elem="{
                                 article: article,
                                 total: totalArticles,
-                                currentPage: currentPage, 
+                                currentPage: currentPage,
                                 index: index,
                                 boardType: params.boardType
                             }">
-                        </FreeBoardListItem>
-                    </tbody>
-                </table>
+                            </FreeBoardListItem>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col offset-2 text-center">
-                <VPageNavigation :current-page="currentPage" :total-page="totalPage" @pageChange="onPageChange">
-                </VPageNavigation>
-            </div>
-            <div class="col-md-2 text-end">
-                <button class="btn btn-primary btn-sm" @click="moveToWrite">글 작성</button>
+            <div class="row">
+                <div class="col offset-2 text-center">
+                    <VPageNavigation :current-page="currentPage" :total-page="totalPage" @pageChange="onPageChange">
+                    </VPageNavigation>
+                </div>
+                <div class="col-md-2 text-end">
+                    <button class="btn btn-primary btn-sm" @click="moveToWrite">글 작성</button>
+                </div>
             </div>
         </div>
     </div>
