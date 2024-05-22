@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: localhost    Database: ssafy_trip_final
+-- Host: 127.0.0.1    Database: ssafy_trip_final
 -- ------------------------------------------------------
 -- Server version	8.0.36
 
@@ -30,11 +30,13 @@ CREATE TABLE `travel_course` (
   `hit` int NOT NULL,
   `register_time` timestamp NOT NULL,
   `course_like` int NOT NULL,
+  `travel_list` text,
+  `modified_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`article_no`),
   UNIQUE KEY `article_no_UNIQUE` (`article_no`),
   KEY `fk_travel_course_member1_idx` (`user_id`),
   CONSTRAINT `fk_travel_course_member1` FOREIGN KEY (`user_id`) REFERENCES `member` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +45,7 @@ CREATE TABLE `travel_course` (
 
 LOCK TABLES `travel_course` WRITE;
 /*!40000 ALTER TABLE `travel_course` DISABLE KEYS */;
-INSERT INTO `travel_course` VALUES (1,'ssafy','여행계획1','여행 계획을 짜봤습니다.',0,'2024-05-22 02:35:37',0);
+INSERT INTO `travel_course` VALUES (3,'ssafy','여행계획수정','여행 계획을 수정해봤습니다.',3,'2024-05-22 13:47:23',0,'json이 string으로 변환되어서 들어갈  수정된 내용.','2024-05-22 13:48:44'),(4,'ssafy','여행계획2','여행 계획을 짜봤습니다.',0,'2024-05-22 14:03:23',0,'json이 string으로 변환되어서 들어갈 내용.',NULL),(6,'ssafy','여행계획4','여행 계획을 짜봤습니다.',0,'2024-05-22 14:03:30',0,'json이 string으로 변환되어서 들어갈 내용.',NULL),(7,'ssafy','여행계획5','여행 계획을 짜봤습니다.',0,'2024-05-22 14:03:32',0,'json이 string으로 변환되어서 들어갈 내용.',NULL),(8,'ssafy','여행계획6','여행 계획을 짜봤습니다.',0,'2024-05-22 14:03:34',0,'json이 string으로 변환되어서 들어갈 내용.',NULL),(9,'ssafy','여행계획9','여행 계획을 짜봤습니다.',0,'2024-05-22 14:32:33',0,'json이 string으로 변환되어서 들어갈 내용.',NULL);
 /*!40000 ALTER TABLE `travel_course` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-22 17:53:36
+-- Dump completed on 2024-05-23  2:32:07

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: localhost    Database: ssafy_trip_final
+-- Host: 127.0.0.1    Database: ssafy_trip_final
 -- ------------------------------------------------------
 -- Server version	8.0.36
 
@@ -16,31 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `travel_course_list`
+-- Table structure for table `attraction_info_check`
 --
 
-DROP TABLE IF EXISTS `travel_course_list`;
+DROP TABLE IF EXISTS `attraction_info_check`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `travel_course_list` (
-  `article_no` int NOT NULL,
-  `attraction_id` int NOT NULL,
-  `position` int NOT NULL,
-  PRIMARY KEY (`article_no`,`attraction_id`),
-  KEY `tcl_to_ai_idx` (`attraction_id`),
-  CONSTRAINT `tcl_to_ai` FOREIGN KEY (`attraction_id`) REFERENCES `attraction_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `tcl_to_tc` FOREIGN KEY (`article_no`) REFERENCES `travel_course` (`article_no`) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE `attraction_info_check` (
+  `user_id` varchar(30) NOT NULL,
+  `id` int NOT NULL,
+  PRIMARY KEY (`user_id`,`id`),
+  KEY `check_to_info_id_idx` (`id`),
+  CONSTRAINT `check_to_info_id` FOREIGN KEY (`id`) REFERENCES `attraction_info` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `check_to_member_user` FOREIGN KEY (`user_id`) REFERENCES `member` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `travel_course_list`
+-- Dumping data for table `attraction_info_check`
 --
 
-LOCK TABLES `travel_course_list` WRITE;
-/*!40000 ALTER TABLE `travel_course_list` DISABLE KEYS */;
-INSERT INTO `travel_course_list` VALUES (1,125266,0),(1,125405,1),(1,125406,2);
-/*!40000 ALTER TABLE `travel_course_list` ENABLE KEYS */;
+LOCK TABLES `attraction_info_check` WRITE;
+/*!40000 ALTER TABLE `attraction_info_check` DISABLE KEYS */;
+INSERT INTO `attraction_info_check` VALUES ('ssafy',125266),('ssafy',126429);
+/*!40000 ALTER TABLE `attraction_info_check` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-22 17:53:37
+-- Dump completed on 2024-05-23  2:32:07

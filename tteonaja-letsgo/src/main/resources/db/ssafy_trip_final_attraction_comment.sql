@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: localhost    Database: ssafy_trip_final
+-- Host: 127.0.0.1    Database: ssafy_trip_final
 -- ------------------------------------------------------
 -- Server version	8.0.36
 
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-22 17:53:36
+-- Dump completed on 2024-05-23  2:32:08

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: localhost    Database: ssafy_trip_final
+-- Host: 127.0.0.1    Database: ssafy_trip_final
 -- ------------------------------------------------------
 -- Server version	8.0.36
 
@@ -33,7 +33,7 @@ CREATE TABLE `travel_comment` (
   KEY `fk_travel_course_comment_member1_idx` (`user_id`),
   CONSTRAINT `fk_travel_course_comment_member1` FOREIGN KEY (`user_id`) REFERENCES `member` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_travel_course_comment_travel_course1` FOREIGN KEY (`article_no`) REFERENCES `travel_course` (`article_no`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `travel_comment` (
 
 LOCK TABLES `travel_comment` WRITE;
 /*!40000 ALTER TABLE `travel_comment` DISABLE KEYS */;
-INSERT INTO `travel_comment` VALUES (1,1,'ssafy','댓글 테스트','2024-05-22 05:03:37');
+INSERT INTO `travel_comment` VALUES (3,3,'ssafy','댓글 테스트','2024-05-22 14:22:56');
 /*!40000 ALTER TABLE `travel_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-22 17:53:36
+-- Dump completed on 2024-05-23  2:32:08

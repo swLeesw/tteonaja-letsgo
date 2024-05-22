@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: localhost    Database: ssafy_trip_final
+-- Host: 127.0.0.1    Database: ssafy_trip_final
 -- ------------------------------------------------------
 -- Server version	8.0.36
 
@@ -42,7 +42,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES ('','123','','','','','2024-05-17 04:27:50',NULL,NULL),('1','12345','12345','12345','12345','12345','2024-05-17 04:31:47',NULL,NULL),('123','123','123','123','123','123','2024-05-17 04:30:37',NULL,NULL),('12345','12345','12345','12345','12345','12345','2024-05-17 04:30:49',NULL,NULL),('admin','관리자','1234','ad@naver.com','01032855012','ad','2024-05-16 01:40:26','2024-05-16 01:40:26',NULL),('mj1584','김민주','1234','mj1584.mk@gmail.com','01032855012','computer','2024-05-16 05:24:34','2024-05-17 05:55:27',NULL),('mz158457','김민수','1234','mj1584.mk@gmail.com','01012345678','computer','2024-05-17 01:24:37',NULL,NULL),('mz1584571','김민수','1234','mj1584.mk@gmail.com','01012345678','computer','2024-05-17 01:37:36',NULL,NULL),('ssafy','이승원','1234','wlk2560@naver.com','01032855012','이승원빈','2024-05-16 01:40:04','2024-05-22 06:27:25','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWZyZXNoLXRva2VuIiwiaWF0IjoxNzE2MzY3OTA0LCJleHAiOjE3MTYzOTI5MDQsInVzZXJJZCI6InNzYWZ5In0.Up0CVv29QOTClwZKyuay7kcgqB7VldTVHELOEQK12IQ'),('wlk256032','이승원','12341234','wlk256032@gmail.com','01032855012','이승티비','2024-05-21 08:47:00',NULL,NULL);
+INSERT INTO `member` VALUES ('','123','','','','','2024-05-17 04:27:50',NULL,NULL),('1','12345','12345','12345','12345','12345','2024-05-17 04:31:47',NULL,NULL),('123','123','123','123','123','123','2024-05-17 04:30:37',NULL,NULL),('12345','12345','12345','12345','12345','12345','2024-05-17 04:30:49',NULL,NULL),('admin','관리자','1234','ad@naver.com','01032855012','ad','2024-05-16 01:40:26','2024-05-16 01:40:26',NULL),('mj1584','김민주','1234','mj1584.mk@gmail.com','01032855012','computer','2024-05-16 05:24:34','2024-05-17 05:55:27',NULL),('mz158457','김민수','1234','mj1584.mk@gmail.com','01012345678','computer','2024-05-17 01:24:37',NULL,NULL),('mz1584571','김민수','1234','mj1584.mk@gmail.com','01012345678','computer','2024-05-17 01:37:36',NULL,NULL),('ssafy','이승원','1234','wlk2560@naver.com','01032855012','이승원빈','2024-05-16 01:40:04','2024-05-22 06:27:25','eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyZWZyZXNoLXRva2VuIiwiaWF0IjoxNzE2MzkzMjA0LCJleHAiOjE3MTY0MTgyMDQsInVzZXJJZCI6InNzYWZ5In0.ExDHeVn2m7fbOP_qCBf-P0yuHnbVmeffmTANuRPOios'),('wlk256032','이승원','12341234','wlk256032@gmail.com','01032855012','이승티비','2024-05-21 08:47:00',NULL,NULL);
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-22 17:53:37
+-- Dump completed on 2024-05-23  2:32:08
