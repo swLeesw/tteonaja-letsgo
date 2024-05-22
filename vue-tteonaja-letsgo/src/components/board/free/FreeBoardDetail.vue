@@ -3,10 +3,12 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { deleteArticle, getArticle } from '@/api/board';
 import BoardCommentWrite from '@/components/board/comment/BoardCommentWrite.vue';
-import BoardCommentListItem from '../comment/item/BoardCommentListItem.vue';
 import Swal from 'sweetalert2';
 import BoardCommentList from '../comment/BoardCommentList.vue';
 import { jwtDecode } from 'jwt-decode';
+import { getGPTResponse } from '@/util/translator';
+// import { Typed } from "@duskmoon/vue3-typed-js";
+// import { TypedOptions } from "@duskmoon/vue3-typed-js";
 
 const route = useRoute();
 const router = useRouter();
@@ -71,6 +73,22 @@ const deleteFreeArticle = () => {
     );
 };
 
+const translated = ref("")
+const translateMode = ref(false)
+
+const translate = async () => {
+    // if (!translateMode.value) {
+    //     translated.value = await getGPTResponse(article.value.content)
+    // }
+    translateMode.value = !translateMode.value
+}
+
+// const options: TypedOptions = {
+//     strings: ["Hello", "World", "This is vue3-typed-js"],
+//     loop: true,
+//     typeSpeed: 30,
+// };
+
 onMounted(() => {
     getArticleDetail();
     currentUserId.value = jwtDecode(sessionStorage.getItem(['accessToken'])).userId;
@@ -94,20 +112,33 @@ const moveToModify = () => {
                 <table class="table">
                     <thead>
                         <tr>
-                            <th colspan="9" class="table-dark text-center">{{ article.subject }}</th>
+                            <th colspan="10" class="table-dark text-center">{{ article.subject }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr class="align-middle">
                             <th colspan="1" class="table-secondary text-center">작성자 </th>
                             <th colspan="2" class="text-center">{{ article.userId }}</th>
                             <th colspan="1" class="table-secondary text-center">작성일자 </th>
                             <th colspan="2" class="text-center">{{ article.registerTime }}</th>
                             <th colspan="1" class="table-secondary text-center">조회수 </th>
                             <th colspan="2" class="text-center">{{ article.hit }}</th>
+                            <th colspan="1" class="table-secondary text-center"><a href="#" class="btn fw-bolder p-0"
+                                    @click="translate">Translate<i class="bi bi-globe"></i></a></th>
                         </tr>
-                        <tr>
-                            <td colspan="9" v-html="article.content" class="p-3"></td>
+                        <tr v-if="!translateMode">
+                            <td colspan="10" v-html="article.content" class="p-3"></td>
+                        </tr>
+                        <tr v-else>
+                            <!-- <td colspan="10" class="p-3">
+                                <Typed :options="options">
+                                    <h1 class="typing"></h1>
+                                </Typed>
+                                <vue-typed-js :typeSpeed="60" :strings="['test']">
+                                    <p></p>
+                                </vue-typed-js>
+                            </td> -->
+                            <td colspan="10" class="p-3">{{ translated }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -116,12 +147,13 @@ const moveToModify = () => {
         <div class="container border p-3" id="comment_block">
             <p>댓글 목록</p>
             <hr>
-            <BoardCommentList :comment-params="params" :write-checker="writeChecker"
-                @deleted-comment="deletedComment" @complete-write="completeWrite"/>
+            <BoardCommentList :comment-params="params" :write-checker="writeChecker" @deleted-comment="deletedComment"
+                @complete-write="completeWrite" />
             <BoardCommentWrite :comment-params="params" @write-comment="writeComment" />
         </div>
 
-        <div v-if="currentUserId === article.userId" class="container mt-3 d-flex justify-content-between align-items-center p-1">
+        <div v-if="currentUserId === article.userId"
+            class="container mt-3 d-flex justify-content-between align-items-center p-1">
             <div>
                 <button class="btn btn-secondary btn-sm" @click="moveToList">글 목록</button>
             </div>
