@@ -92,7 +92,7 @@
         where article_no=#{articleNo}
     </update>
 
-    <select id="getTop" resultMap="TravelCourse">
+    <select id="getTop" resultMap="travelCourse">
         select *
         from travel_course
         order by course_like desc, hit desc, register_time desc

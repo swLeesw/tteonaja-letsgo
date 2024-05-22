@@ -96,6 +96,7 @@ public class TravelCourseController {
                 return new ResponseEntity<List<TravelCourse>>(topReviews, HttpStatus.OK);
             }
         } catch (Exception e) {
+            log.info("travelCourseTop5Error = {}", e);
             return ExceptionResponse.response(e);
         }
     }
