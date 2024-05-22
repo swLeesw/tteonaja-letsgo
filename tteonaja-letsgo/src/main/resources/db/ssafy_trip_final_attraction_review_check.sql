@@ -38,6 +38,7 @@ CREATE TABLE `attraction_review_check` (
 
 LOCK TABLES `attraction_review_check` WRITE;
 /*!40000 ALTER TABLE `attraction_review_check` DISABLE KEYS */;
+INSERT INTO `attraction_review_check` VALUES ('ssafy',12);
 /*!40000 ALTER TABLE `attraction_review_check` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-21 17:38:21
+-- Dump completed on 2024-05-22 14:08:07

@@ -28,7 +28,7 @@ public class FreeBoardServiceImpl implements FreeBoardService{
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("word", map.get("word") == null ? "" : map.get("word"));
         int currentPage = Integer.parseInt(map.get("pgno") == null ? "1" : map.get("pgno"));
-        int sizePerPage = Integer.parseInt(map.get("spp") == null ? "20" : map.get("spp"));
+        int sizePerPage = Integer.parseInt(map.get("spp") == null ? "10" : map.get("spp"));
         int start = currentPage * sizePerPage - sizePerPage;
         param.put("start", start);
         param.put("listsize", sizePerPage);

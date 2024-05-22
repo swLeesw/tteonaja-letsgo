@@ -36,7 +36,7 @@ CREATE TABLE `attraction_review` (
   KEY `fk_attraction_review_attraction_info1_idx` (`attraction_id`),
   CONSTRAINT `fk_attraction_review_attraction_info1` FOREIGN KEY (`attraction_id`) REFERENCES `attraction_info` (`id`),
   CONSTRAINT `fk_attraction_review_member1` FOREIGN KEY (`user_id`) REFERENCES `member` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +45,7 @@ CREATE TABLE `attraction_review` (
 
 LOCK TABLES `attraction_review` WRITE;
 /*!40000 ALTER TABLE `attraction_review` DISABLE KEYS */;
-INSERT INTO `attraction_review` VALUES (1,'ssafy','안녕하세요','goodgood!!베리베리맛있어요',0,'2024-05-21 00:15:07',0,125266),(2,'ssafy','반가워요','goodgood!!!!! 잇츠 베리베리맛있어요',0,'2024-05-21 00:15:19',0,125266),(3,'ssafy','정말 재밌는 장소','진짜 재밌게 놀았습니다. 다음에도 또 오고싶어요!',0,'2024-05-21 06:30:18',0,125266),(4,'ssafy','안반가워요','goodgood!!!!! 잇츠 베리베리맛있어요',0,'2024-05-21 07:17:54',0,125266),(5,'ssafy','정말안반가워요','goodgood!!!!! 잇츠 베리베리맛있어요',0,'2024-05-21 07:17:56',0,125266),(6,'ssafy','ㅁㄴㄹㅇㄴㅁ','ㄴㅇㅁㅁㄴㅇ',0,'2024-05-21 08:34:09',0,125266),(7,'ssafy','청태산은 어떤 곳일까?','프로젝트를 하며 항상 봐왔던 그곳.. 하지만 정작 가본 적은 없는데....',0,'2024-05-21 08:35:50',0,125266);
+INSERT INTO `attraction_review` VALUES (1,'ssafy','안녕하세요','goodgood!!베리베리맛있어요',0,'2024-05-21 00:15:07',0,125266),(2,'ssafy','반가워요','goodgood!!!!! 잇츠 베리베리맛있어요',0,'2024-05-21 00:15:19',0,125266),(3,'ssafy','정말 재밌는 장소','진짜 재밌게 놀았습니다. 다음에도 또 오고싶어요!',0,'2024-05-21 06:30:18',0,125266),(4,'ssafy','안반가워요','goodgood!!!!! 잇츠 베리베리맛있어요',0,'2024-05-21 07:17:54',0,125266),(6,'ssafy','ㅁㄴㄹㅇㄴㅁ','ㄴㅇㅁㅁㄴㅇ',0,'2024-05-21 08:34:09',0,125266),(7,'ssafy','청태산은 어떤 곳일까?','프로젝트를 하며 항상 봐왔던 그곳.. 하지만 정작 가본 적은 없는데....',0,'2024-05-21 08:35:50',0,125266),(8,'wlk256032','리뷰를 써볼까?','응 써볼게!',0,'2024-05-21 08:50:48',0,125266),(12,'ssafy','재밌는 곳입니다','다들 여기로 갑시다!',0,'2024-05-22 04:33:44',1,125581);
 /*!40000 ALTER TABLE `attraction_review` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -58,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-21 17:38:22
+-- Dump completed on 2024-05-22 14:08:08

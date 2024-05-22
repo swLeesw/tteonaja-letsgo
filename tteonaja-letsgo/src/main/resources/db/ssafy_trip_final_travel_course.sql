@@ -23,18 +23,18 @@ DROP TABLE IF EXISTS `travel_course`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `travel_course` (
-  `article_no` int NOT NULL,
+  `article_no` int NOT NULL AUTO_INCREMENT,
   `user_id` varchar(30) NOT NULL,
   `subject` varchar(45) NOT NULL,
-  `content` varchar(200) NOT NULL,
+  `content` text NOT NULL,
   `hit` int NOT NULL,
   `register_time` timestamp NOT NULL,
   `course_like` int NOT NULL,
   PRIMARY KEY (`article_no`),
   UNIQUE KEY `article_no_UNIQUE` (`article_no`),
   KEY `fk_travel_course_member1_idx` (`user_id`),
-  CONSTRAINT `fk_travel_course_member1` FOREIGN KEY (`user_id`) REFERENCES `member` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_travel_course_member1` FOREIGN KEY (`user_id`) REFERENCES `member` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,6 +43,7 @@ CREATE TABLE `travel_course` (
 
 LOCK TABLES `travel_course` WRITE;
 /*!40000 ALTER TABLE `travel_course` DISABLE KEYS */;
+INSERT INTO `travel_course` VALUES (1,'ssafy','여행계획1','여행 계획을 짜봤습니다.',0,'2024-05-22 02:35:37',0);
 /*!40000 ALTER TABLE `travel_course` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-21 17:38:22
+-- Dump completed on 2024-05-22 14:08:07

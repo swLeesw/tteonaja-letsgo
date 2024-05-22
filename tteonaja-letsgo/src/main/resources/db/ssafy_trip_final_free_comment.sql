@@ -33,7 +33,7 @@ CREATE TABLE `free_comment` (
   KEY `fk_free_comment_member1_idx` (`user_id`),
   CONSTRAINT `fk_free_comment_free_board1` FOREIGN KEY (`article_no`) REFERENCES `free_board` (`article_no`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_free_comment_member1` FOREIGN KEY (`user_id`) REFERENCES `member` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `free_comment` (
 
 LOCK TABLES `free_comment` WRITE;
 /*!40000 ALTER TABLE `free_comment` DISABLE KEYS */;
-INSERT INTO `free_comment` VALUES (2,2,'ssafy','good!','2024-05-16 01:59:57'),(4,2,'ssafy','댓글 테스트','2024-05-16 03:23:55');
+INSERT INTO `free_comment` VALUES (2,2,'ssafy','good!','2024-05-16 01:59:57'),(6,2,'ssafy','<p><strong><u>어쩔팁이</u></strong></p>','2024-05-21 08:44:52'),(7,2,'wlk256032','<p>잘했다 ㄷㄷ!</p><p><br></p>','2024-05-21 08:47:22');
 /*!40000 ALTER TABLE `free_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-21 17:38:22
+-- Dump completed on 2024-05-22 14:08:07

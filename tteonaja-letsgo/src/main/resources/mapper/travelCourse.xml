@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.tteonajaletsgo.mapper.TravelCourseMapper">
+
+    <!--resultMap 모음-->
+    <!--domain-->
+    <resultMap type="TravelCourse" id="travelCourse">
+        <result column="article_no" property="articleNo"/>
+        <result column="user_id" property="userId"/>
+        <result column="subject" property="subject"/>
+        <result column="content" property="content"/>
+        <result column="hit" property="hit"/>
+        <result column="register_time" property="registerTime"/>
+        <result column="course_like" property="courseLike"/>
+    </resultMap>
+
+    <resultMap type="TravelCourseList" id="travelCourseList">
+        <result column="article_no" property="articleNo" />
+        <result column="attraction_id" property="attractionId" />
+        <result column="position" property="position" />
+    </resultMap>
+
+    <!--Dto-->
+    <resultMap type="TravelCourseSaveDto" id="travelCourseSaveDto">
+        <result column="user_id" property="userId"/>
+        <result column="subject" property="subject"/>
+        <result column="content" property="content"/>
+    </resultMap>
+
+    <!--sql-->
+    <sql id="search">
+        <if test="word != null and word != ''">
+            <if test="key == 'subject'">
+                and subject like concat('%', #{word}, '%')
+            </if>
+            <if test="key != 'subject'">
+                and ${key} = #{word}
+            </if>
+        </if>
+    </sql>
+
+
+    <insert id="regist" parameterType="TravelCourseSaveDto">
+        insert into travel_course(user_id, subject, content, hit, register_time, course_like)
+        values(#{userId}, #{subject}, #{content}, 0, now(), 0)
+    </insert>
+
+    <insert id="registList" parameterType="TravelCourseListSaveDto">
+        insert into travel_course_list(article_no, position, attraction_id)
+        values
+        <foreach collection="attractionList" item="attractionId" index="index" separator=",">
+            (#{articleNo}, #{index}, #{attractionId})
+        </foreach>
+    </insert>
+
+    <select id="listArticle" resultMap="travelCourse">
+        select *
+        from travel_course
+        <where>
+            <include refid="search"></include>
+        </where>
+        order by register_time desc
+        limit #{start}, #{listsize}
+    </select>
+
+    <select id="getArticle" parameterType="int" resultMap="travelCourse">
+        select *
+        from travel_course
+        where article_no = #{articleNo}
+    </select>
+
+    <select id="getArticleList" parameterType="int" resultMap="travelCourseList">
+        select *
+        from travel_course_list
+        where article_no = #{articleNo}
+    </select>
+
+    <select id="getTotalArticleCount" parameterType="map" resultType="int">
+        select count(article_no)
+        from travel_course
+        <where>
+            <include refid="search"></include>
+        </where>
+    </select>
+
+    <delete id="deleteArticle" parameterType="int">
+        delete from travel_course
+        where article_no = #{articleNo}
+    </delete>
+
+    <update id="updateHit">
+        update travel_course
+        set hit = hit + 1
+        where article_no=#{articleNo}
+    </update>
+
+</mapper>
