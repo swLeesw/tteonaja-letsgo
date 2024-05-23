@@ -86,7 +86,7 @@ public class TravelCourseController {
         }
     }
 
-    @Operation(summary = "top5여행코스", description = "top5여행 코스를 뽑아온다")
+    @Operation(summary = "top5여행코스", description = "top5여행 코스를 뽑아온다.")
     @GetMapping("/top")
     public ResponseEntity<?> getTopReview() {
         try {
@@ -103,6 +103,7 @@ public class TravelCourseController {
         }
     }
 
+    @Operation(summary = "여행코스 좋아요", description = "여행코스에 좋아요 숫자를 늘린다.")
     @GetMapping("/like/{articleno}/{userid}")
     public ResponseEntity<?> likeCourse(@PathVariable(value = "articleno", required = true) int articleno,
                                         @PathVariable(value = "userid", required = true) String userid) {

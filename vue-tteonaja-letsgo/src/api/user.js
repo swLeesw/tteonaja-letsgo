@@ -43,4 +43,7 @@ async function deleteUser(userId, success, fail) {
   await local.delete(`member/${userId}`).then(success).catch(fail);
 }
 
-export { userConfirm, findById, tokenRegeneration, logout, idCheck, register, modifyUser, deleteUser };
+async function checkPass(params, success, fail) {
+  await local.post(`member/passcheck`, params).then(success).catch(fail);
+}
+export { userConfirm, findById, tokenRegeneration, logout, idCheck, register, modifyUser, deleteUser, checkPass };

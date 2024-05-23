@@ -5,9 +5,10 @@ import { useMenuStore } from '@/stores/menu';
 import { useMemberStore } from '@/stores/member';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import { findById } from '@/api/user';
+import { checkPass, findById } from '@/api/user';
 import { jwtDecode } from 'jwt-decode';
 import { httpStatusCode } from "@/util/http-status";
+import Swal from 'sweetalert2';
 const router = useRouter();
 
 const menuStore = useMenuStore();
@@ -54,6 +55,46 @@ const checkLogin = async () => {
 const logout = () => {
     userLogout();
     changeMenuState();
+};
+
+const checkUser = () => {
+    Swal.fire({
+        title: "비밀번호를 입력해주세요.",
+        input: "password",
+        inputAttributes: {
+            autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        cancelButtonText: "취소",
+        showLoaderOnConfirm: true,
+        preConfirm: async (password) => {
+            try {
+                await checkPass(
+                    {
+                        userId: userInfo.value.userId,
+                        checkPassword: password
+                    },
+                    (response) => {
+                        console.log(response.data.check);
+                        if (!response.data.check) {
+                            return Swal.showValidationMessage(`올바른 비밀번호가 아닙니다!`);
+                        }
+                        return response.data.check;
+                    }, (error) => {
+                        console.log(error);
+                    }
+                );
+            } catch (error) {
+                Swal.showValidationMessage(`Request failed: ${error}`);
+            }
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                router.push({ name: 'my-page' });
+            }
+        });
 };
 
 onMounted(() => {
@@ -112,16 +153,18 @@ onMounted(() => {
                                 <li class="nav-item me-2">
                                     <router-link to="/" @click.prevent="logout"
                                         class="nav-link btn-hover-effect rounded-pill">{{
-                                        menu.name
+                                            menu.name
                                         }}</router-link>
                                 </li>
                             </template>
                             <template v-else>
                                 <li class="nav-item">
-                                    <router-link :to="{ name: menu.routeName }"
+                                    <!-- <router-link :to="{ name: menu.routeName }"
                                         class="nav-link btn-hover-effect rounded-pill">{{
                                         menu.name
-                                        }}</router-link>
+                                        }}</router-link> -->
+                                    <button class="nav-link btn-hover-effect rounded-pill" @click="checkUser">내
+                                        정보</button>
                                 </li>
                             </template>
                         </template>
