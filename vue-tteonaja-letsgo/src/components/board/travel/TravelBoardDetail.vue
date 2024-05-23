@@ -224,8 +224,7 @@ const likeThisArticle = () => {
             <BoardCommentWrite :comment-params="params" @write-comment="writeComment" />
         </div>
 
-        <div
-            class="container mt-3 d-flex justify-content-between align-items-center p-1">
+        <div class="container mt-3 d-flex justify-content-between align-items-center p-1">
             <div>
                 <button class="btn btn-secondary btn-sm" @click="moveToList">글 목록</button>
             </div>
@@ -245,11 +244,17 @@ const likeThisArticle = () => {
     white-space: nowrap;
 }
 
+.mycard {
+    transition: all 0.2s linear;
+    padding: 3px;
+}
+
 .mycard:hover {
+    transition: all 0.2s linear;
     transform: scale(1.05);
-    background-color: rgba(67, 180, 255, 0.158);
+    /* background-color: rgba(67, 180, 255, 0.09); */
     border-radius: 10px;
-    display: inline-block;
+    box-shadow: 1px 3px 10px #8886861c;
 }
 
 .btn-custom {

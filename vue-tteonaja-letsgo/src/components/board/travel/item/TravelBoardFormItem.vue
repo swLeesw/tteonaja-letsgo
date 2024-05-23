@@ -71,7 +71,7 @@ const moveToList = () => {
     router.replace({ name: 'travel-list' });
 };
 
-const controlArticle = async() => {
+const controlArticle = async () => {
     let token = sessionStorage.getItem("accessToken");
     let decodeToken = jwtDecode(token);
     article.value.userId = decodeToken.userId;
@@ -454,7 +454,7 @@ onMounted(() => {
     <div class="overflow-x-auto border mb-5 ps-2">
         <!-- <div class="container-fluid border mb-5 ps-2"> -->
         <div class="d-inline-flex" v-for="(info, index) in attractionSelectedList" :key="index">
-            <div class="d-inline-flex ms-3 me-3 mt-4 mb-4 mycard p-3" @click="onClickMapMarker(info)">
+            <div class="d-inline-flex ms-3 me-3 mt-4 mb-4 cardd p-3" @click="onClickMapMarker(info)">
                 <img :src="info.firstImage" style="border-radius: 10px;" alt="사진" width="120px"
                     v-show="info.firstImage != ''">
                 <img src="@/assets/logo.png" alt="사진" width="120px" v-show="info.firstImage == ''">
@@ -591,10 +591,17 @@ main {
     overflow-y: auto;
 }
 
+.cardd {
+    transition: all 0.2s linear;
+    padding: 3px;
+}
+
 .cardd:hover {
+    transition: all 0.2s linear;
     transform: scale(1.05);
-    background-color: rgba(67, 180, 255, 0.158);
+    /* background-color: rgba(67, 180, 255, 0.09); */
     border-radius: 10px;
+    box-shadow: 1px 3px 10px #8886861c;
 }
 
 
