@@ -100,6 +100,7 @@
     <select id="getTop" resultMap="travelCourse">
         select *
         from travel_course
+        where register_time >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
         order by course_like desc, hit desc, register_time desc
         limit 5;
     </select>

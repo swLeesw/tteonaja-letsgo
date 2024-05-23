@@ -88,6 +88,7 @@
 	<select id="getTop" resultMap="freeBoard">
 		select *
 		from free_board
+		where register_time >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
 		order by hit desc, register_time desc
 		limit 5
 	</select>

@@ -111,6 +111,7 @@
 
     <select id="getTopReview" resultMap="attractionReview">
         select * from attraction_review
+        where register_time >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
         order by review_like desc, register_time desc
         limit 5;
     </select>

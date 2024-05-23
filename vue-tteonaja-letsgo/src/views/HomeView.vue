@@ -117,7 +117,7 @@ onMounted(() => {
         <!--관광지 탑 5-->
         <div class="text-center">
             <h2 class="featurette-heading fw-normal lh-1 mb-5 mt-5"> 이달의 관광지
-                <p class="text-muted fs-5 mt-3">최근에 가장 인기있는 관광지를 방문하세요!</p>
+                <p class="text-muted fs-5 mt-3">이번 달의 관광 명소를 탐험해보세요!</p>
             </h2>
             <div class="row d-flex justify-content-center">
                 <div class="card-custom  rounded m-2 p-2 a col-lg-2 text-center mb-2"
@@ -126,13 +126,14 @@ onMounted(() => {
                         width="100" height="100" alt="">
                     <img v-show="info.firstImage == ''" src="@/assets/attractionAlter.png"
                         class="bd-placeholder-img rounded-circle" width="100" height="100" alt="">
-                    <p class="fs-4 m-3 truncate text-font-weight-bold">{{
+                    <p class="fs-4 m-3 truncate text-font-weight-bold mt-4 mb-4">{{
                         info.name }}</p>
-                    <p v-show="info.overview != null" class="truncate" @click="unfold($event)" v-html="info.overview">
+                    <!-- <p v-show="info.overview != null" class="truncate" @click="unfold($event)" v-html="info.overview">
                     </p>
-                    <p v-show="info.overview == null"><br><br></p>
-                    <p style="color: gray;" class="truncate">{{ info.addr1 }}</p>
-                    <button class="btn  btn-secondary" @click="moveAttractionSearch(info.name); unfold($event)">지도에서
+                    <p v-show="info.overview == null"><br><br></p> -->
+                    <!-- <p style="color: gray;" class="truncate">{{ info.addr1 }}</p> -->
+                    <button class="btn  btn-secondary mb-2"
+                        @click="moveAttractionSearch(info.name); unfold($event)">지도에서
                         보기</button>
                 </div>
             </div>
@@ -143,7 +144,9 @@ onMounted(() => {
 
         <div class="row featurette">
             <div class="col-md-7 order-md-2">
-                <h2 class="tb-custom featurette-heading fw-normal lh-1">이달의 여행 코스</h2>
+                <h2 class="tb-custom featurette-heading fw-normal lh-1">이달의 여행 코스
+                    <p class="text-muted fs-5 mt-3">새로운 여행 코스를 만나보세요!</p>
+                </h2>
                 <table class="table">
                     <thead>
                         <tr>
@@ -181,7 +184,9 @@ onMounted(() => {
 
         <div class="row featurette">
             <div class="col-md-7">
-                <h2 class="featurette-heading fw-normal lh-1">인기글</h2>
+                <h2 class="featurette-heading fw-normal lh-1">인기글
+                    <p class="text-muted fs-5 mt-3">지금 가장 핫한 글을 확인해보세요!</p>
+                </h2>
                 <table class="table">
                     <thead>
                         <tr>
