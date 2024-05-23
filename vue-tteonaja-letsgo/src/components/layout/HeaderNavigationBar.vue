@@ -136,7 +136,7 @@ onMounted(() => {
                         <RouterLink :to="{ name: 'login' }" class="nav-link align-middle btn-hover-effect rounded-pill">
                             로그인</RouterLink>
                     </li> -->
-                    <li class="nav-item dropdown me-1">
+                    <!-- <li class="nav-item dropdown me-1">
                         <a class="nav-link dropdown-toggle btn-hover-effect rounded-pill" href="#" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             HELP DESK</a>
@@ -144,7 +144,7 @@ onMounted(() => {
                             <li><a class="dropdown-item " href="#">공지사항</a></li>
                             <li><a class="dropdown-item" href="#">FAQ</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                 </ul>
                 <ul class="navbar-nav navbar-nav-scroll" style="--bs-scroll-height: 100px">
                     <template v-for="menu in menuList" :key="menu.routeName">

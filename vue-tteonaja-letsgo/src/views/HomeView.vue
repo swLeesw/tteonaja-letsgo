@@ -90,10 +90,31 @@ onMounted(() => {
                 <img src="@/assets/new_main.jpg" class="bd-placeholder-img" width="100%" height="100%"
                     aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
                 <div class="container">
-                    <div class="carousel-caption text-start ">
-                        <h1 class="">떠나자, Let's Go</h1>
-                        <p class="">에서 대한민국에 숨겨진 관광지를 찾고 여행을 함께 해요!</p>
-                        <RouterLink class="btn btn-lg btn-warning " :to="{ name: 'map' }">관광지 검색</RouterLink>
+                    <div class="carousel-caption text-start text-dark mb-5 p-5">
+                        <p class="fs-1">떠나자, Let's Go</p>
+                        <p class="fs-5 mb-4">에서 대한민국에 숨겨진 관광지를 찾고 여행을 함께 해요!</p>
+                        <RouterLink class="btn btn-lg border-dark mt-4 top-caption" :to="{ name: 'map' }">관광지 검색하기
+                        </RouterLink>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="@/assets/new_main2.jpg" class="bd-placeholder-img" width="100%" height="100%"
+                    aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <div class="container">
+                    <div class="carousel-caption text-start text-dark mb-5 p-5">
+                        <p class="fs-3 mb-5">나만의 여행 코스를 계획하고, 공유하며 여행을 준비해요!</p>
+                        <RouterLink class="btn btn-lg border-dark" :to="{ name: 'travel-list' }">여행 코스 계획하기</RouterLink>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="@/assets/new_main3.jpg" class="bd-placeholder-img" width="100%" height="100%"
+                    aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <div class="container">
+                    <div class="carousel-caption text-start text-dark mb-5 p-5">
+                        <p class="fs-3 mb-5">다양한 주제로 여러 회원들과 함께 소통해요!</p>
+                        <RouterLink class="btn btn-lg border-dark " :to="{ name: 'free-list' }">자유 게시판</RouterLink>
                     </div>
                 </div>
             </div>
@@ -164,7 +185,7 @@ onMounted(() => {
                                 <RouterLink class="del-deco fw-bold" :to="{
                                     name: 'travel-detail', params: { id: course.articleNo }
                                 }">
-                                    gd
+                                {{ course.subject }}
                                 </RouterLink>
                             </td>
                             <td>{{ course.userId }}</td>
@@ -227,6 +248,23 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.carousel-inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 60vh;
+    /* 100vh to cover the full viewport height */
+    object-fit: cover;
+    /* Ensures the image covers the element, preserving aspect ratio */
+}
+.carousel-cation.top-caption {
+    top: 0;
+    bottom: auto;
+}
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
