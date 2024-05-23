@@ -18,4 +18,8 @@ function getTopAttraction(success, fail) {
   local.get(`/attractionInfo/top`).then(success).catch(fail);
 }
 
-export { getAttraction, getSido, getGugun, getTopAttraction };
+function likeAttraction(id, userId, success, fail) {
+  local.get(`/attractionInfo/like/${id}/${userId}`, id, userId).then(success).catch(fail);
+}
+
+export { getAttraction, getSido, getGugun, getTopAttraction, likeAttraction };

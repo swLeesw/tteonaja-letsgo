@@ -70,7 +70,7 @@ public class AttractionReviewController {
                 attractionReviewService.insertCheckReview(attractionReviewCheckDto);
                 checkDto.setCheck(false);
             }
-                return new ResponseEntity<CheckDto>(checkDto, HttpStatus.OK);
+            return new ResponseEntity<CheckDto>(checkDto, HttpStatus.OK);
         } catch (Exception e) {
             log.debug("reviewLikeError = {}", e);
             return ExceptionResponse.response(e);

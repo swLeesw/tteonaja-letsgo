@@ -2,7 +2,9 @@ package com.ssafy.tteonajaletsgo.controller;
 
 import com.ssafy.tteonajaletsgo.domain.AttractionReview;
 import com.ssafy.tteonajaletsgo.domain.TravelCourse;
+import com.ssafy.tteonajaletsgo.dto.common.CheckDto;
 import com.ssafy.tteonajaletsgo.dto.freeBoard.FreeBoardUpdateDto;
+import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseCheckDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseListDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseSaveDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseUpdateDto;
@@ -101,6 +103,30 @@ public class TravelCourseController {
         }
     }
 
+    @GetMapping("/like/{articleno}/{userid}")
+    public ResponseEntity<?> likeCourse(@PathVariable(value = "articleno", required = true) int articleno,
+                                        @PathVariable(value = "userid", required = true) String userid) {
 
+        try {
+            TravelCourseCheckDto travelCourseCheckDto = new TravelCourseCheckDto();
+            travelCourseCheckDto.setArticleNo(articleno);
+            travelCourseCheckDto.setUserId(userid);
+            CheckDto checkDto = new CheckDto();
+
+            if (travelCourseService.checkCourse(travelCourseCheckDto)) {
+                travelCourseService.likeCancelCourse(articleno);
+                travelCourseService.deleteCheckCourse(travelCourseCheckDto);
+                checkDto.setCheck(true);
+            } else {
+                travelCourseService.likeCourse(articleno);
+                travelCourseService.insertCheckCourse(travelCourseCheckDto);
+                checkDto.setCheck(false);
+            }
+            return new ResponseEntity<CheckDto>(checkDto, HttpStatus.OK);
+        } catch (Exception e) {
+            log.info("likeCourseError={}", e);
+            return ExceptionResponse.response(e);
+        }
+    }
 
 }

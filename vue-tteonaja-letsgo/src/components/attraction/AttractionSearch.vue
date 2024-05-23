@@ -4,8 +4,9 @@ import { ref, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from "vue-router";
 // import axios from 'axios'
 import { KakaoMap, KakaoMapMarker, KakaoMapCustomOverlay } from 'vue3-kakao-maps';
-import { getAttraction, getSido, getGugun } from '@/api/attractionInfo.js';
+import { getAttraction, getSido, getGugun, likeAttraction } from '@/api/attractionInfo.js';
 import { jwtDecode } from "jwt-decode";
+import Swal from 'sweetalert2';
 //router
 const router = useRouter();
 const route = useRoute();
@@ -134,6 +135,43 @@ const moveReview = (value, overvieww, namee, lat, lng) => {
     router.push({ name: "map-review", params: { id: value } });
 }
 
+//리뷰 좋아요
+const likeAttractionf = (articleNo) => {
+
+    if (userId.value == "") {
+        return;
+    }
+
+    likeAttraction(
+        articleNo, userId.value,
+        ({ data }) => {
+            if (data.check) {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "좋아요 취소",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    position: "top",
+                    icon: "success",
+                    title: "좋아요",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        },
+        (error) => {
+            console.log(error);
+        }
+    )
+
+
+}
+
+//리뷰 닫기
 const closeReview = () => {
     const oc = document.getElementById("offcanvasScrolling");
     oc.classList.remove("show");
@@ -291,7 +329,7 @@ onMounted(() => {
                             <button class="btn btn-custom me-3" aria-controls="offcanvasScrolling"
                                 @click.stop="moveReview(info.id, info.overview, info.name, info.latitude, info.longitude)">리뷰
                                 보기</button>
-                            <button class="btn btn-custom" @click.stop="console.log('좋아요')">좋아요</button>
+                            <button class="btn btn-outline-danger" @click.stop="likeAttractionf(info.id)">♥</button>
                         </div>
                     </div>
                     <!-- data-bs-target="#offcanvasScrolling"
@@ -302,17 +340,19 @@ onMounted(() => {
         <!--리뷰 오프캔버스-->
         <div class="offcanvas offcanvas-start offcanvas-custom" data-bs-scroll="true" data-bs-backdrop="false"
             tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasScrollingLabel">리뷰</h5>
-                <button type="button" class="btn-close" @click="closeReview" aria-label="Close"></button>
+            <div>
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasScrollingLabel">리뷰</h5>
+                    <button type="button" class="btn-close" @click="closeReview" aria-label="Close"></button>
+                </div>
+                <p class="d-flex justify-content-center"><strong>{{ name }}</strong></p>
+                <div class="container" v-html="overview">
+                </div>
+                <div v-if="userId != null" class="d-flex justify-content-end me-4 mt-1 mb-1">
+                    <button class="btn btn-custom" @click="moveWrite()">리뷰 작성</button>
+                </div>
             </div>
-            <p class="d-flex justify-content-center"><strong>{{ name }}</strong></p>
-            <div class="container" v-html="overview">
-            </div>
-            <div v-if="userId != null" class="d-flex justify-content-end me-4 mt-1 mb-1">
-                <button class="btn btn-custom" @click="moveWrite()">리뷰 작성</button>
-            </div>
-            <div class="container p-4">
+            <div class="container p-4 mb-2">
                 <router-view />
             </div>
         </div>
@@ -493,10 +533,12 @@ main {
     left: 410px;
     border-radius: 10px;
     z-index: 2;
-
 }
 
 .container {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: rgba(67, 180, 255, 0.158) var(--bs-tertiary-bg);

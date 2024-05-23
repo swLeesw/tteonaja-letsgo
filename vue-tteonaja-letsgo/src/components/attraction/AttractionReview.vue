@@ -52,7 +52,7 @@ const getReview = () => {
     )
 }
 
-const likeReviewf = (param) => {
+const likeReviewf = (reviewNo) => {
     let token = sessionStorage.getItem("accessToken");
 
     if (token == null) {
@@ -61,15 +61,15 @@ const likeReviewf = (param) => {
 
     let decodeToken = jwtDecode(token);
 
-    console.log(param);
+    console.log(reviewNo);
     likeReview(
-        param, decodeToken.userId,
+        reviewNo, decodeToken.userId,
         ({ data }) => {
             if (data.check) {
                 Swal.fire({
                     position: "top",
                     icon: "error",
-                    title: "좋아요 취소.",
+                    title: "좋아요 취소",
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -77,7 +77,7 @@ const likeReviewf = (param) => {
                 Swal.fire({
                     position: "top",
                     icon: "success",
-                    title: "좋아요.",
+                    title: "좋아요",
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -122,29 +122,22 @@ const deleteReviewf = (param) => {
 <template>
     <div class="offcanvas-body">
         <div class="review" v-for="(review, index) in reviews" :key="index">
-            <!-- <button style="margin-left: 191px;" class="btn btn-sm btn-outline-danger" v-if="userId == review.userId"
-                @click="deleteReviewf(review.reviewNo)">삭제</button>
-            <div>
-                <p><strong>{{ review.reviewTitle }}</strong></p>
-            </div>
-            <div>
-                {{ review.content }}<br>
-            </div>
-            <p>{{ review.registerTime }}</p>
-            <p>좋아요 : {{ review.reviewLike }}</p>
-            <p style="">작성자 : {{ review.userId }}</p>
-            <button class="btn btn-custom" @click="likeReviewf(review.reviewNo)">좋아요</button>
-            <hr class="border border-1 opacity-50"> -->
-            <!---->
             <div class="review-item"
                 style="border: 0px solid #ddd; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div>
+                        <p><strong style="font-size: 1.1em; color: #333;">{{ review.reviewTitle }}</strong></p>
+                    </div>
+                    <button style="margin-left: 152px;" class="btn btn-sm btn-outline-danger"
+                        v-if="userId == review.userId" @click="deleteReviewf(review.reviewNo)">삭제</button>
+                </div>
+                <!-- <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <p><strong style="font-size: 1.2em; color: #333;">{{ review.reviewTitle }}</strong></p>
                     </div>
                     <button style="" class="btn btn-sm btn-outline-danger" v-if="userId == review.userId"
                         @click="deleteReviewf(review.reviewNo)">삭제</button>
-                </div>
+                </div> -->
                 <div style="margin-top: 10px;">
                     <p style="font-size: 1em; color: #666;">{{ review.content }}</p>
                 </div>
@@ -158,7 +151,8 @@ const deleteReviewf = (param) => {
                     <p style="font-size: 1em; color: #555;">작성자 : {{ review.userId }}</p>
                 </div>
                 <div style="margin-top: 10px;">
-                    <button class="btn btn-custom" @click="likeReviewf(review.reviewNo)">좋아요</button>
+                    <button style="margin-left: 152px;" class="btn btn-outline-danger"
+                        @click="likeReviewf(review.reviewNo)">♥</button>
                 </div>
                 <hr class="border border-1 opacity-50" style="margin-top: 20px;">
             </div>

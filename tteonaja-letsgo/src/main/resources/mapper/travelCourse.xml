@@ -33,6 +33,11 @@
         <result column="travel_list" property="travelList"/>
     </resultMap>
 
+    <resultMap type="TravelCourseCheckDto" id="travelCourseCheckDto">
+        <result column="article_no" property="articleNo"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
+
     <!--sql-->
     <sql id="search">
         <if test="word != null and word != ''">
@@ -98,5 +103,34 @@
         order by course_like desc, hit desc, register_time desc
         limit 5;
     </select>
+    <!--좋아요 기능-->
+    <update id="likeCourse" parameterType="int">
+        update travel_course
+        set course_like = course_like + 1
+        where article_no=#{articleNo}
+    </update>
+    <update id="likeCancelCourse" parameterType="int">
+        update travel_course
+        set course_like = course_like - 1
+        where article_no=#{articleNo}
+    </update>
+
+    <select id="checkCourse" parameterType="TravelCourseCheckDto" resultType="String">
+        select user_id
+        from travel_course_check
+        where user_id=#{userId}
+        and article_no=#{articleNo}
+    </select>
+
+    <insert id="insertCheckCourse" parameterType="TravelCourseCheckDto">
+        insert into travel_course_check(user_id, article_no)
+        values(#{userId}, #{articleNo})
+    </insert>
+
+    <delete id="deleteCheckCourse" parameterType="TravelCourseCheckDto">
+        delete from travel_course_check
+        where user_id=#{userId}
+        and article_no=#{articleNo}
+    </delete>
 
 </mapper>

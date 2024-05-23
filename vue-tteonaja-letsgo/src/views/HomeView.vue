@@ -9,6 +9,8 @@ const attractionTop = ref([]);
 // const reviewTop = ref([]);
 const courseTop = ref([]);
 const freeTop = ref([]);
+const monthlyCourseImg = ref(null);
+const monthlyFreeImg = ref(null);
 
 const getAttractionTop = () => {
     getTopAttraction(
@@ -26,6 +28,8 @@ const getCourseTop = () => {
         { boardType: 'travel' },
         ({ data }) => {
             courseTop.value = data;
+            let rand = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+            monthlyCourseImg.value = `@/assets/randomImg/img${rand}.jpg`;
         },
         (error) => {
             console.log(error);
@@ -161,7 +165,7 @@ onMounted(() => {
                     <img v-show="info.firstImage == ''" src="@/assets/attractionAlter.png"
                         class="bd-placeholder-img rounded-circle" width="100" height="100" alt="">
                     <p class="fs-4 m-3 truncate text-font-weight-bold">{{
-                            info.name }}</p>
+                        info.name }}</p>
                     <p v-show="info.overview != null" class="truncate" @click="unfold($event)" v-html="info.overview">
                     </p>
                     <p v-show="info.overview == null"><br><br></p>
@@ -199,7 +203,7 @@ onMounted(() => {
                 </table>
             </div>
             <div class="col-md-5 order-md-1">
-                <img class="rounded mt-3" src="@/assets/randomImg/img3.jpg" width="400px" alt="">
+                <img class="rounded mt-3" src="@/assets/randomImg/img4.jpg" width="400px" alt="">
             </div>
         </div>
         <!--이달의 리뷰 top5 end-->
@@ -220,7 +224,7 @@ onMounted(() => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(course, index) in courseTop" :key="index">
+                        <tr v-for="(course, index) in freeTop" :key="index">
                             <th scope="row">{{ course.articleNo }}</th>
                             <td>{{ course.subject }}</td>
                             <td>{{ course.userId }}</td>

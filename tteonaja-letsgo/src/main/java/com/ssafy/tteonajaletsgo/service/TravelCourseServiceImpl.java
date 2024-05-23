@@ -1,6 +1,7 @@
 package com.ssafy.tteonajaletsgo.service;
 
 import com.ssafy.tteonajaletsgo.domain.TravelCourse;
+import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseCheckDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseListDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseSaveDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseUpdateDto;
@@ -77,5 +78,32 @@ public class TravelCourseServiceImpl implements TravelCourseService{
     @Override
     public List<TravelCourse> getTop() throws Exception {
         return travelCourseMapper.getTop();
+    }
+
+    @Override
+    public void likeCourse(int articleNo) throws Exception {
+        travelCourseMapper.likeCourse(articleNo);
+    }
+
+    @Override
+    public void likeCancelCourse(int articleNo) throws Exception {
+        travelCourseMapper.likeCancelCourse(articleNo);
+    }
+
+    @Override
+    public boolean checkCourse(TravelCourseCheckDto travelCourseCheckDto) throws Exception {
+
+        String str = travelCourseMapper.checkCourse(travelCourseCheckDto);
+        return str != null;
+    }
+
+    @Override
+    public void insertCheckCourse(TravelCourseCheckDto travelCourseCheckDto) throws Exception {
+        travelCourseMapper.insertCheckCourse(travelCourseCheckDto);
+    }
+
+    @Override
+    public void deleteCheckCourse(TravelCourseCheckDto travelCourseCheckDto) throws Exception {
+        travelCourseMapper.deleteCheckCourse(travelCourseCheckDto);
     }
 }

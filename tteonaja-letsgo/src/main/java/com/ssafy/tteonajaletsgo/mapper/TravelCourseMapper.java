@@ -1,6 +1,7 @@
 package com.ssafy.tteonajaletsgo.mapper;
 
 import com.ssafy.tteonajaletsgo.domain.TravelCourse;
+import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseCheckDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseSaveDto;
 import com.ssafy.tteonajaletsgo.dto.travelCourse.TravelCourseUpdateDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,4 +20,9 @@ public interface TravelCourseMapper {
     int getTotalArticleCount(Map<String, Object> param) throws SQLException;
     void modifyArticle(TravelCourseUpdateDto travelCourseUpdateDto) throws Exception;
     List<TravelCourse> getTop() throws Exception;
+    void likeCourse(int articleNo) throws Exception;
+    void likeCancelCourse(int articleNo) throws Exception;
+    String checkCourse(TravelCourseCheckDto travelCourseCheckDto) throws Exception;
+    void insertCheckCourse(TravelCourseCheckDto travelCourseCheckDto) throws Exception;
+    void deleteCheckCourse(TravelCourseCheckDto travelCourseCheckDto) throws Exception;
 }
