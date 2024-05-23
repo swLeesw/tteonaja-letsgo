@@ -46,4 +46,24 @@ async function deleteUser(userId, success, fail) {
 async function checkPass(params, success, fail) {
   await local.post(`member/passcheck`, params).then(success).catch(fail);
 }
-export { userConfirm, findById, tokenRegeneration, logout, idCheck, register, modifyUser, deleteUser, checkPass };
+
+async function requestMail(params, success, fail) {
+  await local.post(`member/mailSend?userId=${params.userId}`).then(success).catch(fail)
+}
+
+async function checkCerticationNumber(params, success, fail) {
+  await local.get(`member/mailCheck?userNumber=${params.userNumber}&userId=${params.userId}`).then(success).catch(fail)
+}
+export {
+  userConfirm,
+  findById,
+  tokenRegeneration,
+  logout,
+  idCheck,
+  register,
+  modifyUser,
+  deleteUser,
+  checkPass,
+  requestMail,
+  checkCerticationNumber
+};

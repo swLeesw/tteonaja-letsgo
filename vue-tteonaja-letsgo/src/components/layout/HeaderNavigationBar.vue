@@ -153,11 +153,11 @@ onMounted(() => {
                                 <li class="nav-item me-2">
                                     <router-link to="/" @click.prevent="logout"
                                         class="nav-link btn-hover-effect rounded-pill">{{
-                                            menu.name
+                                        menu.name
                                         }}</router-link>
                                 </li>
                             </template>
-                            <template v-else>
+                            <template v-else-if="menu.routeName === 'my-page'">
                                 <li class="nav-item">
                                     <!-- <router-link :to="{ name: menu.routeName }"
                                         class="nav-link btn-hover-effect rounded-pill">{{
@@ -165,6 +165,14 @@ onMounted(() => {
                                         }}</router-link> -->
                                     <button class="nav-link btn-hover-effect rounded-pill" @click="checkUser">내
                                         정보</button>
+                                </li>
+                            </template>
+                            <template v-else>
+                                <li class="nav-item">
+                                    <router-link :to="{ name: menu.routeName }"
+                                        class="nav-link btn-hover-effect rounded-pill">{{
+                                        menu.name
+                                        }}</router-link>
                                 </li>
                             </template>
                         </template>
