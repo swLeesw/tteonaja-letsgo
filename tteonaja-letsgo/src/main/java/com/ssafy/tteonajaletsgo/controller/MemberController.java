@@ -3,6 +3,7 @@ package com.ssafy.tteonajaletsgo.controller;
 import com.ssafy.tteonajaletsgo.domain.Member;
 import com.ssafy.tteonajaletsgo.dto.member.*;
 import com.ssafy.tteonajaletsgo.exception.ExceptionResponse;
+import com.ssafy.tteonajaletsgo.service.MailService;
 import com.ssafy.tteonajaletsgo.service.MemberService;
 import com.ssafy.tteonajaletsgo.util.JWTUtil;
 import io.swagger.models.Response;
@@ -25,8 +26,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("tteonaja/api/member")
 public class MemberController {
+
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
+    private final MailService mailService;
+    private int number;
 
     @Operation(summary = "회원가입", description = "정보를 입력하여 회원가입을 한다.")
     @PostMapping("/join")
@@ -208,6 +212,50 @@ public class MemberController {
             return ExceptionResponse.response(e);
         }
 
+    }
+
+    // 인증 이메일 전송
+    @PostMapping("/mailSend")
+    public HashMap<String, Object> mailSend(@RequestParam("mail") String mail) {
+        HashMap<String, Object> map = new HashMap<>();
+        System.out.println(mail);
+        try {
+            number = mailService.sendMail(mail);
+            String num = String.valueOf(number);
+
+            map.put("success", Boolean.TRUE);
+            map.put("number", num);
+        } catch (Exception e) {
+            map.put("success", Boolean.FALSE);
+            map.put("error", e.getMessage());
+        }
+
+        return map;
+    }
+
+    // 인증번호 일치여부 확인
+    @GetMapping("/mailCheck")
+    public ResponseEntity<?> mailCheck(@RequestParam("userId") String userId, @RequestParam("userNumber") String userNumber) {
+        System.out.println(userNumber);
+        System.out.println("number는" + number);
+        log.info("userNumber : {}", userNumber);
+        boolean isMatch = userNumber.equals(String.valueOf(number));
+        MailCheckDto mailCheckDto = new MailCheckDto();
+        try {
+            if (isMatch) {
+                mailCheckDto.setCheck(true);
+                mailCheckDto.setPassword(memberService.getPassword(userId));
+            } else {
+                mailCheckDto.setCheck(false);
+            }
+            return new ResponseEntity<MailCheckDto>(mailCheckDto, HttpStatus.OK);
+        } catch (Exception e) {
+            return ExceptionResponse.response(e);
+        }
+    }
+
+    public String getPassword(String userId) throws Exception {
+        return memberService.getPassword(userId);
     }
 
 }

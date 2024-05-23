@@ -90,4 +90,10 @@
 
     </update>
 
+    <select id="getPassword" parameterType="String">
+        select user_password
+        from member
+        where user_id=#{userId}
+    </select>
+
 </mapper>

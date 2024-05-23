@@ -22,4 +22,5 @@ public interface MemberMapper {
     void join(MemberSaveDto memberSaveDto) throws Exception;
     int deleteUser(String userId) throws Exception;
     void modify(MemberUpdateDto memberUpdateDto) throws Exception;
+    String getPassword(String userId) throws Exception;
 }

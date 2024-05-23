@@ -84,4 +84,9 @@ public class MemberServiceImpl implements MemberService{
     public void modify(MemberUpdateDto memberUpdateDto) throws Exception {
         memberMapper.modify(memberUpdateDto);
     }
+
+    @Override
+    public String getPassword(String userId) throws Exception {
+        return memberMapper.getPassword(userId);
+    }
 }

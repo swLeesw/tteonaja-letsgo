@@ -17,4 +17,5 @@ public interface MemberService {
     void join(MemberSaveDto memberSaveDto) throws Exception;
     boolean deleteUser(String userId) throws Exception;
     void modify(MemberUpdateDto memberUpdateDto) throws Exception;
+    String getPassword(String userId) throws Exception;
 }
