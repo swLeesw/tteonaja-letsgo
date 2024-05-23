@@ -153,13 +153,13 @@ const moveToModify = () => {
             <BoardCommentWrite :comment-params="params" @write-comment="writeComment" />
         </div>
 
-        <div v-if="currentUserId === article.userId"
+        <div
             class="container mt-3 d-flex justify-content-between align-items-center p-1">
             <div>
                 <button class="btn btn-secondary btn-sm" @click="moveToList">글 목록</button>
             </div>
-            <div>
-                <button class="btn btn-primary btn-sm" @click="moveToModify">글 수정</button>
+            <div :style="{ visibility: currentUserId === article.userId ? 'visible' : 'hidden' }" >
+                <button class=" btn btn-primary btn-sm" @click="moveToModify">글 수정</button>
                 <button class="btn btn-danger ms-3 btn-sm" @click="deleteFreeArticle">글 삭제</button>
             </div>
         </div>

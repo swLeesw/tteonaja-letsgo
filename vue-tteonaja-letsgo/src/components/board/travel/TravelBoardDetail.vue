@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { deleteArticle, getArticle } from '@/api/board';
+import { deleteArticle, getArticle, likeArticle } from '@/api/board';
 import BoardCommentWrite from '@/components/board/comment/BoardCommentWrite.vue';
 import Swal from 'sweetalert2';
 import BoardCommentList from '../comment/BoardCommentList.vue';
@@ -117,9 +117,40 @@ const moveToList = () => {
 };
 
 const moveToModify = () => {
-    router.push({ name: 'travel-modify', params: { articleNo: article.value.articleNo}, query: {courseList: JSON.stringify(attractionList.value)}});
-}
+    router.push({ name: 'travel-modify', params: { articleNo: article.value.articleNo }, query: { courseList: JSON.stringify(attractionList.value) } });
+};
 
+const likeThisArticle = () => {
+    likeArticle(
+        {
+            boardType: 'travel',
+            articleNo: article.value.articleNo,
+            userId: currentUserId.value
+        },
+        (response) => {
+            if (response.data.check) {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "좋아요 취소",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    position: "top",
+                    icon: "success",
+                    title: "좋아요",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
+};
 </script>
 
 <template>
@@ -131,7 +162,7 @@ const moveToModify = () => {
                 <table class="table">
                     <thead>
                         <tr>
-                            <th colspan="10" class="table-dark text-center">{{ article.subject }}</th>
+                            <th colspan="13" class="table-dark text-center">{{ article.subject }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -148,7 +179,7 @@ const moveToModify = () => {
                                     @click="translate">Translate<i class="bi bi-globe"></i></a></th>
                         </tr>
                         <tr v-if="!translateMode">
-                            <td colspan="10" v-html="article.content" class="p-3"></td>
+                            <td colspan="13" v-html="article.content" class="p-3"></td>
                         </tr>
                         <tr v-else>
                             <!-- <td colspan="10" class="p-3">
@@ -159,7 +190,7 @@ const moveToModify = () => {
                                     <p></p>
                                 </vue-typed-js>
                             </td> -->
-                            <td colspan="10" class="p-3">{{ translated }}</td>
+                            <td colspan="10" class="p-3" v-html="translated"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -193,12 +224,14 @@ const moveToModify = () => {
             <BoardCommentWrite :comment-params="params" @write-comment="writeComment" />
         </div>
 
-        <div v-if="currentUserId === article.userId"
+        <div
             class="container mt-3 d-flex justify-content-between align-items-center p-1">
             <div>
                 <button class="btn btn-secondary btn-sm" @click="moveToList">글 목록</button>
             </div>
-            <div>
+            <button style="margin-left: 90px;" class="btn btn-outline-danger"
+                @click="likeThisArticle(route.params.id)">♥</button>
+            <div :style="{ visibility: currentUserId === article.userId ? 'visible' : 'hidden' }">
                 <button class="btn btn-primary btn-sm" @click="moveToModify">글 수정</button>
                 <button class="btn btn-danger ms-3 btn-sm" @click="removeArticle">글 삭제</button>
             </div>
