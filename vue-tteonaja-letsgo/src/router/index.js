@@ -94,7 +94,7 @@ const router = createRouter({
           component: () => import("@/components/board/travel/TravelBoardList.vue"),
         },
         {
-          path: "travel/:id/:commentNum",
+          path: "travel/:id",
           name: "travel-detail",
           beforeEnter: onlyAuthUser,
           component: () => import("@/components/board/travel/TravelBoardDetail.vue"),
@@ -103,15 +103,13 @@ const router = createRouter({
           path: "travel/write",
           name: "travel-write",
           beforeEnter: onlyAuthUser,
-          component: () =>
-            import("@/components/board/travel/TravelBoardWrite.vue"),
+          component: () => import("@/components/board/travel/TravelBoardWrite.vue"),
         },
         {
           path: "travel/modify/:id",
           name: "travel-modify",
           beforeEnter: onlyAuthUser,
-          component: () =>
-            import("@/components/board/travel/TravelBoardModify.vue"),
+          component: () => import("@/components/board/travel/TravelBoardModify.vue"),
         },
       ],
     },

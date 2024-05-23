@@ -64,6 +64,11 @@ const unfold = (event) => {
 
 }
 
+//여행경로로 이동
+const mvCourse = (articleno) => {
+    router.push({ name: "travel-detail", params: { id: articleno } });
+}
+
 onMounted(() => {
     getAttractionTop();
     getCourseTop();
@@ -73,19 +78,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <!-- <div class='container-fluid z-1 position-absolute pt-5 ps-5 ms-5 mt-5'>
-        <p class="fs-3"><span class="text-dark fs-1 fw-bold">떠나자, Let's Go</span>에서</p>
-        <p class="fs-3">대한민국에 숨겨진 관광지를 찾고</p>
-        <p class="fs-3">여행을 함께 해요!</p>
-        <div class='container-1-buttons'>
-            <button class='btn btn-light' id="mapBtn">관광지 찾으러가기 ></button>
-            <button class='btn btn-light ms-3'>후기 보러 가기 ></button>
-        </div>
-    </div>
-    <div class="mt-0 container-fluid p-0 z-0 position-relative">
-        <img src="@/assets/main.jpg" class="img-fluid">
-    </div> -->
-
     <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true"
@@ -105,34 +97,6 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-            <!-- <div class="carousel-item">
-                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <rect width="100%" height="100%" fill="#777" />
-                </svg>
-
-                <div class="container">
-                    <div class="carousel-caption">
-                        <h1>Another example headline.</h1>
-                        <p>Some representative placeholder content for the second slide of the carousel.</p>
-                        <p><a class="btn btn-lg btn-primary" href="#">Learn more</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
-                    <rect width="100%" height="100%" fill="#777" />
-                </svg>
-
-                <div class="container">
-                    <div class="carousel-caption text-end">
-                        <h1>One more for good measure.</h1>
-                        <p>Some representative placeholder content for the third slide of this carousel.</p>
-                        <p><a class="btn btn-lg btn-primary" href="#">Browse gallery</a></p>
-                    </div>
-                </div>
-            </div> -->
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -144,9 +108,7 @@ onMounted(() => {
         </button>
     </div>
 
-    <div class="container marketing mt-5">
-
-        <!-- Three columns of text below the carousel -->
+    <div class="container marketing mt-5 ">
 
 
         <!-- START THE FEATURETTES -->
@@ -169,8 +131,9 @@ onMounted(() => {
                     <p v-show="info.overview != null" class="truncate" @click="unfold($event)" v-html="info.overview">
                     </p>
                     <p v-show="info.overview == null"><br><br></p>
-                    <p style="color: gray;">{{ info.addr1 }}</p>
-                    <button class="btn  btn-secondary" @click="moveAttractionSearch(info.name)">지도에서 보기</button>
+                    <p style="color: gray;" class="truncate">{{ info.addr1 }}</p>
+                    <button class="btn  btn-secondary" @click="moveAttractionSearch(info.name); unfold($event)">지도에서
+                        보기</button>
                 </div>
             </div>
         </div>
@@ -180,7 +143,7 @@ onMounted(() => {
 
         <div class="row featurette">
             <div class="col-md-7 order-md-2">
-                <h2 class="featurette-heading fw-normal lh-1">이달의 여행 코스</h2>
+                <h2 class="tb-custom featurette-heading fw-normal lh-1">이달의 여행 코스</h2>
                 <table class="table">
                     <thead>
                         <tr>
@@ -194,7 +157,13 @@ onMounted(() => {
                     <tbody>
                         <tr v-for="(course, index) in courseTop" :key="index">
                             <th scope="row">{{ course.articleNo }}</th>
-                            <td>{{ course.subject }}</td>
+                            <td>
+                                <RouterLink class="del-deco fw-bold" :to="{
+                                    name: 'travel-detail', params: { id: course.articleNo }
+                                }">
+                                    gd
+                                </RouterLink>
+                            </td>
                             <td>{{ course.userId }}</td>
                             <td>{{ course.registerTime }}</td>
                             <td>{{ course.hit }}</td>
@@ -224,12 +193,17 @@ onMounted(() => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(course, index) in freeTop" :key="index">
-                            <th scope="row">{{ course.articleNo }}</th>
-                            <td>{{ course.subject }}</td>
-                            <td>{{ course.userId }}</td>
-                            <td>{{ course.registerTime }}</td>
-                            <td>{{ course.hit }}</td>
+                        <tr v-for="(free, index) in freeTop" :key="index">
+                            <th scope="row">{{ free.articleNo }}</th>
+                            <td>
+                                <RouterLink class="del-deco fw-bold"
+                                    :to="{ name: 'free-detail', params: { id: free.articleNo, commentNum: 0 } }">
+                                    {{ free.subject }}
+                                </RouterLink>
+                            </td>
+                            <td>{{ free.userId }}</td>
+                            <td>{{ free.registerTime }}</td>
+                            <td>{{ free.hit }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -313,5 +287,10 @@ onMounted(() => {
 .a:hover img {
     transform: scale(1.12);
     opacity: 0.7;
+}
+
+.del-deco {
+    text-decoration: none;
+    color: black;
 }
 </style>
