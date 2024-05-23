@@ -91,7 +91,7 @@ onMounted(() => {
 <template>
     <section class="py-5 text-center background-section">
         <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="col-lg-6 col-md-8 mx-auto content">
                 <h1 class="fw-light mb-5">여행 코스</h1>
                 <p class="lead text-muted mb-5">나만의 여행 코스를 설계하고, 소중한 경험을 다른 여행자들과 공유하세요. 다양한 팁과 추천 코스를 참고하여 완벽한 여행을
                     계획해보세요.</p>
@@ -157,5 +157,8 @@ onMounted(() => {
     position: relative;
     z-index: 1;
     /* 콘텐츠를 앞쪽에 배치 */
+    background: rgba(255, 255, 255, 0.11); /* 반투명한 검은 배경 추가 */
+    padding: 20px; /* 패딩 추가 */
+    border-radius: 10px; /* 모서리 둥글게 */
 }
 </style>

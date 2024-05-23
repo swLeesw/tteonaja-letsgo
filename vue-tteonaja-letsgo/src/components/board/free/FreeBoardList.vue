@@ -87,7 +87,7 @@ onMounted(() => {
 <template>
     <section class="py-5 text-center background-section">
         <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="col-lg-6 col-md-8 mx-auto content">
                 <h1 class="fw-light mb-5">자유게시판</h1>
                 <p class="lead text-dark fs-bolder">다양한 사람들과 자유롭게 정보를 공유하는 공간입니다.</p>
                 <br><br><br><br>
@@ -173,5 +173,8 @@ onMounted(() => {
     position: relative;
     z-index: 1;
     /* 콘텐츠를 앞쪽에 배치 */
+    background: rgba(255, 255, 255, 0.11); /* 반투명한 검은 배경 추가 */
+    padding: 20px; /* 패딩 추가 */
+    border-radius: 10px; /* 모서리 둥글게 */    
 }
 </style>

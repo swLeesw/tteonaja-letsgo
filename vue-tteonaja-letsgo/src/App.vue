@@ -14,11 +14,6 @@ import HomeView from "@/views/HomeView.vue"
       <RouterView />
     </main>
   </div>
-  <div class="">
-    <Footer class="footer-bar">
-      <FooterBar />
-    </Footer>
-  </div>
 </template>
 
 <style scoped>
