@@ -89,4 +89,9 @@ public class MemberServiceImpl implements MemberService{
     public String getPassword(String userId) throws Exception {
         return memberMapper.getPassword(userId);
     }
+
+    @Override
+    public String getEmail(String userId) throws Exception {
+        return memberMapper.getEmail(userId);
+    }
 }

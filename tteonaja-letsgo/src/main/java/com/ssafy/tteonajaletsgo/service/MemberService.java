@@ -18,4 +18,5 @@ public interface MemberService {
     boolean deleteUser(String userId) throws Exception;
     void modify(MemberUpdateDto memberUpdateDto) throws Exception;
     String getPassword(String userId) throws Exception;
+    String getEmail(String userId) throws Exception;
 }

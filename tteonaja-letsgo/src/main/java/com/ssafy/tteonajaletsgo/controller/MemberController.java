@@ -216,21 +216,27 @@ public class MemberController {
 
     // 인증 이메일 전송
     @PostMapping("/mailSend")
-    public HashMap<String, Object> mailSend(@RequestParam("mail") String mail) {
-        HashMap<String, Object> map = new HashMap<>();
-        System.out.println(mail);
+    public ResponseEntity<?> mailSend(@RequestParam("userId") String userId) {
+        Map<String, Object> map = new HashMap<>();
         try {
-            number = mailService.sendMail(mail);
-            String num = String.valueOf(number);
 
-            map.put("success", Boolean.TRUE);
-            map.put("number", num);
+            String mail = memberService.getEmail(userId);
+            System.out.println(mail);
+            if (mail == null) {
+                map.put("check", false);
+            } else {
+                number = mailService.sendMail(mail);
+                String num = String.valueOf(number);
+                map.put("check", true);
+                map.put("email", mail);
+                map.put("number", num);
+            }
         } catch (Exception e) {
-            map.put("success", Boolean.FALSE);
+            map.put("check", false);
             map.put("error", e.getMessage());
         }
 
-        return map;
+        return new ResponseEntity<Map>(map, HttpStatus.OK);
     }
 
     // 인증번호 일치여부 확인
