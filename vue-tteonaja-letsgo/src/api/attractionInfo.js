@@ -2,24 +2,27 @@ import { localAxios } from "@/util/http-commons";
 
 const local = localAxios();
 
-function getAttraction(params, success, fail) {
-  local.get(`/attractionInfo/region`, { params: params }).then(success).catch(fail);
+async function getAttraction(params, success, fail) {
+  await local.get(`/attractionInfo/region`, { params: params }).then(success).catch(fail);
 }
 
-function getSido(success, fail) {
-  local.get(`/attractionInfo/sido`).then(success).catch(fail);
+async function getSido(success, fail) {
+  await local.get(`/attractionInfo/sido`).then(success).catch(fail);
 }
 
-function getGugun(param, success, fail) {
-  local.get(`/attractionInfo/gugun/${param}`).then(success).catch(fail);
+async function getGugun(param, success, fail) {
+  await local.get(`/attractionInfo/gugun/${param}`).then(success).catch(fail);
 }
 
-function getTopAttraction(success, fail) {
-  local.get(`/attractionInfo/top`).then(success).catch(fail);
+async function getTopAttraction(success, fail) {
+  await local.get(`/attractionInfo/top`).then(success).catch(fail);
 }
 
-function likeAttraction(id, userId, success, fail) {
-  local.get(`/attractionInfo/like/${id}/${userId}`, id, userId).then(success).catch(fail);
+async function likeAttraction(id, userId, success, fail) {
+  await local.get(`/attractionInfo/like/${id}/${userId}`, id, userId).then(success).catch(fail);
 }
 
-export { getAttraction, getSido, getGugun, getTopAttraction, likeAttraction };
+async function getAttractionById(attractionId, success, fail) {
+  await local.get(`attractionInfo/attraction/${attractionId}`).then(success).catch(fail)
+}
+export { getAttraction, getSido, getGugun, getTopAttraction, getAttractionById, likeAttraction};

@@ -54,13 +54,24 @@ if (props.type === "modify") {
             console.error(error);
         }
     );
+
+    attractionSelectedList.value = JSON.parse(route.query.courseList)
+    for (const elem of attractionSelectedList.value) {
+        attractionCustomSelectedList.value.push({
+            id: elem.id,
+            sidoCode: elem.sidoCode,
+            gugunCode: elem.gugunCode,
+            contentCode: elem.typeId,
+            firstImage: elem.firstImage
+        })
+    }
 }
 
 const moveToList = () => {
     router.replace({ name: 'travel-list' });
 };
 
-const controlArticle = () => {
+const controlArticle = async() => {
     let token = sessionStorage.getItem("accessToken");
     let decodeToken = jwtDecode(token);
     article.value.userId = decodeToken.userId;
@@ -76,7 +87,7 @@ const controlArticle = () => {
     };
 
     if (props.type === "regist") {
-        registArticle(
+        await registArticle(
             params,
             (response) => {
                 if (response.status == 201) {
@@ -103,13 +114,14 @@ const controlArticle = () => {
     }
 
     if (props.type === "modify") {
-        modifyArticle(
+        await modifyArticle(
             {
-                boardType: "free",
+                boardType: 'travel',
                 article: {
                     articleNo: article.value.articleNo,
                     subject: article.value.subject,
-                    content: article.value.content
+                    content: article.value.content,
+                    travelList: JSON.stringify(attractionCustomSelectedList.value)
                 }
             },
             (response) => {
@@ -134,7 +146,14 @@ const controlArticle = () => {
                 }
             },
             (error) => {
-
+                console.log(error)
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "글 수정 처리에 문제가 발생했습니다!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             }
         );
     }
@@ -331,6 +350,9 @@ const addAttreaction = (info) => {
 
 const removeAttraction = (id) => {
     attractionSelectedList.value = ArrayControl.remove(attractionSelectedList.value, (info) => {
+        return info.id !== id;
+    });
+    attractionCustomSelectedList.value = ArrayControl.remove(attractionCustomSelectedList.value, (info) => {
         return info.id !== id;
     });
 };

@@ -107,7 +107,7 @@ const router = createRouter({
             import("@/components/board/travel/TravelBoardWrite.vue"),
         },
         {
-          path: "travel/modify:id",
+          path: "travel/modify/:id",
           name: "travel-modify",
           beforeEnter: onlyAuthUser,
           component: () =>

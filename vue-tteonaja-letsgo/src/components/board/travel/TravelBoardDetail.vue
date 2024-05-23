@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import BoardCommentList from '../comment/BoardCommentList.vue';
 import { jwtDecode } from 'jwt-decode';
 import { getGPTResponse } from '@/util/translator';
+import { getAttractionById } from '@/api/attractionInfo';
 // import { Typed } from "@duskmoon/vue3-typed-js";
 // import { TypedOptions } from "@duskmoon/vue3-typed-js";
 
@@ -23,9 +24,11 @@ const params = ref(
 const currentUserId = ref("");
 
 const article = ref({});
+const courseList = ref();
+const attractionList = ref([]);
 
-const getTravelArticleDetail = () => {
-    getArticle(params.value,
+const getTravelArticleDetail = async () => {
+    await getArticle(params.value,
         (response) => {
             article.value = response.data;
             console.log(response);
@@ -35,9 +38,24 @@ const getTravelArticleDetail = () => {
             console.log(error);
         }
     );
+
+    courseList.value = JSON.parse(article.value.travelList);
+
+    for (const course of courseList.value) {
+        await getAttractionById(
+            course.id,
+            (response) => {
+                console.log(response);
+                attractionList.value.push(response.data);
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    }
 };
 
-const deleteTravelArticle = () => {
+const removeArticle = () => {
     deleteArticle(
         params.value,
         (response) => {
@@ -99,14 +117,14 @@ const moveToList = () => {
 };
 
 const moveToModify = () => {
-    router.push({ name: 'travel-modify', params: { articleNo: article.value.articleNo } });
+    router.push({ name: 'travel-modify', params: { articleNo: article.value.articleNo}, query: {courseList: JSON.stringify(attractionList.value)}});
 }
 
 </script>
 
 <template>
     <br><br>
-    <div class="container mt-5 shadow p-4 rounded">
+    <div class="container mt-5 mb-5 shadow p-4 rounded">
         <h1 class="fw-light mb-5 text-center">여행 코스</h1>
         <div class="container mt-5">
             <div class="row justify-content-center">
@@ -124,6 +142,8 @@ const moveToModify = () => {
                             <th colspan="2" class="text-center">{{ article.registerTime }}</th>
                             <th colspan="1" class="table-secondary text-center">조회수 </th>
                             <th colspan="2" class="text-center">{{ article.hit }}</th>
+                            <th colspan="1" class="table-secondary text-center">좋아요 </th>
+                            <th colspan="2" class="text-center">{{ article.courseLike }}</th>
                             <th colspan="1" class="table-secondary text-center"><a href="#" class="btn fw-bolder p-0"
                                     @click="translate">Translate<i class="bi bi-globe"></i></a></th>
                         </tr>
@@ -146,10 +166,30 @@ const moveToModify = () => {
             </div>
         </div>
         <div class="container border p-3" id="comment_block">
+            <p>여행 코스</p>
+            <hr>
+            <div class="overflow-x-auto border mb-3 ps-2">
+
+                <!-- <div class="container-fluid border mb-5 ps-2"> -->
+                <div class="d-inline-flex" v-for="(info, index) in attractionList" :key="index">
+                    <div class="d-inline-flex ms-3 me-3 mt-4 mb-4 mycard p-3" @click="onClickMapMarker(info)">
+                        <img :src="info.firstImage" style="border-radius: 10px;" alt="사진" width="120px"
+                            v-show="info.firstImage != ''">
+                        <img src="@/assets/logo.png" alt="사진" width="120px" v-show="info.firstImage == ''">
+                        <span class="ms-3 border border-1 opacity-90"></span>
+                        <div class="card-content ms-3">
+                            <h5 class="card-title mb-1">{{ info.name }}</h5>
+                            <p class="card-description">{{ info.addr1 }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container border p-3 mt-3" id="comment_block">
             <p>댓글 목록</p>
             <hr>
-            <BoardCommentList board-type="travel" :comment-params="params" :write-checker="writeChecker" @deleted-comment="deletedComment"
-                @complete-write="completeWrite" />
+            <BoardCommentList board-type="travel" :comment-params="params" :write-checker="writeChecker"
+                @deleted-comment="deletedComment" @complete-write="completeWrite" />
             <BoardCommentWrite :comment-params="params" @write-comment="writeComment" />
         </div>
 
@@ -160,12 +200,40 @@ const moveToModify = () => {
             </div>
             <div>
                 <button class="btn btn-primary btn-sm" @click="moveToModify">글 수정</button>
-                <button class="btn btn-danger ms-3 btn-sm" @click="deleteFreeArticle">글 삭제</button>
+                <button class="btn btn-danger ms-3 btn-sm" @click="removeArticle">글 삭제</button>
             </div>
         </div>
     </div>
 
-
 </template>
 
-<style scoped></style>
+<style scoped>
+.overflow-x-auto {
+    white-space: nowrap;
+}
+
+.mycard:hover {
+    transform: scale(1.05);
+    background-color: rgba(67, 180, 255, 0.158);
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.btn-custom {
+    background-color: rgba(67, 180, 255, 0.158);
+    color: #888686;
+    border: 1px solid;
+    border-color: #8886861a;
+}
+
+
+.btn-custom:hover {
+    background-color: rgba(67, 180, 255, 0.623);
+    color: #888686;
+}
+
+.btn-custom:active {
+    background-color: rgba(67, 180, 255, 0.027);
+    color: #888686;
+}
+</style>
