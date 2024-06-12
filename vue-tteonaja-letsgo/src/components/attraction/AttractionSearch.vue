@@ -4,7 +4,7 @@ import { ref, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from "vue-router";
 // import axios from 'axios'
 import { KakaoMap, KakaoMapMarker, KakaoMapCustomOverlay } from 'vue3-kakao-maps';
-import { getAttraction, getSido, getGugun, likeAttraction } from '@/api/attractionInfo.js';
+import { getAttraction, getAdditionalAttraction, getSido, getGugun, likeAttraction } from '@/api/attractionInfo.js';
 import { jwtDecode } from "jwt-decode";
 import Swal from 'sweetalert2';
 //router
@@ -17,6 +17,8 @@ const contentCode = ref("");
 const searchTerm = ref("");
 //전체 정보
 const attractionInfo = ref("");
+//전체 정보 사이즈
+const attractionInfoSize = ref(0);
 
 //옵션(db에서 뽑아온 전체 sido, gugun 정보 모음(content type만 따로 생성))
 const sidoOptions = ref([]);
@@ -167,8 +169,6 @@ const likeAttractionf = (articleNo) => {
             console.log(error);
         }
     )
-
-
 }
 
 //리뷰 닫기
@@ -192,16 +192,44 @@ const getAttractionf = () => (
             if (response.data == "" || response.data == null) {
                 return;
             }
+            //정보 저장
             attractionInfo.value = response.data;
             attractionInfo.value.forEach(info => info.visible = false);
             coordinate.value.lat = attractionInfo.value[0].latitude;
             coordinate.value.lng = attractionInfo.value[0].longitude;
+            //사이즈
+            attractionInfoSize.value = attractionInfo.value.length;
         },
         (error) => {
             console.log(error);
         }
     ));
 
+
+const getAdditionalAttractionf = () => {
+    getAdditionalAttraction(
+        {
+            sidoCode: sido.value,
+            gugunCode: gugun.value,
+            contentCode: contentCode.value,
+            searchTerm: searchTerm.value,
+            attractionInfoSize: attractionInfoSize.value,
+        },
+        (response) => {
+            if (response.data == "" || response.data == null) {
+                return;
+            }
+
+            //정보 저장
+            attractionInfo.value.push(...response.data);
+            attractionInfoSize.value = attractionInfo.value.length;
+
+        },
+        (error) => {
+            console.log(error);
+        }
+    )
+}
 
 //지도화면 좌표
 const coordinate = ref({
@@ -315,6 +343,7 @@ onMounted(() => {
                         {{ contentt.name }}
                     </option>
                 </select>
+                <span class="ms-4 border p-1">검색 결과: {{ attractionInfoSize }}개</span>
             </form>
             <div class="list-group list-group-flush border-bottom scrollarea scroll-custom">
                 <div v-for="(info, index) in attractionInfo" :key="index">
@@ -335,6 +364,7 @@ onMounted(() => {
                     <!-- data-bs-target="#offcanvasScrolling"
                                 data-bs-toggle="offcanvas" -->
                 </div>
+                <button v-if="attractionInfoSize != 0 && attractionInfoSize % 20 == 0" @click="getAdditionalAttractionf()" class="btn btn-custom ms-5 me-5">더보기</button>
             </div>
         </div>
         <!--리뷰 오프캔버스-->

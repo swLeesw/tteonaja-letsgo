@@ -12,15 +12,27 @@ import java.util.List;
 import java.util.Map;
 
 public interface AttractionInfoService {
+
     List<AttractionInfoAndDescription> getRegion(Map<String, String> map) throws SQLException;
+
+    List<AttractionInfoAndDescription> getAdditionalRegion(Map<String, Object> map) throws SQLException;
+
     AttractionInfoAndDescription getAttraction(int id) throws Exception;
+
     List<Sido> getSido() throws SQLException;
+
     List<Gugun> getGugun(int sidoCode) throws SQLException;
+
     List<AttractionInfoAndDescription> getTopAttraction() throws Exception;
+
     void likeInfo(int id) throws Exception;
+
     void likeCancelInfo(int id) throws Exception;
+
     boolean checkInfo(AttractionInfoCheckDto attractionInfoCheckDto) throws Exception;
+
     void insertCheckInfo(AttractionInfoCheckDto attractionInfoCheckDto) throws Exception;
+
     void deleteCheckInfo(AttractionInfoCheckDto attractionInfoCheckDto) throws  Exception;
 
 }

@@ -6,6 +6,10 @@ async function getAttraction(params, success, fail) {
   await local.get(`/attractionInfo/region`, { params: params }).then(success).catch(fail);
 }
 
+async function getAdditionalAttraction(params, success, fail) {
+  await local.get(`/attractionInfo/region/additional`, {params: params}).then(success).catch(fail);
+}
+
 async function getSido(success, fail) {
   await local.get(`/attractionInfo/sido`).then(success).catch(fail);
 }
@@ -25,4 +29,4 @@ async function likeAttraction(id, userId, success, fail) {
 async function getAttractionById(attractionId, success, fail) {
   await local.get(`attractionInfo/attraction/${attractionId}`).then(success).catch(fail)
 }
-export { getAttraction, getSido, getGugun, getTopAttraction, getAttractionById, likeAttraction};
+export { getAttraction, getAdditionalAttraction, getSido, getGugun, getTopAttraction, getAttractionById, likeAttraction};

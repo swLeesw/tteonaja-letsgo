@@ -30,15 +30,25 @@ public class AttractionInfoController {
 
     private final AttractionInfoService attractionInfoService;
 
+
+    @Operation(summary = "조건에 맞는 여행지 정보 불러오기", description = "여행지 정보를 불러온다.")
     @GetMapping("/region")
 //    @CrossOrigin(origins = "*", allowedHeaders = "*")
     public List<AttractionInfoAndDescription> getRegion(@RequestParam Map<String, String> map) throws SQLException {
-        log.info("searchTerm = {}", map.get("searchTerm"));
+        log.debug("searchTerm = {}", map.get("searchTerm"));
         List<AttractionInfoAndDescription> list = attractionInfoService.getRegion(map);
         return list;
     }
+    @Operation(summary = "추가적인 관광지 정보 얻어오기", description = "추가적인 여행지 정보를 불러운다(20개씩)")
+    @GetMapping("/region/additional")
+    public List<AttractionInfoAndDescription> getAdditionalRegion(@RequestParam Map<String, Object> map) throws SQLException {
+        log.debug("searchTerm = {}", map.get("searchTerm"));
 
+        List<AttractionInfoAndDescription> list = attractionInfoService.getAdditionalRegion(map);
+        return list;
+    }
 
+    @Operation(summary = "id로 관광지 정보 얻어오기", description = "아이디당 여행정보 좋아요 및 좋아요 취소를 한다.")
     @GetMapping("/attraction/{id}")
     public ResponseEntity<?> getAttraction(@PathVariable(value = "id", required = true) int id) {
         try {
@@ -48,7 +58,7 @@ public class AttractionInfoController {
         }
     }
 
-
+    @Operation(summary = "시/도 정보 불러오기", description = "시/도 정보를 불러온다.")
     @GetMapping("/sido")
     public List<Sido> getSido() throws SQLException {
 
@@ -56,12 +66,14 @@ public class AttractionInfoController {
         return list;
     }
 
+    @Operation(summary = "구군 정보 불러오기", description = "구군 정보를 불러운다.")
     @GetMapping("/gugun/{sidoCode}")
     public List<Gugun> getGugun(@PathVariable("sidoCode") int sidoCode) throws SQLException {
         List<Gugun> list = attractionInfoService.getGugun(sidoCode);
         return list;
     }
 
+    @Operation(summary = "여행지 탑 5", description = "여행지 탑 5를 불러온다.")
     @GetMapping("/top")
     public ResponseEntity<?> getTopAttraction() {
 

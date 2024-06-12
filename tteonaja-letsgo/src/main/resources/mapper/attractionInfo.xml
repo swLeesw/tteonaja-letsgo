@@ -66,6 +66,29 @@
                 and i.name like concat('%', #{searchTerm}, '%')
             </if>
         </where>
+        limit 20
+    </select>
+
+    <select id="getAdditionalRegion" parameterType="map" resultMap="attractionInfoAndDescription">
+        select i.id, i.type_id, i.name, i.zipcode, i.tel, i.first_image, i.latitude, i.longitude, i.sido_code, i.gugun_code, i.like, i.addr1, d.homepage, d.overview
+        from attraction_info i
+        left join attraction_description d
+        on i.id = d.id
+        <where>
+            <if test="sidoCode != null and sidoCode != ''">
+                and i.sido_code=#{sidoCode}
+            </if>
+            <if test="gugunCode != null and gugunCode != ''">
+                and i.gugun_code=#{gugunCode}
+            </if>
+            <if test="contentCode != null and contentCode != ''">
+                and i.type_id=#{contentCode}
+            </if>
+            <if test="searchTerm != null and searchTerm != ''">
+                and i.name like concat('%', #{searchTerm}, '%')
+            </if>
+        </where>
+        LIMIT #{attractionInfoSize}, 20
     </select>
 
     <select id="getAttraction" parameterType="int" resultMap="attractionInfoAndDescription">

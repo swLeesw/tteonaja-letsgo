@@ -6,7 +6,7 @@ import { getArticle, modifyArticle, registArticle } from '@/api/board';
 import { jwtDecode } from 'jwt-decode';
 import { KakaoMap, KakaoMapMarker, KakaoMapCustomOverlay } from 'vue3-kakao-maps';
 import Swal from 'sweetalert2';
-import { getAttraction, getSido, getGugun } from '@/api/attractionInfo.js';
+import { getAttraction, getAdditionalAttraction, getSido, getGugun } from '@/api/attractionInfo.js';
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
@@ -173,6 +173,8 @@ const contentCode = ref("");
 const searchTerm = ref("");
 //전체 정보
 const attractionInfo = ref("");
+//전체 정보 사이즈
+const attractionInfoSize = ref(0);
 
 //옵션(db에서 뽑아온 전체 sido, gugun 정보 모음(content type만 따로 생성))
 const sidoOptions = ref([]);
@@ -252,7 +254,7 @@ const getContent = (infoName, infoAddr1, infoHomepage) => {
 };
 
 //db에서 여행지 정보 뽑아오기
-const getAttractionf = () => (
+const getAttractionf = () => {
 
     getAttraction(
         {
@@ -274,8 +276,34 @@ const getAttractionf = () => (
         (error) => {
             console.log(error);
         }
-    ));
+    )    
+};
 
+//여행지 정보 추가적으로 뽑아오기
+const getAdditionalAttractionf = () => {
+    getAdditionalAttraction(
+        {
+            sidoCode: sido.value,
+            gugunCode: gugun.value,
+            contentCode: contentCode.value,
+            searchTerm: searchTerm.value,
+            attractionInfoSize: attractionInfoSize.value,
+        },
+        (response) => {
+            if (response.data == "" || response.data == null) {
+                return;
+            }
+
+            //정보 저장
+            attractionInfo.value.push(...response.data);
+            attractionInfoSize.value = attractionInfo.value.length;
+
+        },
+        (error) => {
+            console.log(error);
+        }
+    )
+}
 
 //지도화면 좌표
 const coordinate = ref({
@@ -429,6 +457,7 @@ onMounted(() => {
                         <!-- data-bs-target="#offcanvasScrolling"
                                 data-bs-toggle="offcanvas" -->
                     </div>
+                    <button v-if="attractionInfoSize != 0 && attractionInfoSize % 20 == 0" @click="getAdditionalAttractionf()" class="btn btn-custom ms-5 me-5">더보기</button>
                 </div>
             </div>
             <!--카카오 맵 시작-->

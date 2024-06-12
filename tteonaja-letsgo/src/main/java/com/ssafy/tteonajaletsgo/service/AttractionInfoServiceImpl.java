@@ -7,6 +7,8 @@ import com.ssafy.tteonajaletsgo.dto.AttractionInfoAndDescription;
 import com.ssafy.tteonajaletsgo.dto.attractionInfo.AttractionInfoCheckDto;
 import com.ssafy.tteonajaletsgo.mapper.AttractionInfoMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -15,6 +17,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class AttractionInfoServiceImpl implements AttractionInfoService{
 
     private final AttractionInfoMapper attractionInfoMapper;
@@ -22,6 +25,12 @@ public class AttractionInfoServiceImpl implements AttractionInfoService{
     @Override
     public List<AttractionInfoAndDescription> getRegion(Map<String, String> map) throws SQLException {
         return attractionInfoMapper.getRegion(map);
+    }
+
+    @Override
+    public List<AttractionInfoAndDescription> getAdditionalRegion(Map<String, Object> map) throws SQLException {
+        map.put("attractionInfoSize", Integer.parseInt((String)map.get("attractionInfoSize")));
+        return attractionInfoMapper.getAdditionalRegion(map);
     }
 
     @Override
