@@ -272,6 +272,7 @@ const getAttractionf = () => {
             attractionInfo.value.forEach(info => info.visible = false);
             coordinate.value.lat = attractionInfo.value[0].latitude;
             coordinate.value.lng = attractionInfo.value[0].longitude;
+            attractionInfoSize.value = attractionInfo.value.length;
         },
         (error) => {
             console.log(error);
@@ -439,6 +440,7 @@ onMounted(() => {
                             {{ contentt.name }}
                         </option>
                     </select>
+                    <span class="ms-4 border p-1">검색 결과: {{ attractionInfoSize }}개</span>
                 </form>
                 <div class="list-group list-group-flush border-bottom scrollarea scroll-custom">
                     <div v-for="(info, index) in attractionInfo" :key="index">
@@ -457,7 +459,7 @@ onMounted(() => {
                         <!-- data-bs-target="#offcanvasScrolling"
                                 data-bs-toggle="offcanvas" -->
                     </div>
-                    <button v-if="attractionInfoSize != 0 && attractionInfoSize % 20 == 0" @click="getAdditionalAttractionf()" class="btn btn-custom ms-5 me-5">더보기</button>
+                    <button v-if="attractionInfoSize != 0 && attractionInfoSize % 20 == 0" @click="getAdditionalAttractionf()" class="btn btn-outline-secondary ms-5 me-5">더보기..</button>
                 </div>
             </div>
             <!--카카오 맵 시작-->

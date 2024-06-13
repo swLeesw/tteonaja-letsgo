@@ -364,7 +364,7 @@ onMounted(() => {
                     <!-- data-bs-target="#offcanvasScrolling"
                                 data-bs-toggle="offcanvas" -->
                 </div>
-                <button v-if="attractionInfoSize != 0 && attractionInfoSize % 20 == 0" @click="getAdditionalAttractionf()" class="btn btn-custom ms-5 me-5">더보기</button>
+                <button v-if="attractionInfoSize != 0 && attractionInfoSize % 20 == 0" @click="getAdditionalAttractionf()" class="btn btn-outline-secondary ms-5 me-5" style="">더보기..</button>
             </div>
         </div>
         <!--리뷰 오프캔버스-->
