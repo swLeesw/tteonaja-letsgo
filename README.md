@@ -3,7 +3,7 @@
 <table align="center">
     <tr align="center">
         <td style="min-width: 150px;">
-            <a href="https://github.com/Chaos0103">
+            <a href="https://github.com/MJ-Kor">
               <img src="https://avatars.githubusercontent.com/u/87603324?v=4" width="200">
               <br />
               <b>MJ-Kor</b>
